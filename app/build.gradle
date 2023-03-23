@@ -1,0 +1,111 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.mikepenz.aboutlibraries.plugin'
+    id 'com.google.devtools.ksp'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+}
+
+android {
+    namespace 'com.tristarvoid.vanguard'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.tristarvoid.vanguard"
+        minSdk 29
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.4.3'
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+
+    //Room
+    def room_version = "2.5.1"
+    implementation "androidx.room:room-runtime:$room_version"
+    ksp "androidx.room:room-compiler:$room_version"
+
+    //Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    //Calendar
+    implementation 'com.kizitonwose.calendar:compose:2.2.0'
+
+    //Sheets
+    implementation 'com.maxkeppeler.sheets-compose-dialogs:core:1.1.1'
+    implementation 'com.maxkeppeler.sheets-compose-dialogs:calendar:1.1.1'
+    implementation 'com.maxkeppeler.sheets-compose-dialogs:date-time:1.1.1'
+
+    //ML Kit
+    implementation 'com.google.mlkit:image-labeling:17.0.7'
+
+    //Lottie
+    implementation 'com.airbnb.android:lottie-compose:6.0.0'
+
+    //AboutLibraries
+    implementation "com.mikepenz:aboutlibraries-core:10.6.1"
+    implementation "com.mikepenz:aboutlibraries-compose:10.6.1"
+
+    //Accompanist
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
+    implementation "com.google.accompanist:accompanist-permissions:0.28.0"
+
+    //Material Design
+    implementation 'androidx.compose.material3:material3:1.0.1'
+
+    //Koin
+    implementation "io.insert-koin:koin-androidx-compose:3.4.2"
+
+    //Miscellaneous
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1'
+    implementation 'androidx.activity:activity-compose:1.7.0'
+    implementation "androidx.navigation:navigation-compose:2.5.3"
+    implementation 'androidx.core:core-splashscreen:1.0.0'
+
+    //Testing
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    
+    //Debug
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
+}
