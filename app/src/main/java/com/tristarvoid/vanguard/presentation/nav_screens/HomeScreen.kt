@@ -14,17 +14,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
+import com.tristarvoid.vanguard.domain.ToastMaker
 import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
 import com.tristarvoid.vanguard.domain.use_cases.StepsViewModel
 import com.tristarvoid.vanguard.presentation.navigation.AppBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
-import org.koin.androidx.compose.get
-import org.koin.androidx.compose.getViewModel
+import javax.inject.Inject
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -32,17 +33,15 @@ fun Home(
     navControl: NavHostController,
     navViewModel: NavViewModel,
     drawerState: DrawerState,
-    scope: CoroutineScope
+    scope: CoroutineScope,
+    toaster: ToastMaker = hiltViewModel()
 ) {
-    val toaster = get<Toast>()
     var showToast by remember { mutableStateOf(false) }
 
     var backPressState by remember { mutableStateOf<BackPress>(BackPress.Idle) }
 
     if (showToast) {
-        toaster.setText("Press back again to exit")
-        toaster.duration = Toast.LENGTH_LONG
-        toaster.show()
+        toaster.displayToast("Press back again to exit", Toast.LENGTH_LONG)
         showToast = false
     }
 
@@ -72,7 +71,7 @@ fun Home(
             val permissionState =
                 rememberPermissionState(permission = Manifest.permission.ACTIVITY_RECOGNITION)
             if (permissionState.status == PermissionStatus.Granted) {
-                val viewModel: StepsViewModel = getViewModel()
+                val viewModel: StepsViewModel = hiltViewModel()
                 val steps by viewModel.steps.collectAsState()
                 Text(
                     modifier = Modifier.padding(top = it.calculateTopPadding()),

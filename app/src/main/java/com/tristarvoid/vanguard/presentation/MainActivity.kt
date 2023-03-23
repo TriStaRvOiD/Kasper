@@ -4,14 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,12 +21,16 @@ import com.tristarvoid.vanguard.presentation.navigation.DrawerBody
 import com.tristarvoid.vanguard.presentation.navigation.Navigation
 import com.tristarvoid.vanguard.presentation.ui.theme.VanguardTheme
 import com.tristarvoid.vanguard.util.MenuItem
-import org.koin.androidx.viewmodel.ext.android.getViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var splashViewModel: SplashScreenViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val splashViewModel = getViewModel<SplashScreenViewModel>()
         WindowCompat.setDecorFitsSystemWindows(window, false)
         installSplashScreen().setKeepOnScreenCondition {
             !splashViewModel.isLoading.value
@@ -126,6 +127,8 @@ fun Display(
             )
         }
     ) {
-        Navigation(navController, navViewModel, drawerState, scope, screen)
+        Surface {
+            Navigation(navController, navViewModel, drawerState, scope, screen)
+        }
     }
 }

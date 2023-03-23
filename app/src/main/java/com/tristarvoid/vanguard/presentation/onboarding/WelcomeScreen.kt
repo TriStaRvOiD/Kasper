@@ -22,17 +22,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.tristarvoid.vanguard.domain.use_cases.OnboardViewModel
 import com.tristarvoid.vanguard.presentation.ui.theme.JosefinSans
 import com.tristarvoid.vanguard.presentation.navigation.ScreenConfiguration
-import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun WelcomeScreen(
     navController: NavHostController,
-    welcomeViewModel: OnboardViewModel = getViewModel()
+    welcomeViewModel: OnboardViewModel = hiltViewModel()
 ) {
     val pages = listOf(
         OnboardPage.First,

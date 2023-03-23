@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tristarvoid.vanguard.data.repo.DataStoreRepository
 import com.tristarvoid.vanguard.presentation.navigation.ScreenConfiguration
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SplashScreenViewModel(
+class SplashScreenViewModel @Inject constructor(
     private val repository: DataStoreRepository
 ) : ViewModel() {
 
@@ -17,7 +19,7 @@ class SplashScreenViewModel(
     val isLoading: State<Boolean> = _isLoading
 
     private val _startDestination: MutableState<String> =
-        mutableStateOf("")
+        mutableStateOf(ScreenConfiguration.WelcomeScreen.route)
     val startDestination: State<String> = _startDestination
 
     init {
