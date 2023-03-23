@@ -1,4 +1,4 @@
-package com.tristarvoid.vanguard.data.use_cases.navigation
+package com.tristarvoid.vanguard.util
 
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector

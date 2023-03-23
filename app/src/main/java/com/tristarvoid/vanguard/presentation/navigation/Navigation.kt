@@ -1,66 +1,80 @@
-package com.tristarvoid.vanguard.presentation.resources.use_cases.navigation
+package com.tristarvoid.vanguard.presentation.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.tristarvoid.vanguard.domain.use_cases.navigation.NavViewModel
-import com.tristarvoid.vanguard.presentation.resources.screens.*
-import com.tristarvoid.vanguard.presentation.resources.views.Calendar
+import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
+import com.tristarvoid.vanguard.presentation.nav_screens.*
+import com.tristarvoid.vanguard.presentation.onboarding.WelcomeScreen
+import com.tristarvoid.vanguard.presentation.views.Calendar
+import kotlinx.coroutines.CoroutineScope
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Navigation(
-    padding: PaddingValues,
     navControl: NavHostController,
-    navViewModel: NavViewModel
+    navViewModel: NavViewModel,
+    drawerState: DrawerState,
+    scope: CoroutineScope,
+    defaultScreen: String
 ) {
-    NavHost(navController = navControl, startDestination = ScreenConfiguration.HomeScreen.route) {
+    NavHost(
+        navController = navControl,
+        startDestination = defaultScreen
+    ) {
+        //Onboard
+        composable(route = ScreenConfiguration.WelcomeScreen.route) {
+            WelcomeScreen(navController = navControl)
+        }
+
         //Primary
         composable(route = ScreenConfiguration.HomeScreen.route) {
             navViewModel.heading.value = "Home"
             navViewModel.concernedItem.value = 0
-            Home(padding)
+            Home(navControl, navViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.WorkoutScreen.route) {
             navViewModel.heading.value = "Workouts"
             navViewModel.concernedItem.value = 1
-            Workouts(padding)
+            Workouts(navControl, navViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.DecisionsScreen.route) {
             navViewModel.heading.value = "Decisions"
             navViewModel.concernedItem.value = 2
-            Decisions(padding)
+            Decisions(navControl, navViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.RemindersScreen.route) {
             navViewModel.heading.value = "Reminders"
             navViewModel.concernedItem.value = 3
-            Reminders(padding)
+            Reminders(navControl, navViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.NutritionScreen.route) {
             navViewModel.heading.value = "Nutrition"
             navViewModel.concernedItem.value = 4
-            Nutrition(padding)
+            Nutrition(navControl, navViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.WaterScreen.route) {
             navViewModel.heading.value = "Water"
             navViewModel.concernedItem.value = 5
-            Water(padding)
+            Water(navControl, navViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.SettingsScreen.route) {
             navViewModel.heading.value = "Settings"
             navViewModel.concernedItem.value = 6
-            Settings(padding)
+            Settings(navControl, navViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.PrivacyScreen.route) {
             navViewModel.heading.value = "Privacy"
             navViewModel.concernedItem.value = 7
-            Privacy(padding)
+            Privacy(navControl, navViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.AboutScreen.route) {
             navViewModel.heading.value = "About"
             navViewModel.concernedItem.value = 8
-            About(padding)
+            About(navControl, navViewModel, drawerState, scope)
         }
 
         //Secondary

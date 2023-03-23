@@ -1,4 +1,4 @@
-package com.tristarvoid.vanguard.presentation.resources.views
+package com.tristarvoid.vanguard.presentation.views
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*

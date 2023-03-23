@@ -1,4 +1,4 @@
-package com.tristarvoid.vanguard.domain.use_cases.step_counting
+package com.tristarvoid.vanguard.domain.use_cases
 
 import androidx.lifecycle.ViewModel
 import com.tristarvoid.vanguard.data.use_cases.sensor.MeasurableSensor

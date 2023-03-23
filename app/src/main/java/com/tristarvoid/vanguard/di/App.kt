@@ -17,7 +17,8 @@ class App : Application() {
             modules(
                 ToastProvider,
                 SensorProvider,
-                ViewModelProvider
+                ViewModelResolver,
+                DataStoreProvider
             )
         }
     }

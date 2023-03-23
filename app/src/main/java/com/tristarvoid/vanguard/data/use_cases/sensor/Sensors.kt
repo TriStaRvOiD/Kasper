@@ -1,4 +1,4 @@
-package com.tristarvoid.vanguard.data
+package com.tristarvoid.vanguard.data.use_cases.sensor
 
 import android.content.Context
 import android.hardware.Sensor

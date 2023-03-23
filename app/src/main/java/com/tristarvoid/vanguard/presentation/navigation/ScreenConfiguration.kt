@@ -1,6 +1,9 @@
-package com.tristarvoid.vanguard.presentation.resources.use_cases.navigation
+package com.tristarvoid.vanguard.presentation.navigation
 
 sealed class ScreenConfiguration(val route: String) {
+    //Onboard
+    object WelcomeScreen : ScreenConfiguration("welcome_screen")
+
     //Primary
     object HomeScreen : ScreenConfiguration("home_screen")
     object WorkoutScreen : ScreenConfiguration("workouts_screen")

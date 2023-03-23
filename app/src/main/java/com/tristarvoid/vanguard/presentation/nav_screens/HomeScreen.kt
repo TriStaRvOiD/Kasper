@@ -1,29 +1,38 @@
-package com.tristarvoid.vanguard.presentation.resources.screens
+package com.tristarvoid.vanguard.presentation.nav_screens
 
 import android.Manifest
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
-import com.tristarvoid.vanguard.domain.use_cases.step_counting.StepsViewModel
+import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
+import com.tristarvoid.vanguard.domain.use_cases.StepsViewModel
+import com.tristarvoid.vanguard.presentation.navigation.AppBar
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun Home(
-    padding: PaddingValues
+    navControl: NavHostController,
+    navViewModel: NavViewModel,
+    drawerState: DrawerState,
+    scope: CoroutineScope
 ) {
     val toaster = get<Toast>()
     var showToast by remember { mutableStateOf(false) }
@@ -49,22 +58,28 @@ fun Home(
         showToast = true
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    )
-    {
-        val permissionState =
-            rememberPermissionState(permission = Manifest.permission.ACTIVITY_RECOGNITION)
-        if (permissionState.status == PermissionStatus.Granted) {
-            val viewModel: StepsViewModel = getViewModel()
-            val steps by viewModel.steps.collectAsState()
-            Text(
-                modifier = Modifier.padding(top = padding.calculateTopPadding()),
-                text = steps,
-                textAlign = TextAlign.Center
-            )
+    Scaffold(
+        topBar = {
+            AppBar(navControl, drawerState, scope, navViewModel)
+        }
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        )
+        {
+            val permissionState =
+                rememberPermissionState(permission = Manifest.permission.ACTIVITY_RECOGNITION)
+            if (permissionState.status == PermissionStatus.Granted) {
+                val viewModel: StepsViewModel = getViewModel()
+                val steps by viewModel.steps.collectAsState()
+                Text(
+                    modifier = Modifier.padding(top = it.calculateTopPadding()),
+                    text = steps,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }

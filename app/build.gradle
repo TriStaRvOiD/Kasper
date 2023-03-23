@@ -78,6 +78,9 @@ dependencies {
     implementation "com.mikepenz:aboutlibraries-core:10.6.1"
     implementation "com.mikepenz:aboutlibraries-compose:10.6.1"
 
+    //Data Store
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
     //Accompanist
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
     implementation "com.google.accompanist:accompanist-permissions:0.28.0"
