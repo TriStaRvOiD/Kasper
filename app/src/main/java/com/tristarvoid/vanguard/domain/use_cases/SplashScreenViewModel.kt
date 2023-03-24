@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tristarvoid.vanguard.data.repo.DataStoreRepository
 import com.tristarvoid.vanguard.presentation.navigation.ScreenConfiguration
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

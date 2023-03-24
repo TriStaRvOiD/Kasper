@@ -1,19 +1,23 @@
 package com.tristarvoid.vanguard.presentation.nav_screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.DrawerState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.airbnb.lottie.compose.*
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
+import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
 import com.tristarvoid.vanguard.R
 import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
 import com.tristarvoid.vanguard.presentation.navigation.AppBar
@@ -218,7 +222,9 @@ fun About(
                     .padding(top = it.calculateTopPadding()),
                 showAuthor = true,
                 showVersion = true,
-                showLicenseBadges = false
+                colors = LibraryDefaults.libraryColors(backgroundColor = MaterialTheme.colorScheme.background, contentColor = LocalContentColor.current),
+                showLicenseBadges = false,
+                header = aboutHeader()
             )
         }
     }
@@ -238,5 +244,15 @@ fun LottieLoader(
         composition = composition,
         progress = { progress },
     )
+}
+
+@Composable
+fun aboutHeader(): LazyListScope.() -> Unit {
+    return {
+        item()
+        {
+            Text("")
+        }
+    }
 }
 
