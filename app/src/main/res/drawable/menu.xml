@@ -1,3 +1,13 @@
+<!--
+  ~ Copyright (C) Aditya 2023 <github.com/TriStaRvOiD>
+  ~ This file is part of Vanguard.
+  ~ Vanguard is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~ Vanguard is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <vector android:height="20dp" android:viewportHeight="960"
     android:viewportWidth="960" android:width="20dp" xmlns:android="http://schemas.android.com/apk/res/android">
     <path android:fillColor="#FF000000" android:pathData="M325.28,330.92q-13.69,0 -23.58,-10.05 -9.88,-10.05 -9.88,-24t9.88,-23.74q9.88,-9.8 23.58,-9.8h487.59q13.98,0 24.05,9.93 10.07,9.93 10.07,23.88t-10.07,23.86q-10.07,9.92 -24.05,9.92L325.28,330.92ZM325.28,513.13q-13.69,0 -23.58,-10.05 -9.88,-10.05 -9.88,-24t9.88,-23.74q9.88,-9.8 23.58,-9.8h487.59q13.98,0 24.05,9.93 10.07,9.93 10.07,23.88 0,13.95 -10.07,23.86 -10.07,9.92 -24.05,9.92L325.28,513.13ZM325.28,696.67q-13.69,0 -23.58,-10.05 -9.88,-10.05 -9.88,-24t9.88,-23.74q9.88,-9.79 23.58,-9.79h487.59q13.98,0 24.05,9.93 10.07,9.93 10.07,23.88t-10.07,23.86q-10.07,9.92 -24.05,9.92L325.28,696.67ZM152.51,335.33q-16.67,0 -27.75,-11.58 -11.09,-11.58 -11.09,-27.32 0,-15.73 11.12,-27.29 11.12,-11.56 27.45,-11.56 16.33,0 27.75,11.58 11.42,11.58 11.42,27.32 0,15.73 -11.58,27.29 -11.58,11.56 -27.32,11.56ZM152.51,518.87q-16.67,0 -27.75,-11.58 -11.09,-11.58 -11.09,-27.32 0,-15.73 11.12,-27.29 11.12,-11.56 27.45,-11.56 16.33,0 27.75,11.58 11.42,11.58 11.42,27.32 0,15.73 -11.58,27.29 -11.58,11.56 -27.32,11.56ZM152.51,702.41q-16.67,0 -27.75,-11.58 -11.09,-11.58 -11.09,-27.32 0,-15.73 11.12,-27.29 11.12,-11.56 27.45,-11.56 16.33,0 27.75,11.58 11.42,11.58 11.42,27.32 0,15.73 -11.58,27.29 -11.58,11.56 -27.32,11.56Z"/>
