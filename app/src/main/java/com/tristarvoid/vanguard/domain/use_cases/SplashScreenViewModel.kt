@@ -28,7 +28,7 @@ class SplashScreenViewModel @Inject constructor(
     val isLoading: State<Boolean> = _isLoading
 
     private val _startDestination: MutableState<String> =
-        mutableStateOf(ScreenConfiguration.WelcomeScreen.route)
+        mutableStateOf(ScreenConfiguration.LoadingScreen.route)
     val startDestination: State<String> = _startDestination
 
     init {
@@ -39,8 +39,8 @@ class SplashScreenViewModel @Inject constructor(
                 } else {
                     _startDestination.value = ScreenConfiguration.WelcomeScreen.route
                 }
+                _isLoading.value = false
             }
-            _isLoading.value = false
         }
     }
 }

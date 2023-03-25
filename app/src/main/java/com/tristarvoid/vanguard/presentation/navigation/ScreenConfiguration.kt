@@ -11,6 +11,8 @@
 package com.tristarvoid.vanguard.presentation.navigation
 
 sealed class ScreenConfiguration(val route: String) {
+    //Loading
+    object LoadingScreen : ScreenConfiguration("loading_screen")
     //Onboard
     object WelcomeScreen : ScreenConfiguration("welcome_screen")
 

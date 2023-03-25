@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         installSplashScreen().setKeepOnScreenCondition {
-            !splashViewModel.isLoading.value
+            splashViewModel.isLoading.value
         }
         setContent {
             val systemUiController = rememberSystemUiController()

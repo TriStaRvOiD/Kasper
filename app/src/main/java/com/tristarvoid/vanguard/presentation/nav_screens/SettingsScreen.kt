@@ -36,7 +36,7 @@ fun Settings(
 ) {
     Scaffold(
         topBar = {
-            AppBar(navControl, drawerState, scope, navViewModel)
+            AppBar(navControl, drawerState, scope, navViewModel, false)
         }
     ) {
         Box(

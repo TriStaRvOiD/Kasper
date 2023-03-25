@@ -23,6 +23,7 @@ import androidx.navigation.NavHostController
 import com.tristarvoid.vanguard.R
 import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
 import com.tristarvoid.vanguard.presentation.navigation.AppBar
+import com.tristarvoid.vanguard.util.LottieLoader
 import kotlinx.coroutines.CoroutineScope
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

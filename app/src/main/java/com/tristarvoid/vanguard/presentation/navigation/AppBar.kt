@@ -31,7 +31,8 @@ fun AppBar(
     navControl: NavHostController,
     drawerState: DrawerState,
     scope: CoroutineScope,
-    navViewModel: NavViewModel
+    navViewModel: NavViewModel,
+    actionEnabled: Boolean = true
 ) {
     val heading = remember {
         navViewModel.heading
@@ -62,18 +63,19 @@ fun AppBar(
             }
         },
         actions = {
-            IconButton(
-                onClick = {
-                    navControl.navigate(ScreenConfiguration.CalendarView.route)
+            if (actionEnabled)
+                IconButton(
+                    onClick = {
+                        navControl.navigate(ScreenConfiguration.CalendarView.route)
+                    }
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.calendar),
+                        modifier = Modifier
+                            .size(25.dp),
+                        contentDescription = "Open calendar"
+                    )
                 }
-            ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.calendar),
-                    modifier = Modifier
-                        .size(25.dp),
-                    contentDescription = "Open calendar"
-                )
-            }
         }
     )
 }

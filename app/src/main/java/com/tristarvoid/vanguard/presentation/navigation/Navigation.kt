@@ -35,6 +35,10 @@ fun Navigation(
         navController = navControl,
         startDestination = defaultScreen
     ) {
+        //Loading
+        composable(route = ScreenConfiguration.LoadingScreen.route) {
+            LoadingScreen()
+        }
         //Onboard
         composable(route = ScreenConfiguration.WelcomeScreen.route) {
             WelcomeScreen(navController = navControl)
