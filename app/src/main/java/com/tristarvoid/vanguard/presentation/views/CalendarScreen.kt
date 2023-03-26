@@ -12,26 +12,32 @@ package com.tristarvoid.vanguard.presentation.views
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
+import com.tristarvoid.vanguard.presentation.navigation.FragmentAppBar
 import java.time.DayOfWeek
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Calendar(
-    navControl: NavController
+    navControl: NavHostController,
+    navViewModel: NavViewModel
 ) {
     BackHandler(enabled = true) {
         navControl.popBackStack()
@@ -47,18 +53,29 @@ fun Calendar(
         firstVisibleMonth = currentMonth,
         firstDayOfWeek = firstDayOfWeek
     )
-    Box(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        HorizontalCalendar(
-            state = state,
-            dayContent = { Day(it) },
-            monthHeader = {
-                DaysOfWeekTitle(daysOfWeek = daysOfWeek) // Use the title as month header
-            }
-        )
+        topBar = {
+            FragmentAppBar(
+                navControl = navControl,
+                navViewModel = navViewModel
+            )
+        }
+    ) { values ->
+        Box(
+            modifier = Modifier
+                .padding(top = values.calculateTopPadding()),
+            contentAlignment = Alignment.Center
+        ) {
+            HorizontalCalendar(
+                state = state,
+                dayContent = { Day(it) },
+                monthHeader = {
+                    DaysOfWeekTitle(daysOfWeek = daysOfWeek) // Use the title as month header
+                }
+            )
+        }
     }
 }
 

@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "com.tristarvoid.vanguard"
-        minSdk 29
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"

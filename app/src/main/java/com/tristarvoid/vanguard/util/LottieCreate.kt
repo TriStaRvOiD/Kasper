@@ -19,7 +19,8 @@ import com.airbnb.lottie.compose.*
 
 @Composable
 fun LottieLoader(
-    jsonResource: Int
+    jsonResource: Int,
+    size: Int = 300
 ) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(jsonResource))
     val progress by animateLottieCompositionAsState(
@@ -28,7 +29,7 @@ fun LottieLoader(
         iterations = LottieConstants.IterateForever
     )
     LottieAnimation(
-        modifier = Modifier.size(10.dp),
+        modifier = Modifier.size(size.dp),
         composition = composition,
         progress = { progress },
     )

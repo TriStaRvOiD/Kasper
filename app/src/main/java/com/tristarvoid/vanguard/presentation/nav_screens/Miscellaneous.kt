@@ -11,12 +11,14 @@
 package com.tristarvoid.vanguard.presentation.nav_screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
 import com.airbnb.lottie.compose.*
@@ -24,7 +26,7 @@ import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
 import com.tristarvoid.vanguard.R
 import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
-import com.tristarvoid.vanguard.presentation.navigation.AppBar
+import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
 import com.tristarvoid.vanguard.util.LottieLoader
 import kotlinx.coroutines.CoroutineScope
 
@@ -38,7 +40,7 @@ fun Workouts(
 ) {
     Scaffold(
         topBar = {
-            AppBar(navControl, drawerState, scope, navViewModel)
+            MainAppBar(navControl, drawerState, scope, navViewModel)
         }
     ) {
         Box(
@@ -73,7 +75,7 @@ fun Decisions(
 ) {
     Scaffold(
         topBar = {
-            AppBar(navControl, drawerState, scope, navViewModel)
+            MainAppBar(navControl, drawerState, scope, navViewModel)
         }
     ) {
         Box(
@@ -108,7 +110,7 @@ fun Reminders(
 ) {
     Scaffold(
         topBar = {
-            AppBar(navControl, drawerState, scope, navViewModel)
+            MainAppBar(navControl, drawerState, scope, navViewModel)
         }
     ) {
         Box(
@@ -143,7 +145,7 @@ fun Water(
 ) {
     Scaffold(
         topBar = {
-            AppBar(navControl, drawerState, scope, navViewModel)
+            MainAppBar(navControl, drawerState, scope, navViewModel)
         }
     ) {
         Box(
@@ -178,7 +180,7 @@ fun Privacy(
 ) {
     Scaffold(
         topBar = {
-            AppBar(navControl, drawerState, scope, navViewModel, false)
+            MainAppBar(navControl, drawerState, scope, navViewModel, false)
         }
     ) {
         Box(
@@ -212,7 +214,7 @@ fun About(
 ) {
     Scaffold(
         topBar = {
-            AppBar(navControl, drawerState, scope, navViewModel, false)
+            MainAppBar(navControl, drawerState, scope, navViewModel, false)
         }
     ) {
         Box(
@@ -227,7 +229,12 @@ fun About(
                     .padding(top = it.calculateTopPadding()),
                 showAuthor = true,
                 showVersion = false,
-                colors = LibraryDefaults.libraryColors(backgroundColor = MaterialTheme.colorScheme.background, contentColor = LocalContentColor.current),
+                colors = LibraryDefaults.libraryColors(
+                    backgroundColor = MaterialTheme.colorScheme.background,
+                    contentColor = LocalContentColor.current,
+                    badgeBackgroundColor = MaterialTheme.colorScheme.primary,
+                    badgeContentColor = (if (isSystemInDarkTheme()) Color.Black else Color.White)
+                ),
                 showLicenseBadges = true,
                 header = aboutHeader()
             )

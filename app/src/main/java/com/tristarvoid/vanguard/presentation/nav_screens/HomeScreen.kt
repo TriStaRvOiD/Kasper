@@ -32,10 +32,9 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.tristarvoid.vanguard.domain.ToastMaker
 import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
 import com.tristarvoid.vanguard.domain.use_cases.StepsViewModel
-import com.tristarvoid.vanguard.presentation.navigation.AppBar
+import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
-import javax.inject.Inject
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -69,7 +68,7 @@ fun Home(
 
     Scaffold(
         topBar = {
-            AppBar(navControl, drawerState, scope, navViewModel)
+            MainAppBar(navControl, drawerState, scope, navViewModel)
         }
     ) {
         Box(

@@ -53,7 +53,9 @@ class MainActivity : ComponentActivity() {
                 dynamicColor = false
             ) {
                 val screen by splashViewModel.startDestination
-                Display(screen)
+                Surface {
+                    Display(screen)
+                }
             }
         }
     }
@@ -135,8 +137,6 @@ fun Display(
             )
         }
     ) {
-        Surface {
-            Navigation(navController, navViewModel, drawerState, scope, screen)
-        }
+        Navigation(navController, navViewModel, drawerState, scope, screen)
     }
 }

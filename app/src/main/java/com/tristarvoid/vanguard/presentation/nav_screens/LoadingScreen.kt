@@ -25,6 +25,6 @@ fun LoadingScreen() {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        LottieLoader(jsonResource = R.raw.loading)
+        LottieLoader(jsonResource = R.raw.loading, size = 150)
     }
 }

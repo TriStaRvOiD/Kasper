@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar(
+fun MainAppBar(
     navControl: NavHostController,
     drawerState: DrawerState,
     scope: CoroutineScope,
@@ -35,7 +35,7 @@ fun AppBar(
     actionEnabled: Boolean = true
 ) {
     val heading = remember {
-        navViewModel.heading
+        navViewModel.mainHeading
     }
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(
@@ -76,6 +76,41 @@ fun AppBar(
                         contentDescription = "Open calendar"
                     )
                 }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FragmentAppBar(
+    navControl: NavHostController,
+    navViewModel: NavViewModel,
+    singular: Boolean = true
+) {
+    val heading = remember {
+        navViewModel.fragHeading
+    }
+    MediumTopAppBar(
+        title = {
+            Text(
+                modifier = Modifier,
+                text = heading.value,
+                fontFamily = JosefinSans
+            )
+        },
+        navigationIcon = {
+            IconButton(
+                onClick = {
+                    navControl.popBackStack()
+                }
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = if (singular) R.drawable.close else R.drawable.back),
+                    modifier = Modifier
+                        .size(24.dp),
+                    contentDescription = "Go back"
+                )
+            }
         }
     )
 }

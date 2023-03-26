@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModel
 
 class NavViewModel : ViewModel()
 {
-    var heading = mutableStateOf("")
+    var mainHeading = mutableStateOf("")
+    var fragHeading = mutableStateOf("")
     var concernedItem = mutableStateOf(0)
 }

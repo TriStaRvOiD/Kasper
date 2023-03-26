@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
 import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
-import com.tristarvoid.vanguard.presentation.navigation.AppBar
+import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,7 +36,7 @@ fun Settings(
 ) {
     Scaffold(
         topBar = {
-            AppBar(navControl, drawerState, scope, navViewModel, false)
+            MainAppBar(navControl, drawerState, scope, navViewModel, false)
         }
     ) {
         Box(
