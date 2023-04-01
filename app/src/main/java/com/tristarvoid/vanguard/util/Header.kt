@@ -8,17 +8,31 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.presentation.ui.theme
+package com.tristarvoid.vanguard.util
 
-import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.sp
+import com.tristarvoid.vanguard.presentation.ui.theme.JosefinSans
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
-
-val BackgroundBlack = Color(android.graphics.Color.parseColor("#000000"))
-val BackgroundDark = Color(android.graphics.Color.parseColor("#080808"))
+@Composable
+fun Header(
+    modifier: Modifier,
+    alignment: Alignment = Alignment.Center,
+    text: String,
+    fontSize: Int = 30
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = alignment
+    ) {
+        Text(
+            text = text,
+            fontSize = fontSize.sp,
+            fontFamily = JosefinSans
+        )
+    }
+}
