@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
+import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
 import com.tristarvoid.vanguard.presentation.nav_screens.*
 import com.tristarvoid.vanguard.presentation.onboarding.WelcomeScreen
 import com.tristarvoid.vanguard.presentation.views.Calendar
@@ -26,7 +26,7 @@ import kotlinx.coroutines.CoroutineScope
 @Composable
 fun Navigation(
     navControl: NavHostController,
-    navViewModel: NavViewModel,
+    holderViewModel: HolderViewModel,
     drawerState: DrawerState,
     scope: CoroutineScope,
     defaultScreen: String
@@ -46,55 +46,55 @@ fun Navigation(
 
         //Primary
         composable(route = ScreenConfiguration.HomeScreen.route) {
-            navViewModel.mainHeading.value = "Home"
-            navViewModel.concernedItem.value = 0
-            Home(navControl, navViewModel, drawerState, scope)
+            holderViewModel.mainHeading.value = ""
+            holderViewModel.concernedItem.value = 0
+            Home(navControl, holderViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.WorkoutScreen.route) {
-            navViewModel.mainHeading.value = "Workouts"
-            navViewModel.concernedItem.value = 1
-            Workouts(navControl, navViewModel, drawerState, scope)
+            holderViewModel.mainHeading.value = "Workouts"
+            holderViewModel.concernedItem.value = 1
+            Workouts(navControl, holderViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.DecisionsScreen.route) {
-            navViewModel.mainHeading.value = "Decisions"
-            navViewModel.concernedItem.value = 2
-            Decisions(navControl, navViewModel, drawerState, scope)
+            holderViewModel.mainHeading.value = "Decisions"
+            holderViewModel.concernedItem.value = 2
+            Decisions(navControl, holderViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.RemindersScreen.route) {
-            navViewModel.mainHeading.value = "Reminders"
-            navViewModel.concernedItem.value = 3
-            Reminders(navControl, navViewModel, drawerState, scope)
+            holderViewModel.mainHeading.value = "Reminders"
+            holderViewModel.concernedItem.value = 3
+            Reminders(navControl, holderViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.NutritionScreen.route) {
-            navViewModel.mainHeading.value = "Nutrition"
-            navViewModel.concernedItem.value = 4
-            Nutrition(navControl, navViewModel, drawerState, scope)
+            holderViewModel.mainHeading.value = "Nutrition"
+            holderViewModel.concernedItem.value = 4
+            Nutrition(navControl, holderViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.WaterScreen.route) {
-            navViewModel.mainHeading.value = "Water"
-            navViewModel.concernedItem.value = 5
-            Water(navControl, navViewModel, drawerState, scope)
+            holderViewModel.mainHeading.value = "Water"
+            holderViewModel.concernedItem.value = 5
+            Water(navControl, holderViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.SettingsScreen.route) {
-            navViewModel.mainHeading.value = "Settings"
-            navViewModel.concernedItem.value = 6
-            Settings(navControl, navViewModel, drawerState, scope)
+            holderViewModel.mainHeading.value = ""
+            holderViewModel.concernedItem.value = 6
+            Settings(navControl, holderViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.PrivacyScreen.route) {
-            navViewModel.mainHeading.value = "Privacy"
-            navViewModel.concernedItem.value = 7
-            Privacy(navControl, navViewModel, drawerState, scope)
+            holderViewModel.mainHeading.value = "Privacy"
+            holderViewModel.concernedItem.value = 7
+            Privacy(navControl, holderViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.AboutScreen.route) {
-            navViewModel.mainHeading.value = "About"
-            navViewModel.concernedItem.value = 8
-            About(navControl, navViewModel, drawerState, scope)
+            holderViewModel.mainHeading.value = "About"
+            holderViewModel.concernedItem.value = 8
+            About(navControl, holderViewModel, drawerState, scope)
         }
 
         //Secondary
         composable(route = ScreenConfiguration.CalendarView.route) {
-            navViewModel.fragHeading.value = "History"
-            Calendar(navControl, navViewModel)
+            holderViewModel.fragHeading.value = "History"
+            Calendar(navControl, holderViewModel)
         }
     }
 }

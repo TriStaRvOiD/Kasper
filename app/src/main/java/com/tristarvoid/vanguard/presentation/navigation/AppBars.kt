@@ -20,7 +20,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.tristarvoid.vanguard.R
-import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
+import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
 import com.tristarvoid.vanguard.presentation.ui.theme.JosefinSans
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -31,11 +31,11 @@ fun MainAppBar(
     navControl: NavHostController,
     drawerState: DrawerState,
     scope: CoroutineScope,
-    navViewModel: NavViewModel,
+    holderViewModel: HolderViewModel,
     actionEnabled: Boolean = true
 ) {
     val heading = remember {
-        navViewModel.mainHeading
+        holderViewModel.mainHeading
     }
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(
@@ -84,11 +84,11 @@ fun MainAppBar(
 @Composable
 fun FragmentAppBar(
     navControl: NavHostController,
-    navViewModel: NavViewModel,
+    holderViewModel: HolderViewModel,
     singular: Boolean = true
 ) {
     val heading = remember {
-        navViewModel.fragHeading
+        holderViewModel.fragHeading
     }
     MediumTopAppBar(
         title = {
@@ -108,7 +108,7 @@ fun FragmentAppBar(
                     imageVector = ImageVector.vectorResource(id = if (singular) R.drawable.close else R.drawable.back),
                     modifier = Modifier
                         .size(24.dp),
-                    contentDescription = "Go back"
+                    contentDescription = if (singular) "Close" else "Go back"
                 )
             }
         }

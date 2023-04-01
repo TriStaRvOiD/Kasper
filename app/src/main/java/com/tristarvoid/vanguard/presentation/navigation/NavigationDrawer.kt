@@ -16,28 +16,17 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
+import com.tristarvoid.vanguard.R
+import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
+import com.tristarvoid.vanguard.util.Header
 import com.tristarvoid.vanguard.util.MenuItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-
-@Composable
-fun DrawerHeader() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 64.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Vanguard", fontSize = 30.sp)
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,11 +34,11 @@ fun DrawerBody(
     navControl: NavHostController,
     drawerState: DrawerState,
     scope: CoroutineScope,
-    navViewModel: NavViewModel,
+    holderViewModel: HolderViewModel,
     items: List<MenuItem>,
 ) {
     val index = remember {
-        navViewModel.concernedItem
+        holderViewModel.concernedItem
     }
     val scrollState = rememberScrollState()
     ModalDrawerSheet(
@@ -58,7 +47,10 @@ fun DrawerBody(
             .verticalScroll(state = scrollState, enabled = true)
             .fillMaxHeight()
     ) {
-        DrawerHeader()
+        Header(
+            modifier = Modifier.fillMaxWidth().padding(64.dp),
+            text = stringResource(id = R.string.app_name)
+        )
         Divider(
             color = Color.DarkGray
         )

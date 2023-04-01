@@ -24,7 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.tristarvoid.vanguard.R
-import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
+import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
 import com.tristarvoid.vanguard.domain.use_cases.SplashScreenViewModel
 import com.tristarvoid.vanguard.presentation.navigation.DrawerBody
 import com.tristarvoid.vanguard.presentation.navigation.Navigation
@@ -45,16 +45,19 @@ class MainActivity : ComponentActivity() {
             splashViewModel.isLoading.value
         }
         setContent {
+            val holderViewModel = viewModel<HolderViewModel>()
             val systemUiController = rememberSystemUiController()
             SideEffect {
                 systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = false)
             }
             VanguardTheme(
-                dynamicColor = false
+                dynamicColor = remember {
+                    holderViewModel.dynamicEnabled.value
+                }
             ) {
                 val screen by splashViewModel.startDestination
                 Surface {
-                    Display(screen)
+                    Display(holderViewModel, screen)
                 }
             }
         }
@@ -64,9 +67,9 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Display(
+    holderViewModel: HolderViewModel,
     screen: String
 ) {
-    val navViewModel = viewModel<NavViewModel>()
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -77,7 +80,7 @@ fun Display(
                 navControl = navController,
                 drawerState = drawerState,
                 scope = scope,
-                navViewModel = navViewModel,
+                holderViewModel = holderViewModel,
                 items = listOf(
                     MenuItem(
                         id = "home",
@@ -137,6 +140,6 @@ fun Display(
             )
         }
     ) {
-        Navigation(navController, navViewModel, drawerState, scope, screen)
+        Navigation(navController, holderViewModel, drawerState, scope, screen)
     }
 }

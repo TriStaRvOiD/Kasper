@@ -26,7 +26,7 @@ import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
-import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
+import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
 import com.tristarvoid.vanguard.presentation.navigation.FragmentAppBar
 import java.time.DayOfWeek
 import java.time.YearMonth
@@ -37,7 +37,7 @@ import java.util.*
 @Composable
 fun Calendar(
     navControl: NavHostController,
-    navViewModel: NavViewModel
+    holderViewModel: HolderViewModel
 ) {
     BackHandler(enabled = true) {
         navControl.popBackStack()
@@ -59,7 +59,7 @@ fun Calendar(
         topBar = {
             FragmentAppBar(
                 navControl = navControl,
-                navViewModel = navViewModel
+                holderViewModel = holderViewModel
             )
         }
     ) { values ->

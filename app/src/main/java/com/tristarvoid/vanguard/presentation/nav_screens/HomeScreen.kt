@@ -11,36 +11,38 @@
 package com.tristarvoid.vanguard.presentation.nav_screens
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DrawerState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 import com.tristarvoid.vanguard.domain.ToastMaker
-import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
+import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
 import com.tristarvoid.vanguard.domain.use_cases.StepsViewModel
 import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
+import com.tristarvoid.vanguard.presentation.ui.theme.JosefinSans
+import com.tristarvoid.vanguard.util.Header
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun Home(
     navControl: NavHostController,
-    navViewModel: NavViewModel,
+    holderViewModel: HolderViewModel,
     drawerState: DrawerState,
     scope: CoroutineScope,
     toaster: ToastMaker = hiltViewModel()
@@ -68,7 +70,7 @@ fun Home(
 
     Scaffold(
         topBar = {
-            MainAppBar(navControl, drawerState, scope, navViewModel)
+            MainAppBar(navControl, drawerState, scope, holderViewModel)
         }
     ) {
         Box(
@@ -82,14 +84,138 @@ fun Home(
             if (permissionState.status == PermissionStatus.Granted) {
                 val viewModel: StepsViewModel = hiltViewModel()
                 val steps by viewModel.steps.collectAsState()
-                Text(
-                    modifier = Modifier.padding(top = it.calculateTopPadding()),
-                    text = steps,
-                    textAlign = TextAlign.Center
-                )
+                Column(
+                    modifier = Modifier
+                        .padding(top = it.calculateTopPadding())
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    Header(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .paddingFromBaseline(5.dp),
+                        alignment = Alignment.TopStart,
+                        text = "Today"
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Divider() //Below header
+                    Spacer(modifier = Modifier.height(16.dp))
+                    StepCard(steps)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Divider()
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Weather()
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Divider()
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Quote()
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Divider()
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
         }
     }
+}
+
+@Composable
+fun StepCard(
+    steps: String
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .size(205.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(android.graphics.Color.parseColor("#121212"))
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = CenterHorizontally
+        ) {
+            Text(
+                text = steps,
+                fontSize = 50.sp,
+                fontFamily = JosefinSans
+            )
+            Text(
+                text = "steps",
+                style = MaterialTheme.typography.labelSmall,
+                fontFamily = JosefinSans
+            )
+            Spacer(modifier = Modifier.height(17.dp))
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 9.dp)
+        ) {
+            Text(
+                text = "Current goal: 10,000 steps",
+                style = MaterialTheme.typography.labelSmall,
+                fontFamily = JosefinSans
+            )
+            Text(
+                text = "Steps Remaining: 2000 steps",
+                style = MaterialTheme.typography.labelSmall,
+                fontFamily = JosefinSans
+            )
+            Text(
+                text = "Daily Average: 4000 steps",
+                style = MaterialTheme.typography.labelSmall,
+                fontFamily = JosefinSans
+            )
+            Text(
+                text = "Permissions granted: Yes",
+                style = MaterialTheme.typography.labelSmall,
+                fontFamily = JosefinSans
+            )
+            Text(
+                text = "Listening Status: Enabled",
+                style = MaterialTheme.typography.labelSmall,
+                fontFamily = JosefinSans
+            )
+            Text(
+                text = "Status: Walking",
+                style = MaterialTheme.typography.labelSmall,
+                fontFamily = JosefinSans
+            )
+        }
+    }
+}
+
+@Composable
+fun Weather() {
+    Text(
+        text = "Seattle, WA : ",
+        style = MaterialTheme.typography.titleMedium,
+        fontFamily = JosefinSans
+    )
+    Text(
+        text = "It's 20 degrees, with light rain",
+        style = MaterialTheme.typography.titleSmall,
+        modifier = Modifier
+            .padding(start = 100.dp),
+        fontFamily = JosefinSans
+    )
+}
+
+@Composable
+fun Quote() {
+    Text(
+        text = "Daily Quote : ",
+        style = MaterialTheme.typography.titleMedium,
+        fontFamily = JosefinSans
+    )
+    Text(
+        text = "Walking is good. Keep walking.",
+        style = MaterialTheme.typography.titleSmall,
+        modifier = Modifier
+            .padding(start = 100.dp),
+        fontFamily = JosefinSans
+    )
 }
 
 sealed class BackPress {

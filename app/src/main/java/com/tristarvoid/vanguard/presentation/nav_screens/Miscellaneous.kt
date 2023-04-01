@@ -25,7 +25,7 @@ import com.airbnb.lottie.compose.*
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
 import com.tristarvoid.vanguard.R
-import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
+import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
 import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
 import com.tristarvoid.vanguard.util.LottieLoader
 import kotlinx.coroutines.CoroutineScope
@@ -34,13 +34,13 @@ import kotlinx.coroutines.CoroutineScope
 @Composable
 fun Workouts(
     navControl: NavHostController,
-    navViewModel: NavViewModel,
+    holderViewModel: HolderViewModel,
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
     Scaffold(
         topBar = {
-            MainAppBar(navControl, drawerState, scope, navViewModel)
+            MainAppBar(navControl, drawerState, scope, holderViewModel)
         }
     ) {
         Box(
@@ -69,13 +69,13 @@ fun Workouts(
 @Composable
 fun Decisions(
     navControl: NavHostController,
-    navViewModel: NavViewModel,
+    holderViewModel: HolderViewModel,
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
     Scaffold(
         topBar = {
-            MainAppBar(navControl, drawerState, scope, navViewModel)
+            MainAppBar(navControl, drawerState, scope, holderViewModel)
         }
     ) {
         Box(
@@ -104,13 +104,13 @@ fun Decisions(
 @Composable
 fun Reminders(
     navControl: NavHostController,
-    navViewModel: NavViewModel,
+    holderViewModel: HolderViewModel,
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
     Scaffold(
         topBar = {
-            MainAppBar(navControl, drawerState, scope, navViewModel)
+            MainAppBar(navControl, drawerState, scope, holderViewModel)
         }
     ) {
         Box(
@@ -139,13 +139,13 @@ fun Reminders(
 @Composable
 fun Water(
     navControl: NavHostController,
-    navViewModel: NavViewModel,
+    holderViewModel: HolderViewModel,
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
     Scaffold(
         topBar = {
-            MainAppBar(navControl, drawerState, scope, navViewModel)
+            MainAppBar(navControl, drawerState, scope, holderViewModel)
         }
     ) {
         Box(
@@ -174,13 +174,13 @@ fun Water(
 @Composable
 fun Privacy(
     navControl: NavHostController,
-    navViewModel: NavViewModel,
+    holderViewModel: HolderViewModel,
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
     Scaffold(
         topBar = {
-            MainAppBar(navControl, drawerState, scope, navViewModel, false)
+            MainAppBar(navControl, drawerState, scope, holderViewModel, false)
         }
     ) {
         Box(
@@ -208,13 +208,13 @@ fun Privacy(
 @Composable
 fun About(
     navControl: NavHostController,
-    navViewModel: NavViewModel,
+    holderViewModel: HolderViewModel,
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
     Scaffold(
         topBar = {
-            MainAppBar(navControl, drawerState, scope, navViewModel, false)
+            MainAppBar(navControl, drawerState, scope, holderViewModel, false)
         }
     ) {
         Box(

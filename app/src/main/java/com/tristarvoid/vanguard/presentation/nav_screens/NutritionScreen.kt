@@ -21,7 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.tristarvoid.vanguard.R
-import com.tristarvoid.vanguard.domain.use_cases.NavViewModel
+import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
 import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
 import com.tristarvoid.vanguard.util.LottieLoader
 import kotlinx.coroutines.CoroutineScope
@@ -31,13 +31,13 @@ import kotlinx.coroutines.CoroutineScope
 @Composable
 fun Nutrition(
     navControl: NavHostController,
-    navViewModel: NavViewModel,
+    holderViewModel: HolderViewModel,
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
     Scaffold(
         topBar = {
-            MainAppBar(navControl, drawerState, scope, navViewModel)
+            MainAppBar(navControl, drawerState, scope, holderViewModel)
         }
     ) {
         Box(
