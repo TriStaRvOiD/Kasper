@@ -11,7 +11,6 @@
 package com.tristarvoid.vanguard.presentation.nav_screens
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
@@ -20,7 +19,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,16 +26,17 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
+import com.tristarvoid.vanguard.R
 import com.tristarvoid.vanguard.domain.ToastMaker
 import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
 import com.tristarvoid.vanguard.domain.use_cases.StepsViewModel
 import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
 import com.tristarvoid.vanguard.presentation.ui.theme.JosefinSans
 import com.tristarvoid.vanguard.util.Header
+import com.tristarvoid.vanguard.util.LottieLoader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun Home(
@@ -97,7 +96,7 @@ fun Home(
                         alignment = Alignment.TopStart,
                         text = "Today"
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(18.dp))
                     Divider() //Below header
                     Spacer(modifier = Modifier.height(16.dp))
                     StepCard(steps)
@@ -125,9 +124,13 @@ fun StepCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .size(205.dp),
+            .heightIn(min = 190.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(android.graphics.Color.parseColor("#121212"))
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = LocalContentColor.current
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 1.dp
         )
     ) {
         Column(
@@ -136,51 +139,53 @@ fun StepCard(
             horizontalAlignment = CenterHorizontally
         ) {
             Text(
-                text = steps,
+                text = (if (steps == "") "~" else steps),
                 fontSize = 50.sp,
                 fontFamily = JosefinSans
             )
             Text(
                 text = "steps",
-                style = MaterialTheme.typography.labelSmall,
+                fontSize = 15.sp,
                 fontFamily = JosefinSans
             )
             Spacer(modifier = Modifier.height(17.dp))
         }
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 9.dp)
+                .padding(start = 10.dp, end = 26.dp, bottom = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = "Current goal: 10,000 steps",
-                style = MaterialTheme.typography.labelSmall,
-                fontFamily = JosefinSans
-            )
-            Text(
-                text = "Steps Remaining: 2000 steps",
-                style = MaterialTheme.typography.labelSmall,
-                fontFamily = JosefinSans
-            )
-            Text(
-                text = "Daily Average: 4000 steps",
-                style = MaterialTheme.typography.labelSmall,
-                fontFamily = JosefinSans
-            )
-            Text(
-                text = "Permissions granted: Yes",
-                style = MaterialTheme.typography.labelSmall,
-                fontFamily = JosefinSans
-            )
-            Text(
-                text = "Listening Status: Enabled",
-                style = MaterialTheme.typography.labelSmall,
-                fontFamily = JosefinSans
-            )
-            Text(
-                text = "Status: Walking",
-                style = MaterialTheme.typography.labelSmall,
-                fontFamily = JosefinSans
+            Column {
+                Text(
+                    text = "Current goal: 10,000 steps",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = JosefinSans
+                )
+                Text(
+                    text = "Steps Remaining: 2000 steps",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = JosefinSans
+                )
+                Text(
+                    text = "Daily Average: 4000 steps",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = JosefinSans
+                )
+                Text(
+                    text = "Permissions granted: Yes",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = JosefinSans
+                )
+                Text(
+                    text = "Status: Enabled",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = JosefinSans
+                )
+            }
+            LottieLoader(
+                jsonResource = R.raw.heartbeat,
+                size = 70
             )
         }
     }

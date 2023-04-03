@@ -21,4 +21,4 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val BackgroundBlack = Color(android.graphics.Color.parseColor("#000000"))
-val BackgroundDark = Color(android.graphics.Color.parseColor("#080808"))
+val BackgroundDark = Color(android.graphics.Color.parseColor("#121212"))

@@ -13,6 +13,7 @@ package com.tristarvoid.vanguard.util
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.*
@@ -20,7 +21,9 @@ import com.airbnb.lottie.compose.*
 @Composable
 fun LottieLoader(
     jsonResource: Int,
-    size: Int = 300
+    size: Int = 300,
+    repeat: Boolean = true,
+    alignment: Alignment = Alignment.Center
 ) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(jsonResource))
     val progress by animateLottieCompositionAsState(
@@ -28,9 +31,17 @@ fun LottieLoader(
         isPlaying = true,
         iterations = LottieConstants.IterateForever
     )
-    LottieAnimation(
-        modifier = Modifier.size(size.dp),
-        composition = composition,
-        progress = { progress },
-    )
+    if (repeat)
+        LottieAnimation(
+            modifier = Modifier.size(size.dp),
+            composition = composition,
+            progress = { progress },
+            alignment = alignment
+        )
+    else
+        LottieAnimation(
+            modifier = Modifier.size(size.dp),
+            composition = composition,
+            alignment = alignment
+        )
 }
