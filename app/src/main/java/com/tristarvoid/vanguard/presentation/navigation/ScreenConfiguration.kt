@@ -22,7 +22,7 @@ sealed class ScreenConfiguration(val route: String) {
     object DecisionsScreen : ScreenConfiguration("decisions_screen")
     object RemindersScreen : ScreenConfiguration("reminders_screen")
     object NutritionScreen : ScreenConfiguration("nutrition_screen")
-    object WaterScreen : ScreenConfiguration("h2o_screen")
+    object TimerScreen : ScreenConfiguration("timer_screen")
     object SettingsScreen : ScreenConfiguration("settings_screen")
     object PrivacyScreen : ScreenConfiguration("privacy_screen")
     object AboutScreen : ScreenConfiguration("about_screen")

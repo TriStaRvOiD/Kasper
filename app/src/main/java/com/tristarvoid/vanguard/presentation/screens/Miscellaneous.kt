@@ -8,7 +8,7 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.presentation.nav_screens
+package com.tristarvoid.vanguard.presentation.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -134,10 +134,9 @@ fun Reminders(
     }
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Water(
+fun Timer(
     navControl: NavHostController,
     holderViewModel: HolderViewModel,
     drawerState: DrawerState,
@@ -159,12 +158,11 @@ fun Water(
                     .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                LottieLoader(R.raw.wateranimation)
-//        Text(
-//            modifier = Modifier.padding(top = padding.calculateTopPadding()),
-//            text = "Water",
-//            textAlign = TextAlign.Center
-//        )
+                Text(
+                    modifier = Modifier.padding(top = it.calculateTopPadding()),
+                    text = "Timer",
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }

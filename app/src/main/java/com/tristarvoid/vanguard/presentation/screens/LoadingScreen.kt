@@ -8,7 +8,7 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.presentation.nav_screens
+package com.tristarvoid.vanguard.presentation.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +25,6 @@ fun LoadingScreen() {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        LottieLoader(jsonResource = R.raw.loading, size = 150)
+        LottieLoader(jsonResource = R.raw.loading, size = 140)
     }
 }

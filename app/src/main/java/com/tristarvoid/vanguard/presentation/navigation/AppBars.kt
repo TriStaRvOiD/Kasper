@@ -91,6 +91,9 @@ fun FragmentAppBar(
         holderViewModel.fragHeading
     }
     MediumTopAppBar(
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background
+        ),
         title = {
             Text(
                 modifier = Modifier,
