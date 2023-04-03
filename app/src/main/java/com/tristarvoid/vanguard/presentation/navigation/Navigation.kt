@@ -17,7 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
-import com.tristarvoid.vanguard.presentation.nav_screens.*
+import com.tristarvoid.vanguard.presentation.screens.*
 import com.tristarvoid.vanguard.presentation.onboarding.WelcomeScreen
 import com.tristarvoid.vanguard.presentation.views.Calendar
 import kotlinx.coroutines.CoroutineScope
@@ -70,10 +70,10 @@ fun Navigation(
             holderViewModel.concernedItem.value = 4
             Nutrition(navControl, holderViewModel, drawerState, scope)
         }
-        composable(route = ScreenConfiguration.WaterScreen.route) {
-            holderViewModel.mainHeading.value = "Water"
+        composable(route = ScreenConfiguration.TimerScreen.route) {
+            holderViewModel.mainHeading.value = "Timer"
             holderViewModel.concernedItem.value = 5
-            Water(navControl, holderViewModel, drawerState, scope)
+            Timer(navControl, holderViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.SettingsScreen.route) {
             holderViewModel.mainHeading.value = ""

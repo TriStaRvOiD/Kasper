@@ -69,8 +69,8 @@ fun DrawerBody(
                 },
                 selected = item == items[index.value],
                 onClick = {
-                    val destination = item.title + "_screen"
-                    val current = navControl.currentDestination?.route
+                    val destination = item.id //Identifies the screen to which we navigate to.
+                    val current = navControl.currentDestination?.route  //The current screen the user is at.
                     if (current != destination) {
                         if (current != ScreenConfiguration.HomeScreen.route)
                             navControl.popBackStack()

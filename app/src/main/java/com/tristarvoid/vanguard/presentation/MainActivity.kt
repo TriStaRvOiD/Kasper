@@ -28,6 +28,7 @@ import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
 import com.tristarvoid.vanguard.domain.use_cases.SplashScreenViewModel
 import com.tristarvoid.vanguard.presentation.navigation.DrawerBody
 import com.tristarvoid.vanguard.presentation.navigation.Navigation
+import com.tristarvoid.vanguard.presentation.navigation.ScreenConfiguration
 import com.tristarvoid.vanguard.presentation.ui.theme.VanguardTheme
 import com.tristarvoid.vanguard.util.MenuItem
 import dagger.hilt.android.AndroidEntryPoint
@@ -83,57 +84,57 @@ fun Display(
                 holderViewModel = holderViewModel,
                 items = listOf(
                     MenuItem(
-                        id = "home",
-                        title = "home",
+                        id = ScreenConfiguration.HomeScreen.route,
+                        title = "Home",
                         contentDescription = "Go to home screen",
                         icon = painterResource(id = R.drawable.home)
                     ),
                     MenuItem(
-                        id = "workouts",
-                        title = "workouts",
-                        contentDescription = "Go to home screen",
+                        id = ScreenConfiguration.WorkoutScreen.route,
+                        title = "Workouts",
+                        contentDescription = "Go to workouts screen",
                         icon = painterResource(id = R.drawable.exercise)
                     ),
                     MenuItem(
-                        id = "decisions",
-                        title = "decisions",
-                        contentDescription = "Go to home screen",
+                        id = ScreenConfiguration.DecisionsScreen.route,
+                        title = "Decisions",
+                        contentDescription = "Go to decision screen",
                         icon = painterResource(id = R.drawable.balance)
                     ),
                     MenuItem(
-                        id = "reminders",
-                        title = "reminders",
-                        contentDescription = "Go to home screen",
+                        id = ScreenConfiguration.RemindersScreen.route,
+                        title = "Reminders",
+                        contentDescription = "Go to reminders screen",
                         icon = painterResource(id = R.drawable.reminders)
                     ),
                     MenuItem(
-                        id = "food",
-                        title = "nutrition",
-                        contentDescription = "Go to home screen",
+                        id = ScreenConfiguration.NutritionScreen.route,
+                        title = "Nutrition",
+                        contentDescription = "Go to nutrition screen",
                         icon = painterResource(id = R.drawable.nutrition)
                     ),
                     MenuItem(
-                        id = "water",
-                        title = "h2o",
-                        contentDescription = "Go to home screen",
-                        icon = painterResource(id = R.drawable.water)
+                        id = ScreenConfiguration.TimerScreen.route,
+                        title = "Timer",
+                        contentDescription = "Go to timer screen",
+                        icon = painterResource(id = R.drawable.timer)
                     ),
                     MenuItem(
-                        id = "settings",
-                        title = "settings",
-                        contentDescription = "Go to home screen",
+                        id = ScreenConfiguration.SettingsScreen.route,
+                        title = "Settings",
+                        contentDescription = "Go to settings screen",
                         icon = painterResource(id = R.drawable.settings)
                     ),
                     MenuItem(
-                        id = "privacy",
-                        title = "privacy",
-                        contentDescription = "Go to home screen",
+                        id = ScreenConfiguration.PrivacyScreen.route,
+                        title = "Privacy",
+                        contentDescription = "Go to privacy screen",
                         icon = painterResource(id = R.drawable.privacy)
                     ),
                     MenuItem(
-                        id = "about",
-                        title = "about",
-                        contentDescription = "Go to home screen",
+                        id = ScreenConfiguration.AboutScreen.route,
+                        title = "About",
+                        contentDescription = "Go to about screen",
                         icon = painterResource(id = R.drawable.info)
                     )
                 )

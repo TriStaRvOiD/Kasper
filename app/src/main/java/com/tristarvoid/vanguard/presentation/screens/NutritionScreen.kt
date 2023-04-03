@@ -8,7 +8,7 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.presentation.nav_screens
+package com.tristarvoid.vanguard.presentation.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box

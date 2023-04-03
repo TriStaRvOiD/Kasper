@@ -42,10 +42,18 @@ fun Calendar(
     BackHandler(enabled = true) {
         navControl.popBackStack()
     }
-    val currentMonth = remember { YearMonth.now() }
-    val startMonth = remember { currentMonth.minusMonths(0) } // Adjust as needed
-    val endMonth = remember { currentMonth.plusMonths(100) } // Adjust as needed
-    val firstDayOfWeek = remember { firstDayOfWeekFromLocale() }
+    val currentMonth = remember {
+        YearMonth.now()
+    }
+    val startMonth = remember {
+        currentMonth.minusMonths(0)
+    } // Adjust as needed
+    val endMonth = remember {
+        currentMonth.plusMonths(100)
+    } // Adjust as needed
+    val firstDayOfWeek = remember {
+        firstDayOfWeekFromLocale()
+    }
     val daysOfWeek = daysOfWeek()// Available from the library
     val state = rememberCalendarState(
         startMonth = startMonth,
