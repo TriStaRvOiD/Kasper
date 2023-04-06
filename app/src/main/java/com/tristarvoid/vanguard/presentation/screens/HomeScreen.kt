@@ -22,12 +22,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
+import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
+import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
+import com.patrykandpatrick.vico.compose.chart.Chart
+import com.patrykandpatrick.vico.compose.chart.column.columnChart
 import com.tristarvoid.vanguard.R
 import com.tristarvoid.vanguard.domain.ToastMaker
+import com.tristarvoid.vanguard.domain.use_cases.GraphDataViewModel
 import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
 import com.tristarvoid.vanguard.domain.use_cases.StepsViewModel
 import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
@@ -111,6 +117,8 @@ fun Home(
                     Spacer(modifier = Modifier.height(16.dp))
                     Divider()
                     Spacer(modifier = Modifier.height(16.dp))
+                    CalorieGraph()
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }
@@ -173,7 +181,7 @@ fun StepCard(
                     fontFamily = JosefinSans
                 )
                 Text(
-                    text = "Permissions granted: Yes",
+                    text = "Calories burned: 1500 kcal",
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = JosefinSans
                 )
@@ -220,6 +228,23 @@ fun Quote() {
         modifier = Modifier
             .padding(start = 100.dp),
         fontFamily = JosefinSans
+    )
+}
+
+@Composable
+fun CalorieGraph() {
+    val calorieViewModel = viewModel<GraphDataViewModel>()
+    Text(
+        text = "Activity : ",
+        style = MaterialTheme.typography.titleMedium,
+        fontFamily = JosefinSans
+    )
+    Spacer(modifier = Modifier.height(5.dp))
+    Chart(
+        chart = columnChart(),
+        chartModelProducer = calorieViewModel.chartEntryModelProducer,
+        startAxis = startAxis(),
+        bottomAxis = bottomAxis(),
     )
 }
 
