@@ -82,12 +82,12 @@ fun Home(
             val quoteViewModel: QuoteViewModel = hiltViewModel()
             //Remember whether quote has been called
             val quoteCalled = remember {
-                mutableStateOf(false)
+                holderViewModel.quoteCalled
             }
             //To prevent continuous network call
             if (!quoteCalled.value) {
                 quoteViewModel.getTheQuote()
-                quoteCalled.value = true
+                holderViewModel.quoteCalled.value = true
             }
             //Current number of steps
             val steps by stepsViewModel.steps.collectAsState()
