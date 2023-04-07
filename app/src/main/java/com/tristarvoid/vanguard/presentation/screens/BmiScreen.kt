@@ -11,7 +11,6 @@
 package com.tristarvoid.vanguard.presentation.screens
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -23,11 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.tristarvoid.vanguard.domain.HolderViewModel
 import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
+import com.tristarvoid.vanguard.presentation.ui.theme.JosefinSans
 import com.tristarvoid.vanguard.presentation.util.Header
 import kotlinx.coroutines.CoroutineScope
 import kotlin.math.pow
@@ -57,7 +58,7 @@ fun Bmi(
                 mutableStateOf("")
             }
             val bmi = remember {
-                mutableStateOf("")
+                mutableStateOf(0.0)
             }
             val height = remember {
                 mutableStateOf("")
@@ -72,43 +73,52 @@ fun Bmi(
             Spacer(modifier = Modifier.height(18.dp))
             Divider() //Below header
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Weight in kg : ")
-            TextField(
+            Text(
+                modifier = Modifier.align(Alignment.Start),
+                text = "Weight in kg : ",
+                fontSize = 25.sp
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            OutlinedTextField(
                 value = weight.value,
                 onValueChange = {
                     weight.value = it
                 },
-                textStyle = TextStyle(color = Color.White, fontSize = 21.sp),
+                textStyle = TextStyle(fontFamily = JosefinSans, fontSize = 21.sp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 singleLine = true
             )
+            Spacer(modifier = Modifier.height(15.dp))
+            Text(
+                modifier = Modifier.align(Alignment.Start),
+                text = "Height in cm : ",
+                fontSize = 25.sp
+            )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "Height in cm : ")
-            TextField(
+            OutlinedTextField(
                 value = height.value,
                 onValueChange = {
                     height.value = it
                 },
-                textStyle = TextStyle(color = Color.White, fontSize = 21.sp),
+                textStyle = TextStyle(fontFamily = JosefinSans, fontSize = 21.sp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 singleLine = true
             )
             Spacer(modifier = Modifier.height(10.dp))
-            Box(
-                contentAlignment = Alignment.Center,
+            OutlinedButton(
                 modifier = Modifier
-                    .fillMaxWidth(0.6f)
-                    .height(60.dp)
-                    .padding(16.dp)
-                    .clickable {
+                    .padding(16.dp),
+                onClick = {
+                    if (weight.value != "" && height.value != "") {
                         val one = weight.value.toDouble()
                         val two = height.value.toDouble()
                         val ans = one / (two / 100).pow(2.0)
                         val solution: Double = String
                             .format("%.2f", ans)
                             .toDouble()
-                        bmi.value = "Your BMI is $solution."
+                        bmi.value = solution
                     }
+                }
             ) {
                 Text(
                     text = "Calculate",
@@ -117,13 +127,16 @@ fun Bmi(
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-            ) {
+            if (bmi.value != 0.0) {
                 Text(
-                    text = bmi.value,
+                    text = "You're BMI is ${bmi.value}",
                     fontSize = 22.sp
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "This could potentially mean that you are " + if (bmi.value < 18.5) "Underweight" else if (bmi.value in 18.5..24.9) "Normal weight" else if (bmi.value in 25.0..29.9) "Over weight" else "Obese",
+                    fontSize = 22.sp,
+                    textAlign = TextAlign.Center
                 )
             }
         }
