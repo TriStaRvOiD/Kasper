@@ -19,4 +19,5 @@ class HolderViewModel : ViewModel()
     var mainHeading = mutableStateOf("")
     var fragHeading = mutableStateOf("")
     var concernedItem = mutableStateOf(0)
+    var quoteCalled = mutableStateOf(false)
 }
