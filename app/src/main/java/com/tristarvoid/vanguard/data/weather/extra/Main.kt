@@ -8,24 +8,15 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.domain
+package com.tristarvoid.vanguard.data.weather.extra
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import java.util.*
-
-class HolderViewModel : ViewModel()
-{
-    var dynamicEnabled = mutableStateOf(false)
-    var mainHeading = mutableStateOf("")
-    var fragHeading = mutableStateOf("")
-    var concernedItem = mutableStateOf(0)
-    var quoteCalled = mutableStateOf(false)
-
-    private val calendar = mutableStateOf(Calendar.getInstance())
-    var timeOfDay = mutableStateOf(calendar.value.get(Calendar.HOUR_OF_DAY))
-    fun updateTime() {
-        calendar.value = Calendar.getInstance()
-        timeOfDay.value = calendar.value.get(Calendar.HOUR_OF_DAY)
-    }
-}
+data class Main(
+    val feels_like: Double,
+    val grnd_level: Int,
+    val humidity: Int,
+    val pressure: Int,
+    val sea_level: Int,
+    val temp: Double,
+    val temp_max: Double,
+    val temp_min: Double
+)

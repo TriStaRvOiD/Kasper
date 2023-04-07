@@ -80,6 +80,15 @@ fun Home(
         if (permissionState.status == PermissionStatus.Granted) {
             val stepsViewModel: StepsViewModel = hiltViewModel()
             val quoteViewModel: QuoteViewModel = hiltViewModel()
+            val timeOfDay by remember {
+                holderViewModel.timeOfDay
+            }
+            LaunchedEffect(Unit) {
+                while (true) {
+                    delay(5000)
+                    holderViewModel.updateTime()
+                }
+            }
             //Remember whether quote has been called
             val quoteCalled = remember {
                 holderViewModel.quoteCalled
@@ -109,7 +118,7 @@ fun Home(
                         .fillMaxWidth()
                         .paddingFromBaseline(5.dp),
                     alignment = Alignment.TopStart,
-                    text = "It's mornin'"
+                    text = if (timeOfDay < 12) "It's mornin'" else if (timeOfDay < 16) "It's afternoon" else "It's evenin'"
                 )
                 Spacer(modifier = Modifier.height(18.dp))
                 Divider() //Below header
@@ -155,7 +164,7 @@ fun StepInfo(
                 fontSize = 70.sp,
                 fontFamily = JosefinSans
             )
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             Text(
                 modifier = Modifier
                     .padding(top = 55.dp),
@@ -268,7 +277,7 @@ fun Control(
     ) {
         Text(
             modifier = Modifier.padding(10.dp),
-            text = if (active) "Status: Enabled" else "Status: Disabled",
+            text = if (active) "Status: Enabled" else "Status: Paused",
             style = MaterialTheme.typography.titleSmall,
             fontFamily = JosefinSans
         )
