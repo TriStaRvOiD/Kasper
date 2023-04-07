@@ -11,7 +11,7 @@
 package com.tristarvoid.vanguard.di
 
 import android.content.Context
-import com.tristarvoid.vanguard.data.repo.DataStoreRepository
+import com.tristarvoid.vanguard.data.repo.StatusDataStoreRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,12 +21,12 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataStoreModule {
+object StatusDataStoreModule {
 
     @Provides
     @Singleton
-    fun provideDataStoreRepository(
+    fun provideStatusDataStoreRepository(
         @ApplicationContext context: Context
-    ) = DataStoreRepository(context = context)
+    ) = StatusDataStoreRepository(context = context)
 
 }

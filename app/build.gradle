@@ -61,6 +61,7 @@ dependencies {
 
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation "com.squareup.okhttp3:okhttp:4.10.0"
 
     //Calendar
     implementation 'com.kizitonwose.calendar:compose:2.2.0'

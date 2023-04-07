@@ -10,23 +10,27 @@
 
 package com.tristarvoid.vanguard.presentation.screens
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Divider
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
 import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
 import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
-import com.tristarvoid.vanguard.presentation.util.Header
 import kotlinx.coroutines.CoroutineScope
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Settings(
+fun Covid(
     navControl: NavHostController,
     holderViewModel: HolderViewModel,
     drawerState: DrawerState,
@@ -37,20 +41,16 @@ fun Settings(
             MainAppBar(navControl, drawerState, scope, holderViewModel, false)
         }
     ) {
-        Column(
+        Box(
             modifier = Modifier
-                .padding(top = it.calculateTopPadding())
-                .fillMaxSize()
-        )
-        {
-            Header(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .paddingFromBaseline(5.dp),
-                text = "Settings"
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                modifier = Modifier.padding(top = it.calculateTopPadding()),
+                text = "Covid",
+                textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(18.dp))
-            Divider()
         }
     }
 }

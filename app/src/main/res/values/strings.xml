@@ -10,4 +10,8 @@
 
 <resources>
     <string name="app_name">Vanguard</string>
+
+    <string name="privacy_1">Vanguard is open source</string>
+    <string name="privacy_2">This app does not request unnecessary permissions</string>
+    <string name="privacy_3">This app does not contain any analytics APIs whatsoever</string>
 </resources>

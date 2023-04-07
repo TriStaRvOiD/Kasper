@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
@@ -30,7 +31,6 @@ import com.tristarvoid.vanguard.presentation.navigation.DrawerBody
 import com.tristarvoid.vanguard.presentation.navigation.Navigation
 import com.tristarvoid.vanguard.presentation.navigation.ScreenConfiguration
 import com.tristarvoid.vanguard.presentation.ui.theme.VanguardTheme
-import com.tristarvoid.vanguard.util.MenuItem
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -96,12 +96,6 @@ fun Display(
                         icon = painterResource(id = R.drawable.exercise)
                     ),
                     MenuItem(
-                        id = ScreenConfiguration.DecisionsScreen.route,
-                        title = "Decisions",
-                        contentDescription = "Go to decision screen",
-                        icon = painterResource(id = R.drawable.balance)
-                    ),
-                    MenuItem(
                         id = ScreenConfiguration.RemindersScreen.route,
                         title = "Reminders",
                         contentDescription = "Go to reminders screen",
@@ -120,16 +114,22 @@ fun Display(
                         icon = painterResource(id = R.drawable.timer)
                     ),
                     MenuItem(
+                        id = ScreenConfiguration.BMIScreen.route,
+                        title = "BMI",
+                        contentDescription = "Go to privacy screen",
+                        icon = painterResource(id = R.drawable.bmi)
+                    ),
+                    MenuItem(
+                        id = ScreenConfiguration.CovidScreen.route,
+                        title = "Covid",
+                        contentDescription = "Go to water screen",
+                        icon = painterResource(id = R.drawable.coronavirus)
+                    ),
+                    MenuItem(
                         id = ScreenConfiguration.SettingsScreen.route,
                         title = "Settings",
                         contentDescription = "Go to settings screen",
                         icon = painterResource(id = R.drawable.settings)
-                    ),
-                    MenuItem(
-                        id = ScreenConfiguration.PrivacyScreen.route,
-                        title = "Privacy",
-                        contentDescription = "Go to privacy screen",
-                        icon = painterResource(id = R.drawable.privacy)
                     ),
                     MenuItem(
                         id = ScreenConfiguration.AboutScreen.route,
@@ -144,3 +144,10 @@ fun Display(
         Navigation(navController, holderViewModel, drawerState, scope, screen)
     }
 }
+
+data class MenuItem(
+    val id: String,
+    val title: String,
+    val contentDescription: String,
+    val icon: Painter
+)
