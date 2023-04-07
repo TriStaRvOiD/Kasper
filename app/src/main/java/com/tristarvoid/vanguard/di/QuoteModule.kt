@@ -10,21 +10,26 @@
 
 package com.tristarvoid.vanguard.di
 
-import android.app.Application
-import com.tristarvoid.vanguard.data.sensor.MeasurableSensor
-import com.tristarvoid.vanguard.data.sensor.StepSensor
+import com.tristarvoid.vanguard.data.quote.QuoteApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object StepModule {
+object QuoteModule {
+
     @Provides
     @Singleton
-    fun provideLightSensor(app: Application): MeasurableSensor {
-        return StepSensor(app)
+    fun provideRetrofitInstanceForQuote(): QuoteApi {
+        return Retrofit.Builder()
+            .baseUrl("https://api.quotable.io")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(QuoteApi::class.java)
     }
 }

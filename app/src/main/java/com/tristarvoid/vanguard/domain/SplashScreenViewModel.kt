@@ -8,7 +8,7 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.domain.use_cases
+package com.tristarvoid.vanguard.domain
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State

@@ -23,7 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
-import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
+import com.tristarvoid.vanguard.domain.HolderViewModel
 import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
 import kotlinx.coroutines.CoroutineScope
 

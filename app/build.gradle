@@ -61,6 +61,7 @@ dependencies {
 
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
 
     //Calendar
@@ -100,6 +101,10 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.44"
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
     kapt "com.google.dagger:hilt-compiler:2.44"
+
+    //Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
     //Miscellaneous
     implementation "androidx.compose.ui:ui:$compose_version"

@@ -8,23 +8,26 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.di
+package com.tristarvoid.vanguard.domain
 
-import android.app.Application
-import com.tristarvoid.vanguard.data.sensor.MeasurableSensor
-import com.tristarvoid.vanguard.data.sensor.StepSensor
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import androidx.lifecycle.ViewModel
+import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
+import com.patrykandpatrick.vico.core.entry.FloatEntry
+import java.util.*
 
-@Module
-@InstallIn(SingletonComponent::class)
-object StepModule {
-    @Provides
-    @Singleton
-    fun provideLightSensor(app: Application): MeasurableSensor {
-        return StepSensor(app)
+class GraphDataViewModel : ViewModel() {
+
+    private val min = 0f
+    private val max = 16f
+    private val rand = Random()
+    private val fl = rand.nextFloat() * (max - min) + min
+
+    private fun getRandomEntries() = List(4) {
+        FloatEntry(
+            it.toFloat(),
+            fl
+        )
     }
+
+    val chartEntryModelProducer = ChartEntryModelProducer(getRandomEntries())
 }

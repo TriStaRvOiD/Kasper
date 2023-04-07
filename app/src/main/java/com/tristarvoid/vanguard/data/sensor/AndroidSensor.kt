@@ -8,7 +8,7 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.data.use_cases.sensor
+package com.tristarvoid.vanguard.data.sensor
 
 import android.content.Context
 import android.hardware.Sensor

@@ -8,26 +8,15 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.domain.use_cases
+package com.tristarvoid.vanguard.domain
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
-import com.patrykandpatrick.vico.core.entry.FloatEntry
-import java.util.*
 
-class GraphDataViewModel : ViewModel() {
-
-    private val min = 0f
-    private val max = 16f
-    private val rand = Random()
-    private val fl = rand.nextFloat() * (max - min) + min
-
-    private fun getRandomEntries() = List(4) {
-        FloatEntry(
-            it.toFloat(),
-            fl
-        )
-    }
-
-    val chartEntryModelProducer = ChartEntryModelProducer(getRandomEntries())
+class HolderViewModel : ViewModel()
+{
+    var dynamicEnabled = mutableStateOf(false)
+    var mainHeading = mutableStateOf("")
+    var fragHeading = mutableStateOf("")
+    var concernedItem = mutableStateOf(0)
 }

@@ -8,13 +8,13 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.domain.use_cases
+package com.tristarvoid.vanguard.domain
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tristarvoid.vanguard.data.repo.StatusDataStoreRepository
-import com.tristarvoid.vanguard.data.use_cases.sensor.MeasurableSensor
+import com.tristarvoid.vanguard.data.sensor.MeasurableSensor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,10 +29,10 @@ class StepsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _steps = MutableStateFlow("")
-    private val sensor = stepSensor
-
-    val isActive = mutableStateOf(false)
     val steps = _steps.asStateFlow()
+
+    private val sensor = stepSensor
+    val isActive = mutableStateOf(false)
 
     init {
         updateStatus()

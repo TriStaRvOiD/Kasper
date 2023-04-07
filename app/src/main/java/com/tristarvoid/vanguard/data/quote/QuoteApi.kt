@@ -8,15 +8,13 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.domain.use_cases
+package com.tristarvoid.vanguard.data.quote
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import retrofit2.Response
+import retrofit2.http.GET
 
-class HolderViewModel : ViewModel()
-{
-    var dynamicEnabled = mutableStateOf(false)
-    var mainHeading = mutableStateOf("")
-    var fragHeading = mutableStateOf("")
-    var concernedItem = mutableStateOf(0)
+interface QuoteApi {
+
+    @GET ("/random?maxLength=30")
+    suspend fun getQuote(): Response<Quote>
 }

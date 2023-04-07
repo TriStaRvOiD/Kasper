@@ -31,10 +31,7 @@ import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
 import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.column.columnChart
 import com.tristarvoid.vanguard.R
-import com.tristarvoid.vanguard.domain.ToastMaker
-import com.tristarvoid.vanguard.domain.use_cases.GraphDataViewModel
-import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
-import com.tristarvoid.vanguard.domain.use_cases.StepsViewModel
+import com.tristarvoid.vanguard.domain.*
 import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
 import com.tristarvoid.vanguard.presentation.ui.theme.JosefinSans
 import com.tristarvoid.vanguard.presentation.util.CustomCard
@@ -81,13 +78,26 @@ fun Home(
         val permissionState =
             rememberPermissionState(permission = Manifest.permission.ACTIVITY_RECOGNITION)
         if (permissionState.status == PermissionStatus.Granted) {
-            val viewModel: StepsViewModel = hiltViewModel()
-            val steps by viewModel.steps.collectAsState()
+            val stepsViewModel: StepsViewModel = hiltViewModel()
+            val quoteViewModel: QuoteViewModel = hiltViewModel()
+            //Remember whether quote has been called
+            val quoteCalled = remember {
+                mutableStateOf(false)
+            }
+            //To prevent continuous network call
+            if (!quoteCalled.value) {
+                quoteViewModel.getTheQuote()
+                quoteCalled.value = true
+            }
+            //Current number of steps
+            val steps by stepsViewModel.steps.collectAsState()
+            //The quote
+            val quote by quoteViewModel.quote.collectAsState()
             val isActive = remember {
-                viewModel.isActive
+                stepsViewModel.isActive
             }
             if (isActive.value)
-                viewModel.start()
+                stepsViewModel.start()
             Column(
                 modifier = Modifier
                     .padding(top = it.calculateTopPadding())
@@ -111,9 +121,9 @@ fun Home(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column {
-                        Quote()
+                        Quote(quote)
                         Spacer(modifier = Modifier.height(9.dp))
-                        Control(isActive.value, viewModel)
+                        Control(isActive.value, stepsViewModel)
                     }
                     Weather()
                 }
@@ -216,7 +226,9 @@ fun Weather() {
 }
 
 @Composable
-fun Quote() {
+fun Quote(
+    quote: String
+) {
     CustomCard(
         modifier = Modifier
             .widthIn(min = 143.dp, max = 143.dp)
@@ -231,7 +243,7 @@ fun Quote() {
         )
         Text(
             modifier = Modifier.padding(10.dp),
-            text = "Walking is good. Keep walking.",
+            text = if (quote == "") "Loading . . ." else quote,
             style = MaterialTheme.typography.titleSmall,
             fontFamily = JosefinSans
         )

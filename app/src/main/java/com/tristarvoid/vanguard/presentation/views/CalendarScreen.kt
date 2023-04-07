@@ -26,7 +26,7 @@ import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
-import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
+import com.tristarvoid.vanguard.domain.HolderViewModel
 import com.tristarvoid.vanguard.presentation.navigation.FragmentAppBar
 import java.time.DayOfWeek
 import java.time.YearMonth
