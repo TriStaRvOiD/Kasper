@@ -10,23 +10,26 @@
 
 package com.tristarvoid.vanguard.presentation.screens
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Divider
-import androidx.compose.material3.DrawerState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
+import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
+import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
 import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
 import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
-import com.tristarvoid.vanguard.presentation.util.Header
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Settings(
+fun About(
     navControl: NavHostController,
     holderViewModel: HolderViewModel,
     drawerState: DrawerState,
@@ -37,20 +40,36 @@ fun Settings(
             MainAppBar(navControl, drawerState, scope, holderViewModel, false)
         }
     ) {
-        Column(
+        Box(
             modifier = Modifier
-                .padding(top = it.calculateTopPadding())
-                .fillMaxSize()
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
         )
         {
-            Header(
+            LibrariesContainer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .paddingFromBaseline(5.dp),
-                text = "Settings"
+                    .padding(top = it.calculateTopPadding()),
+                showAuthor = true,
+                showVersion = false,
+                colors = LibraryDefaults.libraryColors(
+                    backgroundColor = MaterialTheme.colorScheme.background,
+                    contentColor = LocalContentColor.current,
+                    badgeBackgroundColor = MaterialTheme.colorScheme.primary,
+                    badgeContentColor = (if (isSystemInDarkTheme()) Color.Black else Color.White)
+                ),
+                showLicenseBadges = true
             )
-            Spacer(modifier = Modifier.height(18.dp))
-            Divider()
         }
     }
 }
+
+//@Composable
+//fun aboutHeader(): LazyListScope.() -> Unit {
+//    return {
+//        item()
+//        {
+//
+//        }
+//    }
+//}

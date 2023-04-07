@@ -55,35 +55,35 @@ fun Navigation(
             holderViewModel.concernedItem.value = 1
             Workouts(navControl, holderViewModel, drawerState, scope)
         }
-        composable(route = ScreenConfiguration.DecisionsScreen.route) {
-            holderViewModel.mainHeading.value = "Decisions"
-            holderViewModel.concernedItem.value = 2
-            Decisions(navControl, holderViewModel, drawerState, scope)
-        }
         composable(route = ScreenConfiguration.RemindersScreen.route) {
             holderViewModel.mainHeading.value = "Reminders"
-            holderViewModel.concernedItem.value = 3
+            holderViewModel.concernedItem.value = 2
             Reminders(navControl, holderViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.NutritionScreen.route) {
             holderViewModel.mainHeading.value = "Nutrition"
-            holderViewModel.concernedItem.value = 4
+            holderViewModel.concernedItem.value = 3
             Nutrition(navControl, holderViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.TimerScreen.route) {
             holderViewModel.mainHeading.value = "Timer"
-            holderViewModel.concernedItem.value = 5
+            holderViewModel.concernedItem.value = 4
             Timer(navControl, holderViewModel, drawerState, scope)
+        }
+        composable(route = ScreenConfiguration.BMIScreen.route) {
+            holderViewModel.mainHeading.value = ""
+            holderViewModel.concernedItem.value = 5
+            Bmi(navControl, holderViewModel, drawerState, scope)
+        }
+        composable(route = ScreenConfiguration.CovidScreen.route) {
+            holderViewModel.mainHeading.value = ""
+            holderViewModel.concernedItem.value = 6
+            Covid(navControl, holderViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.SettingsScreen.route) {
             holderViewModel.mainHeading.value = ""
-            holderViewModel.concernedItem.value = 6
-            Settings(navControl, holderViewModel, drawerState, scope)
-        }
-        composable(route = ScreenConfiguration.PrivacyScreen.route) {
-            holderViewModel.mainHeading.value = "Privacy"
             holderViewModel.concernedItem.value = 7
-            Privacy(navControl, holderViewModel, drawerState, scope)
+            Settings(navControl, holderViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.AboutScreen.route) {
             holderViewModel.mainHeading.value = "About"

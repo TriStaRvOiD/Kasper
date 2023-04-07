@@ -23,7 +23,7 @@ import androidx.navigation.NavHostController
 import com.tristarvoid.vanguard.R
 import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
 import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
-import com.tristarvoid.vanguard.util.LottieLoader
+import com.tristarvoid.vanguard.presentation.util.LottieLoader
 import kotlinx.coroutines.CoroutineScope
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -44,20 +44,13 @@ fun Nutrition(
             modifier = Modifier
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
-        )
-        {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                LottieLoader(R.raw.food)
+        ) {
+            LottieLoader(R.raw.food)
 //        Text(
 //            modifier = Modifier.padding(top = padding.calculateTopPadding()),
 //            text = "Nutrition",
 //            textAlign = TextAlign.Center
 //        )
-            }
         }
     }
 }

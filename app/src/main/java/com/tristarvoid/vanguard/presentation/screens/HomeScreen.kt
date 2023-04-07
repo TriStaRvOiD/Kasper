@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,8 +37,9 @@ import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
 import com.tristarvoid.vanguard.domain.use_cases.StepsViewModel
 import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
 import com.tristarvoid.vanguard.presentation.ui.theme.JosefinSans
-import com.tristarvoid.vanguard.util.Header
-import com.tristarvoid.vanguard.util.LottieLoader
+import com.tristarvoid.vanguard.presentation.util.CustomCard
+import com.tristarvoid.vanguard.presentation.util.Header
+import com.tristarvoid.vanguard.presentation.util.LottieLoader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 
@@ -78,82 +78,79 @@ fun Home(
             MainAppBar(navControl, drawerState, scope, holderViewModel)
         }
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        )
-        {
-            val permissionState =
-                rememberPermissionState(permission = Manifest.permission.ACTIVITY_RECOGNITION)
-            if (permissionState.status == PermissionStatus.Granted) {
-                val viewModel: StepsViewModel = hiltViewModel()
-                val steps by viewModel.steps.collectAsState()
-                Column(
+        val permissionState =
+            rememberPermissionState(permission = Manifest.permission.ACTIVITY_RECOGNITION)
+        if (permissionState.status == PermissionStatus.Granted) {
+            val viewModel: StepsViewModel = hiltViewModel()
+            val steps by viewModel.steps.collectAsState()
+            val isActive = remember {
+                viewModel.isActive
+            }
+            if (isActive.value)
+                viewModel.start()
+            Column(
+                modifier = Modifier
+                    .padding(top = it.calculateTopPadding())
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                Header(
                     modifier = Modifier
-                        .padding(top = it.calculateTopPadding())
-                        .fillMaxSize()
-                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .paddingFromBaseline(5.dp),
+                    alignment = Alignment.TopStart,
+                    text = "It's mornin'"
+                )
+                Spacer(modifier = Modifier.height(18.dp))
+                Divider() //Below header
+                Spacer(modifier = Modifier.height(16.dp))
+                StepInfo(isActive.value, steps)
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Header(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .paddingFromBaseline(5.dp),
-                        alignment = Alignment.TopStart,
-                        text = "Today"
-                    )
-                    Spacer(modifier = Modifier.height(18.dp))
-                    Divider() //Below header
-                    Spacer(modifier = Modifier.height(16.dp))
-                    StepCard(steps)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Divider()
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Column {
+                        Quote()
+                        Spacer(modifier = Modifier.height(9.dp))
+                        Control(isActive.value, viewModel)
+                    }
                     Weather()
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Divider()
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Quote()
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Divider()
-                    Spacer(modifier = Modifier.height(16.dp))
-                    CalorieGraph()
-                    Spacer(modifier = Modifier.height(16.dp))
                 }
+                Spacer(modifier = Modifier.height(16.dp))
+                CalorieGraph()
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
 }
 
 @Composable
-fun StepCard(
+fun StepInfo(
+    active: Boolean,
     steps: String
 ) {
-    Card(
+    CustomCard(
         modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 190.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = LocalContentColor.current
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 1.dp
-        )
+            .heightIn(min = 170.dp, max = 170.dp),
+        function = {}
     ) {
-        Column(
+        Row(
             modifier = Modifier
-                .fillMaxWidth(),
-            horizontalAlignment = CenterHorizontally
+                .padding(start = 10.dp)
         ) {
             Text(
-                text = (if (steps == "") "~" else steps),
-                fontSize = 50.sp,
+                text = (if (steps == "") "0" else if (steps.toInt() > 100000) "100,000+" else (steps.toInt()
+                    .formatDecimalSeparator())),
+                fontSize = 70.sp,
                 fontFamily = JosefinSans
             )
+            Spacer(modifier = Modifier.height(5.dp))
             Text(
+                modifier = Modifier
+                    .padding(top = 55.dp),
                 text = "steps",
-                fontSize = 15.sp,
+                fontSize = 20.sp,
                 fontFamily = JosefinSans
             )
             Spacer(modifier = Modifier.height(17.dp))
@@ -185,50 +182,85 @@ fun StepCard(
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = JosefinSans
                 )
-                Text(
-                    text = "Status: Enabled",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontFamily = JosefinSans
-                )
             }
-            LottieLoader(
-                jsonResource = R.raw.heartbeat,
-                size = 70
-            )
+            if (active)
+                LottieLoader(
+                    jsonResource = R.raw.heartbeat,
+                    size = 70
+                )
         }
     }
 }
 
 @Composable
 fun Weather() {
-    Text(
-        text = "Seattle, WA : ",
-        style = MaterialTheme.typography.titleMedium,
-        fontFamily = JosefinSans
-    )
-    Text(
-        text = "It's 20 degrees, with light rain",
-        style = MaterialTheme.typography.titleSmall,
+    CustomCard(
         modifier = Modifier
-            .padding(start = 100.dp),
-        fontFamily = JosefinSans
-    )
+            .widthIn(min = 178.dp, max = 178.dp)
+            .heightIn(min = 145.dp, max = 145.dp),
+        function = {}
+    ) {
+        Text(
+            modifier = Modifier.padding(start = 10.dp, top = 10.dp),
+            text = "Seattle, WA : ",
+            style = MaterialTheme.typography.titleMedium,
+            fontFamily = JosefinSans
+        )
+        Text(
+            modifier = Modifier.padding(10.dp),
+            text = "It's 20 degrees, with light rain",
+            style = MaterialTheme.typography.titleSmall,
+            fontFamily = JosefinSans
+        )
+    }
 }
 
 @Composable
 fun Quote() {
-    Text(
-        text = "Daily Quote : ",
-        style = MaterialTheme.typography.titleMedium,
-        fontFamily = JosefinSans
-    )
-    Text(
-        text = "Walking is good. Keep walking.",
-        style = MaterialTheme.typography.titleSmall,
+    CustomCard(
         modifier = Modifier
-            .padding(start = 100.dp),
-        fontFamily = JosefinSans
-    )
+            .widthIn(min = 143.dp, max = 143.dp)
+            .heightIn(min = 90.dp, max = 90.dp),
+        function = {}
+    ) {
+        Text(
+            modifier = Modifier.padding(start = 10.dp, top = 10.dp),
+            text = "Quote : ",
+            style = MaterialTheme.typography.titleMedium,
+            fontFamily = JosefinSans
+        )
+        Text(
+            modifier = Modifier.padding(10.dp),
+            text = "Walking is good. Keep walking.",
+            style = MaterialTheme.typography.titleSmall,
+            fontFamily = JosefinSans
+        )
+    }
+}
+
+@Composable
+fun Control(
+    active: Boolean,
+    viewModel: StepsViewModel
+) {
+    CustomCard(
+        modifier = Modifier
+            .widthIn(min = 143.dp, max = 143.dp)
+            .heightIn(min = 46.dp, max = 46.dp),
+        function = {
+            if (active)
+                viewModel.stop()
+            else
+                viewModel.start()
+        }
+    ) {
+        Text(
+            modifier = Modifier.padding(10.dp),
+            text = if (active) "Status: Enabled" else "Status: Disabled",
+            style = MaterialTheme.typography.titleSmall,
+            fontFamily = JosefinSans
+        )
+    }
 }
 
 @Composable
@@ -246,6 +278,10 @@ fun CalorieGraph() {
         startAxis = startAxis(),
         bottomAxis = bottomAxis(),
     )
+}
+
+fun Int.formatDecimalSeparator(): String {
+    return toString().reversed().chunked(3).joinToString(",").reversed()
 }
 
 sealed class BackPress {

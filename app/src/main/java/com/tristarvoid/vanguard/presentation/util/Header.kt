@@ -8,14 +8,31 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.util
+package com.tristarvoid.vanguard.presentation.util
 
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.sp
+import com.tristarvoid.vanguard.presentation.ui.theme.JosefinSans
 
-data class MenuItem(
-    val id: String,
-    val title: String,
-    val contentDescription: String,
-    val icon: Painter
-)
+@Composable
+fun Header(
+    modifier: Modifier,
+    alignment: Alignment = Alignment.Center,
+    text: String,
+    fontSize: Int = 30
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = alignment
+    ) {
+        Text(
+            text = text,
+            fontSize = fontSize.sp,
+            fontFamily = JosefinSans
+        )
+    }
+}

@@ -19,12 +19,12 @@ sealed class ScreenConfiguration(val route: String) {
     //Primary
     object HomeScreen : ScreenConfiguration("home_screen")
     object WorkoutScreen : ScreenConfiguration("workouts_screen")
-    object DecisionsScreen : ScreenConfiguration("decisions_screen")
     object RemindersScreen : ScreenConfiguration("reminders_screen")
     object NutritionScreen : ScreenConfiguration("nutrition_screen")
     object TimerScreen : ScreenConfiguration("timer_screen")
+    object BMIScreen : ScreenConfiguration("bmi_screen")
+    object CovidScreen : ScreenConfiguration("covid_screen")
     object SettingsScreen : ScreenConfiguration("settings_screen")
-    object PrivacyScreen : ScreenConfiguration("privacy_screen")
     object AboutScreen : ScreenConfiguration("about_screen")
 
     //Secondary

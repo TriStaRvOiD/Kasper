@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.tristarvoid.vanguard.R
-import com.tristarvoid.vanguard.util.LottieLoader
+import com.tristarvoid.vanguard.presentation.util.LottieLoader
 
 @Composable
 fun LoadingScreen() {
@@ -25,6 +25,6 @@ fun LoadingScreen() {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        LottieLoader(jsonResource = R.raw.loading, size = 140)
+        LottieLoader(jsonResource = R.raw.loading, size = 100)
     }
 }

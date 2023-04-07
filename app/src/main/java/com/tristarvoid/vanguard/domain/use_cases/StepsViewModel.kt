@@ -10,24 +10,58 @@
 
 package com.tristarvoid.vanguard.domain.use_cases
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.tristarvoid.vanguard.data.repo.StatusDataStoreRepository
 import com.tristarvoid.vanguard.data.use_cases.sensor.MeasurableSensor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class StepsViewModel @Inject constructor(
-    stepSensor: MeasurableSensor
+    stepSensor: MeasurableSensor,
+    private val repository: StatusDataStoreRepository
 ) : ViewModel() {
+
     private val _steps = MutableStateFlow("")
+    private val sensor = stepSensor
+
+    val isActive = mutableStateOf(false)
     val steps = _steps.asStateFlow()
 
     init {
-        stepSensor.startListening()
-        stepSensor.setOnSensorValuesChangedListener { values ->
+        updateStatus()
+    }
+
+    private fun updateStatus() {
+        viewModelScope.launch {
+            repository.readListeningState().collect { status ->
+                isActive.value = status
+            }
+        }
+    }
+
+    fun start() {
+        sensor.startListening()
+        sensor.setOnSensorValuesChangedListener { values ->
             _steps.value = values[0].toInt().toString()
         }
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.saveListeningState(true)
+        }
+        updateStatus()
+    }
+
+    fun stop() {
+        sensor.stopListening()
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.saveListeningState(false)
+        }
+        updateStatus()
     }
 }

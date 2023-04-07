@@ -15,13 +15,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tristarvoid.vanguard.data.repo.DataStoreRepository
+import com.tristarvoid.vanguard.data.repo.OnBoardDataStoreRepository
 import com.tristarvoid.vanguard.presentation.navigation.ScreenConfiguration
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SplashScreenViewModel @Inject constructor(
-    private val repository: DataStoreRepository
+    private val repository: OnBoardDataStoreRepository
 ) : ViewModel() {
 
     private val _isLoading: MutableState<Boolean> = mutableStateOf(true)
