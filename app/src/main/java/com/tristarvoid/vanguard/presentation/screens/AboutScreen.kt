@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
-import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
+import com.tristarvoid.vanguard.domain.HolderViewModel
 import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
 import kotlinx.coroutines.CoroutineScope
 

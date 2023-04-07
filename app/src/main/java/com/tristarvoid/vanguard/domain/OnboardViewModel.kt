@@ -8,20 +8,24 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.data.use_cases.sensor
+package com.tristarvoid.vanguard.domain
 
-abstract class MeasurableSensor(
-    protected val sensorType: Int
-) {
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.tristarvoid.vanguard.data.repo.OnBoardDataStoreRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-    protected var onSensorValuesChanged: ((List<Float>) -> Unit)? = null
+@HiltViewModel
+class OnboardViewModel @Inject constructor(
+    private val repository: OnBoardDataStoreRepository
+) : ViewModel() {
 
-    abstract val doesSensorExist: Boolean
-
-    abstract fun startListening()
-    abstract fun stopListening()
-
-    fun setOnSensorValuesChangedListener(listener: (List<Float>) -> Unit) {
-        onSensorValuesChanged = listener
+    fun saveOnBoardingState(completed: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.saveOnBoardingState(completed = completed)
+        }
     }
 }

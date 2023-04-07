@@ -25,8 +25,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.tristarvoid.vanguard.R
-import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
-import com.tristarvoid.vanguard.domain.use_cases.SplashScreenViewModel
+import com.tristarvoid.vanguard.domain.HolderViewModel
+import com.tristarvoid.vanguard.domain.SplashScreenViewModel
 import com.tristarvoid.vanguard.presentation.navigation.DrawerBody
 import com.tristarvoid.vanguard.presentation.navigation.Navigation
 import com.tristarvoid.vanguard.presentation.navigation.ScreenConfiguration

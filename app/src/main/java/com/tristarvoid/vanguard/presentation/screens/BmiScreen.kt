@@ -26,7 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
+import com.tristarvoid.vanguard.domain.HolderViewModel
 import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
 import com.tristarvoid.vanguard.presentation.util.Header
 import kotlinx.coroutines.CoroutineScope

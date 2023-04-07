@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.tristarvoid.vanguard.domain.use_cases.HolderViewModel
+import com.tristarvoid.vanguard.domain.HolderViewModel
 import com.tristarvoid.vanguard.presentation.screens.*
 import com.tristarvoid.vanguard.presentation.onboarding.WelcomeScreen
 import com.tristarvoid.vanguard.presentation.views.Calendar

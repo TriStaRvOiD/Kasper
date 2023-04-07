@@ -34,7 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.tristarvoid.vanguard.domain.use_cases.OnboardViewModel
+import com.tristarvoid.vanguard.domain.OnboardViewModel
 import com.tristarvoid.vanguard.presentation.ui.theme.JosefinSans
 import com.tristarvoid.vanguard.presentation.navigation.ScreenConfiguration
 
