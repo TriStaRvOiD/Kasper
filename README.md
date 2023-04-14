@@ -16,6 +16,6 @@ This application's code is available under a GPL v3 license. This excludes the i
 
 ## Attribution
 
-* This application uses icons from https://www.flaticon.com
 * This application uses animations from https://lottiefiles.com
+* This application uses icons from https://fonts.google.com
 * This application uses the "Josefin Sans" font family from https://fonts.google.com
