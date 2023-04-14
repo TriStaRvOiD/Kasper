@@ -6,7 +6,7 @@ A pedometer/health app written in Kotlin and Jetpack Compose (for a university p
 
 I am anything but a seasoned developer, and my coding skills are not spectacular at the moment. So, contributions are truly appreciated.
 
-### Translations
+## Translations
 
 Unfortunately this app currently only supports English, however this will most likely change in the future.
 
@@ -18,3 +18,4 @@ This application's code is available under a GPL v3 license. This excludes the i
 
 * This application uses icons from https://www.flaticon.com
 * This application uses animations from https://lottiefiles.com
+* This application uses the "Josefin Sans" font family from https://fonts.google.com
