@@ -18,8 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -34,7 +36,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlin.math.pow
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun Bmi(
     navControl: NavHostController,
@@ -42,6 +44,7 @@ fun Bmi(
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     Scaffold(
         topBar = {
             MainAppBar(navControl, drawerState, scope, holderViewModel, false)
@@ -109,6 +112,7 @@ fun Bmi(
                 modifier = Modifier
                     .padding(16.dp),
                 onClick = {
+                    keyboardController?.hide()
                     if (weight.value != "" && height.value != "") {
                         val one = weight.value.toDouble()
                         val two = height.value.toDouble()
@@ -130,7 +134,8 @@ fun Bmi(
             if (bmi.value != 0.0) {
                 Text(
                     text = "You're BMI is ${bmi.value}",
-                    fontSize = 22.sp
+                    fontSize = 22.sp,
+                    textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
