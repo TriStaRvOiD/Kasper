@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Vanguard"
-include ':app'
+include(":app")
