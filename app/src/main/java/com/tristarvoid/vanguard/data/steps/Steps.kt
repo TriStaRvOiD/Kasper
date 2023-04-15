@@ -8,23 +8,16 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.di
+package com.tristarvoid.vanguard.data.steps
 
-import android.app.Application
-import com.tristarvoid.vanguard.data.sensor.MeasurableSensor
-import com.tristarvoid.vanguard.data.sensor.StepSensor
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Module
-@InstallIn(SingletonComponent::class)
-object StepModule {
-    @Provides
-    @Singleton
-    fun provideStepSensor(app: Application): MeasurableSensor {
-        return StepSensor(app)
-    }
-}
+@Entity
+data class Steps(
+    val currentSteps: Int,
+    val goal: Int,
+    val calories: Int,
+    @PrimaryKey(autoGenerate = false)
+    val id: Long
+)

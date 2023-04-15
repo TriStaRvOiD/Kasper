@@ -75,80 +75,86 @@ fun Home(
             MainAppBar(navControl, drawerState, scope, holderViewModel)
         }
     ) {
-        val permissionState =
-            rememberPermissionState(permission = Manifest.permission.ACTIVITY_RECOGNITION)
-        if (permissionState.status == PermissionStatus.Granted) {
-            val stepsViewModel: StepsViewModel = hiltViewModel()
-            val quoteViewModel: QuoteViewModel = hiltViewModel()
-            val timeOfDay by remember {
-                holderViewModel.timeOfDay
+        val permissionStatus =
+            rememberPermissionState(permission = Manifest.permission.ACTIVITY_RECOGNITION).status
+        val stepsViewModel: StepsViewModel = hiltViewModel()
+        val quoteViewModel: QuoteViewModel = hiltViewModel()
+        val timeOfDay by remember {
+            holderViewModel.timeOfDay
+        }
+        LaunchedEffect(Unit) {
+            while (true) {
+                delay(5000)
+                holderViewModel.updateTime()
             }
-            LaunchedEffect(Unit) {
-                while (true) {
-                    delay(5000)
-                    holderViewModel.updateTime()
-                }
-            }
-            //Remember whether quote has been called
-            val quoteCalled = remember {
-                holderViewModel.quoteCalled
-            }
-            //To prevent continuous network call
-            if (!quoteCalled.value) {
-                quoteViewModel.getTheQuote()
-                holderViewModel.quoteCalled.value = true
-            }
-            //Current number of steps
-            val steps by stepsViewModel.steps.collectAsState()
-            //The quote
-            val quote by quoteViewModel.quote.collectAsState()
-            val isActive = remember {
-                stepsViewModel.isActive
-            }
-            if (isActive.value)
-                stepsViewModel.start()
-            Column(
+        }
+        //Remember whether quote has been called
+        val quoteCalled = remember {
+            holderViewModel.quoteCalled
+        }
+        //To prevent continuous network call
+        if (!quoteCalled.value) {
+            quoteViewModel.getTheQuote()
+            holderViewModel.quoteCalled.value = true
+        }
+        //The quote
+        val quote by quoteViewModel.quote.collectAsState()
+        val isActive = remember {
+            stepsViewModel.isActive
+        }
+        Column(
+            modifier = Modifier
+                .padding(top = it.calculateTopPadding())
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            Header(
                 modifier = Modifier
-                    .padding(top = it.calculateTopPadding())
-                    .fillMaxSize()
-                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .paddingFromBaseline(5.dp),
+                alignment = Alignment.TopStart,
+                text = if (timeOfDay < 12) "It's mornin'" else if (timeOfDay < 16) "It's afternoon" else "It's evenin'"
+            )
+            Spacer(modifier = Modifier.height(18.dp))
+            Divider() //Below header
+            Spacer(modifier = Modifier.height(16.dp))
+            StepInfo(stepsViewModel, isActive.value, permissionStatus)
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Header(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .paddingFromBaseline(5.dp),
-                    alignment = Alignment.TopStart,
-                    text = if (timeOfDay < 12) "It's mornin'" else if (timeOfDay < 16) "It's afternoon" else "It's evenin'"
-                )
-                Spacer(modifier = Modifier.height(18.dp))
-                Divider() //Below header
-                Spacer(modifier = Modifier.height(16.dp))
-                StepInfo(isActive.value, steps)
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Column {
-                        Quote(quote)
-                        Spacer(modifier = Modifier.height(9.dp))
-                        Control(isActive.value, stepsViewModel)
-                    }
-                    Weather()
+                Column {
+                    Quote(quote)
+                    Spacer(modifier = Modifier.height(9.dp))
+                    Control(isActive.value, stepsViewModel, permissionStatus)
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-                CalorieGraph()
-                Spacer(modifier = Modifier.height(16.dp))
+                Weather()
             }
+            Spacer(modifier = Modifier.height(16.dp))
+            CalorieGraph()
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun StepInfo(
-    active: Boolean,
-    steps: String
+    stepsViewModel: StepsViewModel,
+    isActive: Boolean,
+    permissionStatus: PermissionStatus
 ) {
+    val state by stepsViewModel.state.collectAsState()
+    val steps = state.currentSteps
+    val goal = state.goal
+    val calories = state.calories
+    if (isActive) {
+        if (permissionStatus == PermissionStatus.Granted)
+            stepsViewModel.start()
+        else
+            stepsViewModel.stop()
+    }
     CustomCard(
         modifier = Modifier
             .heightIn(min = 170.dp, max = 170.dp),
@@ -159,7 +165,7 @@ fun StepInfo(
                 .padding(start = 10.dp)
         ) {
             Text(
-                text = (if (steps == "") "0" else if (steps.toInt() > 100000) "100,000+" else (steps.toInt()
+                text = (if (steps > 100000) "100,000+" else (steps
                     .formatDecimalSeparator())),
                 fontSize = 70.sp,
                 fontFamily = JosefinSans
@@ -182,7 +188,7 @@ fun StepInfo(
         ) {
             Column {
                 Text(
-                    text = "Current goal: 10,000 steps",
+                    text = "Current goal: $goal steps",
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = JosefinSans
                 )
@@ -197,12 +203,12 @@ fun StepInfo(
                     fontFamily = JosefinSans
                 )
                 Text(
-                    text = "Calories burned: 1500 kcal",
+                    text = "Calories burned: $calories kcal",
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = JosefinSans
                 )
             }
-            if (active)
+            if (isActive)
                 LottieLoader(
                     jsonResource = R.raw.heartbeat,
                     size = 70
@@ -259,20 +265,24 @@ fun Quote(
     }
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun Control(
     active: Boolean,
-    viewModel: StepsViewModel
+    viewModel: StepsViewModel,
+    permissionStatus: PermissionStatus
 ) {
     CustomCard(
         modifier = Modifier
             .widthIn(min = 143.dp, max = 143.dp)
             .heightIn(min = 46.dp, max = 46.dp),
         function = {
-            if (active)
-                viewModel.stop()
-            else
-                viewModel.start()
+            if (permissionStatus == PermissionStatus.Granted) {
+                if (active)
+                    viewModel.stop()
+                else
+                    viewModel.start()
+            }
         }
     ) {
         Text(
@@ -301,6 +311,7 @@ fun CalorieGraph() {
     )
 }
 
+//Puts a comma after every 3 digits
 fun Int.formatDecimalSeparator(): String {
     return toString().reversed().chunked(3).joinToString(",").reversed()
 }

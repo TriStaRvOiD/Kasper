@@ -8,23 +8,27 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.di
+package com.tristarvoid.vanguard.data.steps
 
-import android.app.Application
-import com.tristarvoid.vanguard.data.sensor.MeasurableSensor
-import com.tristarvoid.vanguard.data.sensor.StepSensor
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Upsert
 
-@Module
-@InstallIn(SingletonComponent::class)
-object StepModule {
-    @Provides
-    @Singleton
-    fun provideStepSensor(app: Application): MeasurableSensor {
-        return StepSensor(app)
-    }
+@Dao
+interface StepsDao {
+
+    @Upsert
+    suspend fun upsertEntry(steps: Steps)
+
+    @Query("SELECT currentSteps FROM steps WHERE id = :date")
+    suspend fun getStepValues(date: Long): Int
+
+    @Query("SELECT goal FROM steps WHERE id = :date")
+    suspend fun getGoalValue(date: Long): Int
+
+    @Query("SELECT calories FROM steps WHERE id = :date")
+    suspend fun getCalorieValue(date: Long): Int
+
+    @Query("SELECT (SELECT COUNT(*) FROM steps) == 0")
+    suspend fun entryPresence(): Int
 }
