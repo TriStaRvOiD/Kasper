@@ -43,7 +43,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.4"
+        kotlinCompilerExtensionVersion = "1.4.5"
     }
     packaging {
         resources {
@@ -63,10 +63,9 @@ dependencies {
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
 
     //Calendar
-    implementation("com.kizitonwose.calendar:compose:2.2.0")
+    implementation("com.kizitonwose.calendar:compose:2.3.0")
 
     //Vico
     implementation("com.patrykandpatrick.vico:core:1.6.4")
@@ -78,15 +77,12 @@ dependencies {
     implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:1.1.1")
     implementation("com.maxkeppeler.sheets-compose-dialogs:date-time:1.1.1")
 
-    //ML Kit
-    implementation("com.google.mlkit:image-labeling:17.0.7")
-
     //Lottie
     implementation("com.airbnb.android:lottie-compose:6.0.0")
 
     //AboutLibraries
-    implementation("com.mikepenz:aboutlibraries-core:10.6.1")
-    implementation("com.mikepenz:aboutlibraries-compose:10.6.1")
+    implementation("com.mikepenz:aboutlibraries-core:10.6.2")
+    implementation("com.mikepenz:aboutlibraries-compose:10.6.2")
 
     //Data Store
     implementation("androidx.datastore:datastore-preferences:1.0.0")
@@ -99,9 +95,9 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.0.1")
 
     //Hilt
-    implementation("com.google.dagger:hilt-android:2.44")
+    implementation("com.google.dagger:hilt-android:2.45")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("com.google.dagger:hilt-compiler:2.44")
+    kapt("com.google.dagger:hilt-compiler:2.45")
 
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

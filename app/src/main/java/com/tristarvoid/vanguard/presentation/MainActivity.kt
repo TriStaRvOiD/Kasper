@@ -120,12 +120,6 @@ fun Display(
                         icon = painterResource(id = R.drawable.bmi)
                     ),
                     MenuItem(
-                        id = ScreenConfiguration.CovidScreen.route,
-                        title = "Covid",
-                        contentDescription = "Go to water screen",
-                        icon = painterResource(id = R.drawable.coronavirus)
-                    ),
-                    MenuItem(
                         id = ScreenConfiguration.SettingsScreen.route,
                         title = "Settings",
                         contentDescription = "Go to settings screen",
@@ -136,6 +130,12 @@ fun Display(
                         title = "About",
                         contentDescription = "Go to about screen",
                         icon = painterResource(id = R.drawable.info)
+                    ),
+                    MenuItem(
+                        id = ScreenConfiguration.LicensesScreen.route,
+                        title = "Licenses",
+                        contentDescription = "Go to water screen",
+                        icon = painterResource(id = R.drawable.licenses)
                     )
                 )
             )

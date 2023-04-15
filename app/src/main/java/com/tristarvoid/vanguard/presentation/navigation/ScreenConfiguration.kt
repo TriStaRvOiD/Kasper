@@ -23,9 +23,9 @@ sealed class ScreenConfiguration(val route: String) {
     object NutritionScreen : ScreenConfiguration("nutrition_screen")
     object TimerScreen : ScreenConfiguration("timer_screen")
     object BMIScreen : ScreenConfiguration("bmi_screen")
-    object CovidScreen : ScreenConfiguration("covid_screen")
     object SettingsScreen : ScreenConfiguration("settings_screen")
     object AboutScreen : ScreenConfiguration("about_screen")
+    object LicensesScreen : ScreenConfiguration("licenses_screen")
 
     //Secondary
     object CalendarView : ScreenConfiguration("calendar_view")
