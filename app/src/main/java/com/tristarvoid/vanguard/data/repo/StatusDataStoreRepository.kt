@@ -27,14 +27,14 @@ val Context.statusDataStore: DataStore<Preferences> by preferencesDataStore(name
 class StatusDataStoreRepository(context: Context) {
 
     private object PreferencesKey {
-        val onBoardingKey = booleanPreferencesKey(name = "status_of_listener")
+        val statusKey = booleanPreferencesKey(name = "status_of_listener")
     }
 
     private val statusDataStore = context.statusDataStore
 
     suspend fun saveListeningState(value: Boolean) {
         statusDataStore.edit { preferences ->
-            preferences[PreferencesKey.onBoardingKey] = value
+            preferences[PreferencesKey.statusKey] = value
         }
     }
 
@@ -48,8 +48,8 @@ class StatusDataStoreRepository(context: Context) {
                 }
             }
             .map { preferences ->
-                val onBoardingState = preferences[PreferencesKey.onBoardingKey] ?: false
-                onBoardingState
+                val statusState = preferences[PreferencesKey.statusKey] ?: false
+                statusState
             }
     }
 }

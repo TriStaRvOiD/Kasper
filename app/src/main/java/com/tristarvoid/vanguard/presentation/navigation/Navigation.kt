@@ -75,20 +75,20 @@ fun Navigation(
             holderViewModel.concernedItem.value = 5
             Bmi(navControl, holderViewModel, drawerState, scope)
         }
-        composable(route = ScreenConfiguration.CovidScreen.route) {
-            holderViewModel.mainHeading.value = ""
-            holderViewModel.concernedItem.value = 6
-            Covid(navControl, holderViewModel, drawerState, scope)
-        }
         composable(route = ScreenConfiguration.SettingsScreen.route) {
             holderViewModel.mainHeading.value = ""
-            holderViewModel.concernedItem.value = 7
+            holderViewModel.concernedItem.value = 6
             Settings(navControl, holderViewModel, drawerState, scope)
         }
         composable(route = ScreenConfiguration.AboutScreen.route) {
             holderViewModel.mainHeading.value = "About"
-            holderViewModel.concernedItem.value = 8
+            holderViewModel.concernedItem.value = 7
             About(navControl, holderViewModel, drawerState, scope)
+        }
+        composable(route = ScreenConfiguration.LicensesScreen.route) {
+            holderViewModel.mainHeading.value = "Licenses"
+            holderViewModel.concernedItem.value = 8
+            Licenses(navControl, holderViewModel, drawerState, scope)
         }
 
         //Secondary

@@ -33,6 +33,7 @@ import com.tristarvoid.vanguard.presentation.navigation.MainAppBar
 import com.tristarvoid.vanguard.presentation.ui.theme.JosefinSans
 import com.tristarvoid.vanguard.presentation.util.Header
 import kotlinx.coroutines.CoroutineScope
+import java.lang.NumberFormatException
 import kotlin.math.pow
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -114,13 +115,17 @@ fun Bmi(
                 onClick = {
                     keyboardController?.hide()
                     if (weight.value != "" && height.value != "") {
-                        val one = weight.value.toDouble()
-                        val two = height.value.toDouble()
-                        val ans = one / (two / 100).pow(2.0)
-                        val solution: Double = String
-                            .format("%.2f", ans)
-                            .toDouble()
-                        bmi.value = solution
+                        try {
+                            val one = weight.value.toDouble()
+                            val two = height.value.toDouble()
+                            val ans = one / (two / 100).pow(2.0)
+                            val solution: Double = String
+                                .format("%.2f", ans)
+                                .toDouble()
+                            bmi.value = solution
+                        } catch (e: NumberFormatException) {
+
+                        }
                     }
                 }
             ) {
