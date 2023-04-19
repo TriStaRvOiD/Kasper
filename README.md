@@ -4,7 +4,7 @@ A pedometer/health app written in Kotlin and Jetpack Compose (for a university p
 
 ## Contributions
 
-I am anything but a seasoned developer, and my coding skills are not spectacular at the moment. So, contributions are truly appreciated.
+I am anything but a seasoned developer, and my coding skills are not spectacular at the moment; so, contributions are truly appreciated.
 
 ## Translations
 
