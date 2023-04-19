@@ -17,6 +17,6 @@ plugins {
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version "2.0.1" apply false
 
     //Annotation Processing
-    id("org.jetbrains.kotlin.kapt") version "1.8.20" //kapt
-    id("com.google.devtools.ksp") version "1.8.20-1.0.10" apply false //ksp
+    id("org.jetbrains.kotlin.kapt") version "1.8.10" //kapt
+    id("com.google.devtools.ksp") version "1.8.20-1.0.11" apply false //ksp
 }

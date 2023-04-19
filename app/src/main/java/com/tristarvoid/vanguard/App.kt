@@ -8,10 +8,25 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.di
+package com.tristarvoid.vanguard
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class App : Application()
+class App : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        val channel = NotificationChannel(
+            "channel_id",
+            "Reminders",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        channel.description = "Notifications for the 'Reminders' feature."
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+}

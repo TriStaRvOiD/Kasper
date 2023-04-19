@@ -10,7 +10,6 @@
 
 package com.tristarvoid.vanguard.domain
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,9 +20,6 @@ import com.tristarvoid.vanguard.data.steps.StepsDao
 import com.tristarvoid.vanguard.data.steps.StepsEvent
 import com.tristarvoid.vanguard.data.steps.StepsState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -45,59 +41,57 @@ class StepsViewModel @Inject constructor(
     private val _state = MutableStateFlow(StepsState())
     val state = _state.asStateFlow()
 
-    private val _theFucker = MutableStateFlow(0)
-
-    private val _initialStart = MutableStateFlow(true)
-
     init {
         updateStatus()
-        createEntryIfRequired()
         viewModelScope.launch {
-            updatePastSteps()
+            createEntryIfRequired()
+            dao.getStepValues(_date.value).collect {
+                onEvent(StepsEvent.SetCurrentSteps(it))
+            }
+            updateState()
         }
-        updateState()
-        Log.d("Steps", "${_theFucker.value}")
     }
 
-    private fun createEntryIfRequired() {
+    fun start() {
+        sensor.startListening()
         viewModelScope.launch {
-            if (dao.entryPresence() == 1)
-                onEvent(StepsEvent.SaveEntry)
+            repository.saveListeningState(true)
         }
+        updateStatus()
+        sensor.setOnSensorValuesChangedListener {
+            val value = it[0].toInt()
+            onEvent(StepsEvent.SetCurrentSteps(value))
+            onEvent(StepsEvent.SetCalories(calculateCalories(value)))
+            onEvent(StepsEvent.SaveEntry)
+            updateState()
+        }
+    }
+
+    fun stop() {
+        sensor.stopListening()
+        viewModelScope.launch {
+            repository.saveListeningState(false)
+        }
+        updateStatus()
     }
 
     private fun updateState() {
-        onEvent(StepsEvent.SetCurrentSteps(0))
-        onEvent(StepsEvent.SetGoal(getGoal()))
-        onEvent(StepsEvent.SetCalories(getCalories()))
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private suspend fun updatePastSteps() {
-        val job = viewModelScope.async {
-            return@async dao.getStepValues(_date.value)
-        }
-        job.invokeOnCompletion {
-            if (it == null) {
-                _theFucker.value = job.getCompleted()
+        viewModelScope.launch {
+            dao.getAvgStepValues().collect {
+                onEvent(StepsEvent.SetAvgSteps(it))
             }
         }
     }
 
-    private fun getGoal(): Int {
-        var current = 0
-        viewModelScope.launch {
-            current = dao.getGoalValue(_date.value)
-        }
-        return current
+    //This method will change in the future.
+    // Here weight is 70kg, height is 6 ft
+    private fun calculateCalories(value: Int): Int {
+        return ((0.57 * 70) + (0.415 * 6) + (0.00063 * value)).toInt()  // An unreliable formula that needs to be changed
     }
 
-    private fun getCalories(): Int {
-        var current = 0
-        viewModelScope.launch {
-            current = dao.getCalorieValue(_date.value)
-        }
-        return current
+    private suspend fun createEntryIfRequired() {
+        if (dao.entryPresence(_date.value) == 1)
+            onEvent(StepsEvent.SaveEntry)
     }
 
     fun onEvent(
@@ -108,7 +102,7 @@ class StepsViewModel @Inject constructor(
             is StepsEvent.SetCurrentSteps -> {
                 _state.update {
                     it.copy(
-                        currentSteps = event.steps + _theFucker.value
+                        currentSteps = event.steps
                     )
                 }
             }
@@ -130,6 +124,14 @@ class StepsViewModel @Inject constructor(
                 }
             }
 
+            is StepsEvent.SetAvgSteps -> {
+                _state.update {
+                    it.copy(
+                        avgSteps = event.avgSteps
+                    )
+                }
+            }
+
             is StepsEvent.SaveEntry -> {
                 val data = Steps(
                     currentSteps = _state.value.currentSteps,
@@ -141,6 +143,7 @@ class StepsViewModel @Inject constructor(
                     dao.upsertEntry(data)
                 }
             }
+
         }
     }
 
@@ -150,38 +153,5 @@ class StepsViewModel @Inject constructor(
                 isActive.value = status
             }
         }
-    }
-
-    fun start() {
-        sensor.startListening()
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.saveListeningState(true)
-        }
-        updateStatus()
-        sensor.setOnSensorValuesChangedListener { values ->
-            if (_initialStart.value) {  //Initial app start, or after restart
-                onEvent(
-                    StepsEvent.SetCurrentSteps(
-                        steps = values[0].toInt()
-                    )
-                )
-                _initialStart.value = false
-            } else {
-                onEvent(
-                    StepsEvent.SetCurrentSteps(
-                        steps = values[0].toInt() - _theFucker.value
-                    )
-                )
-            }
-            onEvent(StepsEvent.SaveEntry)
-        }
-    }
-
-    fun stop() {
-        sensor.stopListening()
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.saveListeningState(false)
-        }
-        updateStatus()
     }
 }

@@ -68,9 +68,9 @@ dependencies {
     implementation("com.kizitonwose.calendar:compose:2.3.0")
 
     //Vico
-    implementation("com.patrykandpatrick.vico:core:1.6.4")
-    implementation("com.patrykandpatrick.vico:compose:1.6.4")
-    implementation("com.patrykandpatrick.vico:compose-m3:1.6.4")
+    implementation("com.patrykandpatrick.vico:core:1.6.5")
+    implementation("com.patrykandpatrick.vico:compose:1.6.5")
+    implementation("com.patrykandpatrick.vico:compose-m3:1.6.5")
 
     //Sheets
     implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.1.1")

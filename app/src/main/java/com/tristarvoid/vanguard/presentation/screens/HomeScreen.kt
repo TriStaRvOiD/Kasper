@@ -149,6 +149,13 @@ fun StepInfo(
     val steps = state.currentSteps
     val goal = state.goal
     val calories = state.calories
+    val avgSteps = state.avgSteps
+    val remainingSteps = remember {
+        if (goal > steps) {
+            mutableStateOf(goal - steps)
+        } else
+            mutableStateOf(0)
+    }
     if (isActive) {
         if (permissionStatus == PermissionStatus.Granted)
             stepsViewModel.start()
@@ -193,12 +200,12 @@ fun StepInfo(
                     fontFamily = JosefinSans
                 )
                 Text(
-                    text = "Steps Remaining: 2000 steps",
+                    text = "Steps Remaining: " + if (remainingSteps.value == 0) "none" else "$remainingSteps steps",
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = JosefinSans
                 )
                 Text(
-                    text = "Daily Average: 4000 steps",
+                    text = "Daily Average: $avgSteps steps",
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = JosefinSans
                 )

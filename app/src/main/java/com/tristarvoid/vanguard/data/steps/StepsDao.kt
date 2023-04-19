@@ -13,6 +13,7 @@ package com.tristarvoid.vanguard.data.steps
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface StepsDao {
@@ -20,8 +21,14 @@ interface StepsDao {
     @Upsert
     suspend fun upsertEntry(steps: Steps)
 
+    @Query("UPDATE steps SET currentSteps = :value WHERE id = :date")
+    suspend fun updateOnlySteps(value: Int, date: Long)
+
     @Query("SELECT currentSteps FROM steps WHERE id = :date")
-    suspend fun getStepValues(date: Long): Int
+    fun getStepValues(date: Long): Flow<Int>
+
+    @Query("SELECT AVG(currentSteps) FROM steps")
+    fun getAvgStepValues(): Flow<Int>
 
     @Query("SELECT goal FROM steps WHERE id = :date")
     suspend fun getGoalValue(date: Long): Int
@@ -29,6 +36,6 @@ interface StepsDao {
     @Query("SELECT calories FROM steps WHERE id = :date")
     suspend fun getCalorieValue(date: Long): Int
 
-    @Query("SELECT (SELECT COUNT(*) FROM steps) == 0")
-    suspend fun entryPresence(): Int
+    @Query("SELECT (SELECT COUNT(*) FROM steps WHERE id = :date) == 0")
+    suspend fun entryPresence(date: Long): Int
 }

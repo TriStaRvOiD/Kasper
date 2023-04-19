@@ -15,4 +15,5 @@ sealed interface StepsEvent {
     data class SetCurrentSteps(val steps: Int): StepsEvent
     data class SetGoal(val goal: Int): StepsEvent
     data class SetCalories(val calories: Int): StepsEvent
+    data class SetAvgSteps(val avgSteps: Int): StepsEvent
 }

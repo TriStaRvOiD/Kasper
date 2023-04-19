@@ -17,7 +17,8 @@ import androidx.room.RoomDatabase
     entities = [
         Steps::class
     ],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 abstract class StepsDatabase: RoomDatabase() {
 

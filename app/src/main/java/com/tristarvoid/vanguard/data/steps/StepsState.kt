@@ -14,5 +14,6 @@ data class StepsState(
     val stepsData: List<Steps> = emptyList(),
     val currentSteps: Int = 0,
     val goal: Int = 0,
-    val calories: Int = 0
+    val calories: Int = 0,
+    val avgSteps: Int = 0
 )
