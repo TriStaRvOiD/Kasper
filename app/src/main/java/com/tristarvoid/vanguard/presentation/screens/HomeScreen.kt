@@ -79,6 +79,7 @@ fun Home(
             rememberPermissionState(permission = Manifest.permission.ACTIVITY_RECOGNITION).status
         val stepsViewModel: StepsViewModel = hiltViewModel()
         val quoteViewModel: QuoteViewModel = hiltViewModel()
+        val weatherViewModel: WeatherViewModel = hiltViewModel()
         val timeOfDay by remember {
             holderViewModel.timeOfDay
         }
@@ -88,17 +89,24 @@ fun Home(
                 holderViewModel.updateTime()
             }
         }
-        //Remember whether quote has been called
-        val quoteCalled = remember {
-            holderViewModel.quoteCalled
+        //Remember whether apis have been called
+        val apisCalled = remember {
+            holderViewModel.apisCalled
         }
         //To prevent continuous network call
-        if (!quoteCalled.value) {
+        if (!apisCalled.value) {
             quoteViewModel.getTheQuote()
-            holderViewModel.quoteCalled.value = true
+            weatherViewModel.getWeather(19.0760, 72.8777)
+            holderViewModel.apisCalled.value = true
         }
         //The quote
         val quote by quoteViewModel.quote.collectAsState()
+        val temp = remember{
+            weatherViewModel.temp
+        }
+        val desc = remember{
+            weatherViewModel.desc
+        }
         val isActive = remember {
             stepsViewModel.isActive
         }
@@ -129,7 +137,7 @@ fun Home(
                     Spacer(modifier = Modifier.height(9.dp))
                     Control(isActive.value, stepsViewModel, permissionStatus)
                 }
-                Weather()
+                Weather(desc.value, temp.value)
             }
             Spacer(modifier = Modifier.height(16.dp))
             CalorieGraph()
@@ -225,7 +233,10 @@ fun StepInfo(
 }
 
 @Composable
-fun Weather() {
+fun Weather(
+    desc: String,
+    temp: String
+) {
     CustomCard(
         modifier = Modifier
             .widthIn(min = 178.dp, max = 178.dp)
@@ -234,13 +245,13 @@ fun Weather() {
     ) {
         Text(
             modifier = Modifier.padding(start = 10.dp, top = 10.dp),
-            text = "Seattle, WA : ",
+            text = "Mumbai, India : ",
             style = MaterialTheme.typography.titleMedium,
             fontFamily = JosefinSans
         )
         Text(
             modifier = Modifier.padding(10.dp),
-            text = "It's 20 degrees, with light rain",
+            text = "It's $temp degrees, with ${desc.lowercase()}",
             style = MaterialTheme.typography.titleSmall,
             fontFamily = JosefinSans
         )
