@@ -8,24 +8,28 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.domain
+package com.tristarvoid.vanguard.di
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import java.util.*
+import com.tristarvoid.vanguard.data.weather.WeatherApi
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
-class HolderViewModel : ViewModel()
-{
-    var dynamicEnabled = mutableStateOf(false)
-    var mainHeading = mutableStateOf("")
-    var fragHeading = mutableStateOf("")
-    var concernedItem = mutableStateOf(0)
-    var apisCalled = mutableStateOf(false)
+@Module
+@InstallIn(SingletonComponent::class)
+object WeatherModule {
 
-    private val calendar = mutableStateOf(Calendar.getInstance())
-    var timeOfDay = mutableStateOf(calendar.value.get(Calendar.HOUR_OF_DAY))
-    fun updateTime() {
-        calendar.value = Calendar.getInstance()
-        timeOfDay.value = calendar.value.get(Calendar.HOUR_OF_DAY)
+    @Provides
+    @Singleton
+    fun provideRetrofitInstanceForWeather(): WeatherApi {
+        return Retrofit.Builder()
+            .baseUrl("https://api.openweathermap.org")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(WeatherApi::class.java)
     }
 }

@@ -45,7 +45,8 @@ fun DrawerBody(
         modifier = Modifier
             .width(300.dp)
             .verticalScroll(state = scrollState, enabled = true)
-            .fillMaxHeight()
+            .fillMaxHeight(),
+        drawerTonalElevation = 0.dp
     ) {
         Header(
             modifier = Modifier.fillMaxWidth().padding(64.dp),

@@ -10,6 +10,19 @@
 
 package com.tristarvoid.vanguard.data.weather
 
+import com.tristarvoid.vanguard.BuildConfig
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Query
+
 interface WeatherApi {
+
+    @GET("/data/2.5/weather")
+    suspend fun getWeather(
+        @Query("lat") lat: Double,
+        @Query("lon") long: Double,
+        @Query("appid") api: String = BuildConfig.openweather_api_key,
+        @Query("units") units: String = "metric"
+    ): Response<Weather>
 
 }

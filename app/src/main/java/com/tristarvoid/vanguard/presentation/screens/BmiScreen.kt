@@ -11,6 +11,7 @@
 package com.tristarvoid.vanguard.presentation.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -132,7 +133,8 @@ fun Bmi(
                 Text(
                     text = "Calculate",
                     fontSize = 21.sp,
-                    color = Color.White,
+                    color = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                    fontFamily = JosefinSans
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))

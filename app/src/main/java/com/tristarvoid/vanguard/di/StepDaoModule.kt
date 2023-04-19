@@ -10,21 +10,31 @@
 
 package com.tristarvoid.vanguard.di
 
-import android.app.Application
-import com.tristarvoid.vanguard.data.sensor.MeasurableSensor
-import com.tristarvoid.vanguard.data.sensor.StepSensor
+import android.content.Context
+import androidx.room.Room
+import com.tristarvoid.vanguard.data.steps.StepsDao
+import com.tristarvoid.vanguard.data.steps.StepsDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object StepModule {
+object StepDaoModule {
+
     @Provides
     @Singleton
-    fun provideStepSensor(app: Application): MeasurableSensor {
-        return StepSensor(app)
+    fun provideDao(@ApplicationContext context: Context): StepsDao {
+        val db by lazy {
+            Room.databaseBuilder(
+                context,
+                StepsDatabase::class.java,
+                "steps.db"
+            ).build()
+        }
+        return db.stepsDao
     }
 }

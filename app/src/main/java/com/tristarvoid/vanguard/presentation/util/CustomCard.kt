@@ -36,7 +36,7 @@ fun CustomCard(
             defaultElevation = 0.dp
         ),
         border = BorderStroke(
-            0.6.dp,
+            (if (isSystemInDarkTheme()) 0.6.dp else 1.dp),
             (if (isSystemInDarkTheme()) Color.White else Color.Black)
         )
     ) {

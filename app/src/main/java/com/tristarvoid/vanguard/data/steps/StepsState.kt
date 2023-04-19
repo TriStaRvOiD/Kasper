@@ -8,24 +8,12 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.domain
+package com.tristarvoid.vanguard.data.steps
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import java.util.*
-
-class HolderViewModel : ViewModel()
-{
-    var dynamicEnabled = mutableStateOf(false)
-    var mainHeading = mutableStateOf("")
-    var fragHeading = mutableStateOf("")
-    var concernedItem = mutableStateOf(0)
-    var apisCalled = mutableStateOf(false)
-
-    private val calendar = mutableStateOf(Calendar.getInstance())
-    var timeOfDay = mutableStateOf(calendar.value.get(Calendar.HOUR_OF_DAY))
-    fun updateTime() {
-        calendar.value = Calendar.getInstance()
-        timeOfDay.value = calendar.value.get(Calendar.HOUR_OF_DAY)
-    }
-}
+data class StepsState(
+    val stepsData: List<Steps> = emptyList(),
+    val currentSteps: Int = 0,
+    val goal: Int = 0,
+    val calories: Int = 0,
+    val avgSteps: Int = 0
+)

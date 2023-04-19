@@ -8,24 +8,19 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.vanguard.domain
+package com.tristarvoid.vanguard.data.steps
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import java.util.*
+import androidx.room.Database
+import androidx.room.RoomDatabase
 
-class HolderViewModel : ViewModel()
-{
-    var dynamicEnabled = mutableStateOf(false)
-    var mainHeading = mutableStateOf("")
-    var fragHeading = mutableStateOf("")
-    var concernedItem = mutableStateOf(0)
-    var apisCalled = mutableStateOf(false)
+@Database(
+    entities = [
+        Steps::class
+    ],
+    version = 1,
+    exportSchema = false
+)
+abstract class StepsDatabase: RoomDatabase() {
 
-    private val calendar = mutableStateOf(Calendar.getInstance())
-    var timeOfDay = mutableStateOf(calendar.value.get(Calendar.HOUR_OF_DAY))
-    fun updateTime() {
-        calendar.value = Calendar.getInstance()
-        timeOfDay.value = calendar.value.get(Calendar.HOUR_OF_DAY)
-    }
+    abstract val stepsDao: StepsDao
 }
