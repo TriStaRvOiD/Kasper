@@ -21,8 +21,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
+import com.tristarvoid.kasper.R
 import com.tristarvoid.kasper.domain.HolderViewModel
 import com.tristarvoid.kasper.presentation.navigation.MainAppBar
 import kotlinx.coroutines.CoroutineScope
@@ -48,7 +50,7 @@ fun About(
         ) {
             Text(
                 modifier = Modifier.padding(top = it.calculateTopPadding()),
-                text = "Vanguard",
+                text = stringResource(id = R.string.app_name),
                 textAlign = TextAlign.Center
             )
         }
