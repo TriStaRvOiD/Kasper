@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace = "com.tristarvoid.vanguard"
+    namespace = "com.tristarvoid.kasper"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.tristarvoid.vanguard"
+        applicationId = "com.tristarvoid.kasper"
         minSdk = 26
         targetSdk = 33
         versionCode = 1
