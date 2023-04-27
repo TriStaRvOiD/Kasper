@@ -18,7 +18,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,18 +31,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.tristarvoid.kasper.R
+import com.tristarvoid.kasper.data.steps.StepsEvent
 import com.tristarvoid.kasper.domain.StepsViewModel
-import com.tristarvoid.kasper.ext.formatDecimalSeparator
 import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
+import com.tristarvoid.kasper.utils.formatDecimalSeparator
 import com.tristarvoid.kasper.view.CustomCard
 import com.tristarvoid.kasper.view.LottieLoader
 
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun StepInfo(
     stepsViewModel: StepsViewModel,
@@ -46,25 +54,68 @@ fun StepInfo(
 ) {
     val state by stepsViewModel.state.collectAsState()
     val steps = state.currentSteps
-    val goal = state.goal
+    val goalInState = state.goal
+    val goalChange = remember {
+        mutableStateOf(goalInState)
+    }
     val calories = state.calories
     val avgSteps = state.avgSteps
-    val remainingSteps = remember {
-        if (goal > steps) {
-            mutableStateOf(goal - steps)
-        } else
-            mutableStateOf(0)
-    }
+    val remainingSteps = state.remainingSteps
     if (isActive) {
         if (permissionStatus == PermissionStatus.Granted)
             stepsViewModel.start()
         else
             stepsViewModel.stop()
     }
+    val openDialog = remember { mutableStateOf(false) }
+    if (openDialog.value)
+        AlertDialog(
+            onDismissRequest = {
+                openDialog.value = false
+            },
+            title = {
+                Text("Enter goal")
+            },
+            text = {
+                OutlinedTextField(
+                    value = goalChange.value.toString(),
+                    onValueChange = {
+                        if (it.length in 1..5) goalChange.value = it.toInt()
+                    },
+                    label = { Text("Text") },
+                    textStyle = TextStyle(fontFamily = JosefinSans, fontSize = 21.sp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    singleLine = true
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        openDialog.value = false
+                        stepsViewModel.onEvent(StepsEvent.SetGoal(goalChange.value))
+                        stepsViewModel.onEvent(StepsEvent.SaveEntry)
+                    }
+                ) {
+                    Text("OK")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = {
+                        openDialog.value = false
+                        goalChange.value = goalInState
+                    }
+                ) {
+                    Text("Cancel")
+                }
+            }
+        )
     CustomCard(
         modifier = Modifier
             .heightIn(min = 170.dp, max = 170.dp),
-        function = {}
+        function = {
+            openDialog.value = true
+        }
     ) {
         Row(
             modifier = Modifier
@@ -94,22 +145,22 @@ fun StepInfo(
         ) {
             Column {
                 Text(
-                    text = "Current goal: $goal steps",
+                    text = "Current goal: ${goalInState.formatDecimalSeparator()} steps",
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = JosefinSans
                 )
                 Text(
-                    text = "Steps Remaining: " + if (remainingSteps.value == 0) "none" else "$remainingSteps steps",
+                    text = "Steps Remaining: " + if (remainingSteps == 0) "none" else "${remainingSteps.formatDecimalSeparator()} steps",
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = JosefinSans
                 )
                 Text(
-                    text = "Daily Average: $avgSteps steps",
+                    text = "Daily Average: ${avgSteps.formatDecimalSeparator()} steps",
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = JosefinSans
                 )
                 Text(
-                    text = "Calories burned: $calories kcal",
+                    text = "Calories burned: ${calories.formatDecimalSeparator()} kcal",
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = JosefinSans
                 )

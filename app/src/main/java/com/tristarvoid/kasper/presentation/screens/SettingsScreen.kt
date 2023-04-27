@@ -10,18 +10,21 @@
 
 package com.tristarvoid.kasper.presentation.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.tristarvoid.kasper.domain.HolderViewModel
 import com.tristarvoid.kasper.presentation.navigation.MainAppBar
-import com.tristarvoid.kasper.view.Header
+import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,25 +35,39 @@ fun Settings(
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
+    val dynamicEnabled = holderViewModel.dynamicEnabled.collectAsStateWithLifecycle()
     Scaffold(
         topBar = {
             MainAppBar(navControl, drawerState, scope, holderViewModel, false)
         }
     ) {
-        Column(
+        Box(
             modifier = Modifier
-                .padding(top = it.calculateTopPadding())
                 .fillMaxSize()
+                .padding(top = it.calculateTopPadding()),
+            contentAlignment = Alignment.Center
         )
         {
-            Header(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .paddingFromBaseline(5.dp),
-                text = "Settings"
-            )
-            Spacer(modifier = Modifier.height(18.dp))
-            Divider()
+            if (!dynamicEnabled.value)
+                Text(
+                    modifier = Modifier
+                        .clickable {
+                            holderViewModel.dynamicEnabled.value = true
+                        },
+                    text = "Click to enable dynamic theming",
+                    fontFamily = JosefinSans,
+                    textAlign = TextAlign.Center
+                )
+            else
+                Text(
+                    modifier = Modifier
+                        .clickable {
+                            holderViewModel.dynamicEnabled.value = false
+                        },
+                    text = "Click to disable dynamic theming",
+                    fontFamily = JosefinSans,
+                    textAlign = TextAlign.Center
+                )
         }
     }
 }

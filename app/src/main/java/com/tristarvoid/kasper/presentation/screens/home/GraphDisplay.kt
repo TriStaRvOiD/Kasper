@@ -26,7 +26,9 @@ import com.tristarvoid.kasper.domain.GraphDataViewModel
 import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
 
 @Composable
-fun CalorieGraph() {
+fun CalorieGraph(
+
+) {
     val calorieViewModel = viewModel<GraphDataViewModel>()
     Text(
         text = "Activity : ",

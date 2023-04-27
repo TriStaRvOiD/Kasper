@@ -12,11 +12,12 @@ package com.tristarvoid.kasper.domain
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.*
 
 class HolderViewModel : ViewModel()
 {
-    var dynamicEnabled = mutableStateOf(false)
+    var dynamicEnabled = MutableStateFlow(false)
     var mainHeading = mutableStateOf("")
     var fragHeading = mutableStateOf("")
     var concernedItem = mutableStateOf(0)

@@ -11,8 +11,10 @@
 package com.tristarvoid.kasper.data.steps
 
 data class StepsState(
+    val stepsData: List<StepsData> = emptyList(),
     val currentSteps: Int = 0,
     val goal: Int = 0,
     val calories: Int = 0,
-    val avgSteps: Int = 0
+    val avgSteps: Int = 0,
+    val remainingSteps: Int = 0
 )

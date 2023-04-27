@@ -10,12 +10,15 @@
 
 package com.tristarvoid.kasper.presentation.screens.home
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -36,31 +39,36 @@ fun Weather(
     ) {
         Text(
             modifier = Modifier.padding(start = 10.dp, top = 10.dp),
-            text = "today : ",
-            style = MaterialTheme.typography.titleLarge,
+            text = "Today : ",
+            style = MaterialTheme.typography.titleMedium,
             fontFamily = JosefinSans
         )
         if (temp != "" && desc != "" && quality != "") {
             Text(
-                modifier = Modifier.padding(start = 10.dp, top = 10.dp),
+                modifier = Modifier.padding(start = 10.dp, top = 14.dp),
                 text = "\u2022 It's $temp\u2103 , with ${desc.lowercase()}.",
                 style = MaterialTheme.typography.titleSmall,
                 fontFamily = JosefinSans
             )
             Text(
                 modifier = Modifier.padding(10.dp),
-                text = "\u2022 The quality of air outdoors is $quality.",
+                text = "\u2022 Air quality outdoors is $quality.",
                 style = MaterialTheme.typography.titleSmall,
                 fontFamily = JosefinSans
             )
         }
         else
-            Text(
-                modifier = Modifier.padding(10.dp),
-                text = "Loading . . .",
-                style = MaterialTheme.typography.titleSmall,
-                textAlign = TextAlign.Center,
-                fontFamily = JosefinSans
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    modifier = Modifier.padding(bottom = 21.dp),
+                    text = "Loading . . .",
+                    style = MaterialTheme.typography.titleSmall,
+                    textAlign = TextAlign.Center,
+                    fontFamily = JosefinSans
+                )
+            }
     }
 }

@@ -35,7 +35,7 @@ class QuoteViewModel @Inject constructor(
             try {
                 val response = quoteApi.getQuote()
                 if (response.isSuccessful && response.body() != null) {
-                    _quote.value = response.body()!!.content
+                    _quote.value = response.body()!![0].content
                 }
             }
             catch (e: IOException) {

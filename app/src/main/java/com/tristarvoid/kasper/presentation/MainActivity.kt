@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -48,13 +49,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             val holderViewModel = viewModel<HolderViewModel>()
             val systemUiController = rememberSystemUiController()
+            val dynamicEnabled = holderViewModel.dynamicEnabled.collectAsStateWithLifecycle()
             SideEffect {
                 systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = false)
             }
             VanguardTheme(
-                dynamicColor = remember {
-                    holderViewModel.dynamicEnabled.value
-                }
+                dynamicColor = dynamicEnabled.value
             ) {
                 val screen by splashViewModel.startDestination
                 Surface {

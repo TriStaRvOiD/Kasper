@@ -13,19 +13,13 @@ package com.tristarvoid.kasper.domain
 import androidx.lifecycle.ViewModel
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
 import com.patrykandpatrick.vico.core.entry.FloatEntry
-import java.util.*
 
 class GraphDataViewModel : ViewModel() {
-
-    private val min = 0f
-    private val max = 16f
-    private val rand = Random()
-    private val fl = rand.nextFloat() * (max - min) + min
 
     private fun getRandomEntries() = List(4) {
         FloatEntry(
             it.toFloat(),
-            fl
+            (0..16).random().toFloat()
         )
     }
 

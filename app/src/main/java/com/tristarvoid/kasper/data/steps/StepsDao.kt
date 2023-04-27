@@ -21,20 +21,17 @@ interface StepsDao {
     @Upsert
     suspend fun upsertEntry(stepsData: StepsData)
 
-    @Query("SELECT currentSteps FROM stepsdata WHERE id = :date")
-    fun getStepValues(date: Long): Flow<Int>
-
     @Query("SELECT * FROM stepsdata WHERE id = :date")
     fun getEverything(date: Long): Flow<StepsData>
+
+    @Query("SELECT * FROM stepsdata")
+    fun getEverythingAlt(): Flow<List<StepsData>>
 
     @Query("SELECT AVG(currentSteps) FROM stepsdata")
     fun getAvgStepValue(): Flow<Int>
 
-    @Query("SELECT goal FROM stepsdata WHERE id = :date")
-    fun getGoalValue(date: Long): Flow<Int>
-
-    @Query("SELECT calories FROM stepsdata WHERE id = :date")
-    fun getCalorieValue(date: Long): Flow<Int>
+    @Query("SELECT goal - currentSteps FROM stepsdata WHERE id = :date")
+    fun getRemainingStepValue(date: Long): Flow<Int>
 
     @Query("SELECT (SELECT COUNT(*) FROM stepsdata WHERE id = :date) == 0")
     suspend fun entryPresence(date: Long): Int
