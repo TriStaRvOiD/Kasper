@@ -122,7 +122,7 @@ fun Home(
                     .fillMaxWidth()
                     .paddingFromBaseline(5.dp),
                 alignment = Alignment.TopStart,
-                text = if (timeOfDay < 12) "It's mornin'" else if (timeOfDay < 16) "It's afternoon" else "It's evenin'",
+                text = if (timeOfDay < 12) "It's mornin'" else if (timeOfDay < 18) "It's afternoon" else "It's evenin'",
                 fontSize = 35
             )
             Spacer(modifier = Modifier.height(18.dp))

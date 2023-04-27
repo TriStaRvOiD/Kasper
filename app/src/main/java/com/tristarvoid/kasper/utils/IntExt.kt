@@ -8,7 +8,7 @@
  * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.kasper.ext
+package com.tristarvoid.kasper.utils
 
 //Puts a comma after every 3 digits
 fun Int.formatDecimalSeparator(): String {

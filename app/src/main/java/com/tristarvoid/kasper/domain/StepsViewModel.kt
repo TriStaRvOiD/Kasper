@@ -43,13 +43,10 @@ class StepsViewModel @Inject constructor(
 
     init {
         updateStatus()
-        viewModelScope.launch {
-            createBlankEntryIfRequired()
-            dao.getEverything(_date.value).collect {
-                updateState(it)
-            }
-            updateAvgSteps()
-        }
+        updateState()
+        updateRemainingSteps()
+        updateAvgSteps()
+        updateStateAlt()
     }
 
     fun start() {
@@ -65,7 +62,6 @@ class StepsViewModel @Inject constructor(
             incrementSteps()
             onEvent(StepsEvent.SetCalories(calculateCalories()))
             onEvent(StepsEvent.SaveEntry)
-            updateAvgSteps()
         }
     }
 
@@ -115,6 +111,14 @@ class StepsViewModel @Inject constructor(
                 }
             }
 
+            is StepsEvent.SetDataList -> {
+                _state.update {
+                    it.copy(
+                        stepsData = event.listData
+                    )
+                }
+            }
+
             is StepsEvent.SaveEntry -> {
                 val data = StepsData(
                     currentSteps = _state.value.currentSteps,
@@ -127,13 +131,33 @@ class StepsViewModel @Inject constructor(
                 }
             }
 
+            is StepsEvent.SetRemainingSteps -> {
+                _state.update {
+                    it.copy(
+                        remainingSteps = event.remainingSteps
+                    )
+                }
+            }
         }
     }
 
-    private fun updateState(stepsData: StepsData) {
-        onEvent(StepsEvent.SetCurrentSteps(stepsData.currentSteps))
-        onEvent(StepsEvent.SetGoal(stepsData.goal))
-        onEvent(StepsEvent.SetCalories(stepsData.calories))
+    private fun updateState() {
+        viewModelScope.launch {
+            createBlankEntryIfRequired()
+            dao.getEverything(_date.value).collect { stepsData ->
+                onEvent(StepsEvent.SetCurrentSteps(stepsData.currentSteps))
+                onEvent(StepsEvent.SetGoal(stepsData.goal))
+                onEvent(StepsEvent.SetCalories(stepsData.calories))
+            }
+        }
+    }
+
+    private fun updateStateAlt() {
+        viewModelScope.launch {
+            dao.getEverythingAlt().collect { stepsData ->
+                onEvent(StepsEvent.SetDataList(stepsData))
+            }
+        }
     }
 
     private fun incrementSteps() {
@@ -144,6 +168,15 @@ class StepsViewModel @Inject constructor(
         viewModelScope.launch {
             dao.getAvgStepValue().collect {
                 onEvent(StepsEvent.SetAvgSteps(it))
+            }
+        }
+    }
+
+    private fun updateRemainingSteps() {
+        viewModelScope.launch {
+            dao.getRemainingStepValue(_date.value).collect {
+                if (it >= 0)
+                    onEvent(StepsEvent.SetRemainingSteps(it))
             }
         }
     }
