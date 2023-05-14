@@ -12,7 +12,9 @@ package com.tristarvoid.kasper.presentation.navigation
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -34,17 +36,17 @@ fun MainAppBar(
     holderViewModel: HolderViewModel,
     actionEnabled: Boolean = true
 ) {
-    val heading = remember {
+    val heading by remember {
         holderViewModel.mainHeading
     }
     CenterAlignedTopAppBar(
-        colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background
+        colors = topAppBarColors(
+        containerColor = MaterialTheme.colorScheme.background
         ),
         title = {
             Text(
                 modifier = Modifier,
-                text = heading.value,
+                text = heading,
                 fontFamily = JosefinSans
             )
         },
@@ -87,17 +89,17 @@ fun FragmentAppBar(
     holderViewModel: HolderViewModel,
     singular: Boolean = true
 ) {
-    val heading = remember {
+    val heading by remember {
         holderViewModel.fragHeading
     }
     MediumTopAppBar(
-        colors = TopAppBarDefaults.smallTopAppBarColors(
+        colors = topAppBarColors(
             containerColor = MaterialTheme.colorScheme.background
         ),
         title = {
             Text(
                 modifier = Modifier,
-                text = heading.value,
+                text = heading,
                 fontFamily = JosefinSans
             )
         },

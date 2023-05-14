@@ -12,21 +12,21 @@ package com.tristarvoid.kasper.presentation.navigation
 
 sealed class ScreenConfiguration(val route: String) {
     //Loading
-    object LoadingScreen : ScreenConfiguration("loading_screen")
+    object LoadingScreen : ScreenConfiguration(route = "loading_screen")
     //Onboard
-    object WelcomeScreen : ScreenConfiguration("welcome_screen")
+    object WelcomeScreen : ScreenConfiguration(route = "welcome_screen")
 
     //Primary
-    object HomeScreen : ScreenConfiguration("home_screen")
-    object WorkoutScreen : ScreenConfiguration("workouts_screen")
-    object RemindersScreen : ScreenConfiguration("reminders_screen")
-    object NutritionScreen : ScreenConfiguration("nutrition_screen")
-    object TimerScreen : ScreenConfiguration("timer_screen")
-    object BMIScreen : ScreenConfiguration("bmi_screen")
-    object SettingsScreen : ScreenConfiguration("settings_screen")
-    object AboutScreen : ScreenConfiguration("about_screen")
-    object LicensesScreen : ScreenConfiguration("licenses_screen")
+    object HomeScreen : ScreenConfiguration(route = "home_screen")
+    object WorkoutScreen : ScreenConfiguration(route = "workouts_screen")
+    object RemindersScreen : ScreenConfiguration(route = "reminders_screen")
+    object NutritionScreen : ScreenConfiguration(route = "nutrition_screen")
+    object TimerScreen : ScreenConfiguration(route = "timer_screen")
+    object BMIScreen : ScreenConfiguration(route = "bmi_screen")
+    object SettingsScreen : ScreenConfiguration(route = "settings_screen")
+    object AboutScreen : ScreenConfiguration(route = "about_screen")
+    object LicensesScreen : ScreenConfiguration(route = "licenses_screen")
 
     //Secondary
-    object CalendarView : ScreenConfiguration("calendar_view")
+    object CalendarView : ScreenConfiguration(route = "calendar_view")
 }

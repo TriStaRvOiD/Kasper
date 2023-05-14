@@ -15,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,7 +27,6 @@ import com.tristarvoid.kasper.view.Header
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DrawerBody(
     navControl: NavHostController,
@@ -35,7 +35,7 @@ fun DrawerBody(
     holderViewModel: HolderViewModel,
     items: List<MenuItem>,
 ) {
-    val index = remember {
+    val index by remember {
         holderViewModel.concernedItem
     }
     val scrollState = rememberScrollState()
@@ -64,9 +64,9 @@ fun DrawerBody(
                     )
                 },
                 label = {
-                    Text(item.title)
+                    Text(text = item.title)
                 },
-                selected = item == items[index.value],
+                selected = item == items[index],
                 onClick = {
                     val destination = item.id //Identifies the screen to which we navigate to.
                     val current = navControl.currentDestination?.route  //The current screen the user is at.

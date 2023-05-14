@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tristarvoid.kasper.data.retrofit.quote.QuoteApi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -31,7 +32,7 @@ class QuoteViewModel @Inject constructor(
     val quote = _quote.asStateFlow()
 
     fun getTheQuote() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = quoteApi.getQuote()
                 if (response.isSuccessful && response.body() != null) {

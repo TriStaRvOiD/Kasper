@@ -20,13 +20,25 @@ import dagger.hilt.android.HiltAndroidApp
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        val channel = NotificationChannel(
-            "channel_id",
+
+        val foregroundServiceChannel = NotificationChannel(
+            "foreground_service_channel_id",
+            "Step counting",
+            NotificationManager.IMPORTANCE_LOW
+        )
+        foregroundServiceChannel.description =
+            "Notification for the step counting foreground service"
+
+        val remindersChannel = NotificationChannel(
+            "reminders_channel_id",
             "Reminders",
             NotificationManager.IMPORTANCE_HIGH
         )
-        channel.description = "Notifications for the 'Reminders' feature."
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
+        remindersChannel.description = "Notifications for the 'Reminders' feature."
+
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(foregroundServiceChannel)
+        notificationManager.createNotificationChannel(remindersChannel)
     }
 }

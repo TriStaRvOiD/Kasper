@@ -8,19 +8,15 @@
  * You should have received a copy of the GNU General Public License along with Kasper. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.kasper.data.steps
+package com.tristarvoid.kasper.data.retrofit.quote
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-
-@Database(
-    entities = [
-        StepsData::class
-    ],
-    version = 1,
-    exportSchema = false
+data class QuoteItem(
+    val _id: String,
+    val author: String,
+    val authorSlug: String,
+    val content: String,
+    val dateAdded: String,
+    val dateModified: String,
+    val length: Int,
+    val tags: List<String>
 )
-abstract class StepsDatabase: RoomDatabase() {
-
-    abstract val stepsDao: StepsDao
-}

@@ -8,19 +8,24 @@
  * You should have received a copy of the GNU General Public License along with Kasper. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.kasper.data.steps
+package com.tristarvoid.kasper.di
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
+import android.content.Context
+import com.tristarvoid.kasper.data.repo.GoalDataStoreRepository
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-@Database(
-    entities = [
-        StepsData::class
-    ],
-    version = 1,
-    exportSchema = false
-)
-abstract class StepsDatabase: RoomDatabase() {
+@Module
+@InstallIn(SingletonComponent::class)
+object GoalDataStoreModule {
 
-    abstract val stepsDao: StepsDao
+    @Provides
+    @Singleton
+    fun provideGoalRepository(
+        @ApplicationContext context: Context
+    ) = GoalDataStoreRepository(context = context)
 }

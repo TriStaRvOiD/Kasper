@@ -13,9 +13,14 @@ package com.tristarvoid.kasper.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -51,7 +56,7 @@ class MainActivity : ComponentActivity() {
             val systemUiController = rememberSystemUiController()
             val dynamicEnabled = holderViewModel.dynamicEnabled.collectAsStateWithLifecycle()
             SideEffect {
-                systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = false)
+                systemUiController.setSystemBarsColor(color = Color.Transparent)
             }
             VanguardTheme(
                 dynamicColor = dynamicEnabled.value
@@ -65,14 +70,13 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Display(
     holderViewModel: HolderViewModel,
     screen: String
 ) {
     val navController = rememberNavController()
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -141,7 +145,13 @@ fun Display(
             )
         }
     ) {
-        Navigation(navController, holderViewModel, drawerState, scope, screen)
+        Navigation(
+            navControl = navController,
+            holderViewModel = holderViewModel,
+            drawerState = drawerState,
+            scope = scope,
+            defaultScreen = screen
+        )
     }
 }
 

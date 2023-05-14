@@ -10,6 +10,8 @@
 
 package com.tristarvoid.kasper.presentation.screens.home
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
@@ -17,11 +19,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.tristarvoid.kasper.domain.StepsViewModel
 import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
+import com.tristarvoid.kasper.service.StepDetectorService
 import com.tristarvoid.kasper.view.CustomCard
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -29,18 +33,24 @@ import com.tristarvoid.kasper.view.CustomCard
 fun Control(
     active: Boolean,
     viewModel: StepsViewModel,
-    permissionStatus: PermissionStatus
+    permissionStatus: PermissionStatus,
+    localContext: Context = LocalContext.current
 ) {
+    val stepsServiceIntent = Intent(localContext, StepDetectorService::class.java)
     CustomCard(
         modifier = Modifier
             .widthIn(min = 143.dp, max = 143.dp)
             .heightIn(min = 46.dp, max = 46.dp),
         function = {
             if (permissionStatus == PermissionStatus.Granted) {
-                if (active)
-                    viewModel.stop()
-                else
-                    viewModel.start()
+                if (active) {
+                    localContext.stopService(stepsServiceIntent)
+                    viewModel.stopWork()
+                }
+                else {
+                    localContext.startForegroundService(stepsServiceIntent)
+                    viewModel.startWork()
+                }
             }
         }
     ) {

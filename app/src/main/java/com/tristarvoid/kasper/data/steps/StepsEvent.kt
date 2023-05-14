@@ -11,11 +11,9 @@
 package com.tristarvoid.kasper.data.steps
 
 sealed interface StepsEvent {
-    object SaveEntry: StepsEvent
-    data class SetCurrentSteps(val steps: Int): StepsEvent
+    data class SetCurrentStepCountInState(val currentStepCount: Int): StepsEvent
+    data class SetAverageStepsInState(val avgSteps: Int): StepsEvent
     data class SetGoal(val goal: Int): StepsEvent
-    data class SetCalories(val calories: Int): StepsEvent
-    data class SetAvgSteps(val avgSteps: Int): StepsEvent
+    data class SetCaloriesBurnedInState(val calories: Int): StepsEvent
     data class SetDataList(val listData: List<StepsData>): StepsEvent
-    data class SetRemainingSteps(val remainingSteps: Int): StepsEvent
 }

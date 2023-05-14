@@ -11,7 +11,6 @@
 package com.tristarvoid.kasper.presentation.navigation
 
 import androidx.compose.material3.DrawerState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -31,7 +30,6 @@ import com.tristarvoid.kasper.presentation.screens.home.Home
 import com.tristarvoid.kasper.presentation.views.Calendar
 import kotlinx.coroutines.CoroutineScope
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Navigation(
     navControl: NavHostController,
@@ -57,53 +55,98 @@ fun Navigation(
         composable(route = ScreenConfiguration.HomeScreen.route) {
             holderViewModel.mainHeading.value = ""
             holderViewModel.concernedItem.value = 0
-            Home(navControl, holderViewModel, drawerState, scope)
+            Home(
+                navControl = navControl,
+                holderViewModel = holderViewModel,
+                drawerState = drawerState,
+                scope = scope
+            )
         }
         composable(route = ScreenConfiguration.WorkoutScreen.route) {
             holderViewModel.mainHeading.value = "Workouts"
             holderViewModel.concernedItem.value = 1
-            Workouts(navControl, holderViewModel, drawerState, scope)
+            Workouts(
+                navControl = navControl,
+                holderViewModel = holderViewModel,
+                drawerState = drawerState,
+                scope = scope
+            )
         }
         composable(route = ScreenConfiguration.RemindersScreen.route) {
             holderViewModel.mainHeading.value = "Reminders"
             holderViewModel.concernedItem.value = 2
-            Reminders(navControl, holderViewModel, drawerState, scope)
+            Reminders(
+                navControl = navControl,
+                holderViewModel = holderViewModel,
+                drawerState = drawerState,
+                scope = scope
+            )
         }
         composable(route = ScreenConfiguration.NutritionScreen.route) {
             holderViewModel.mainHeading.value = "Nutrition"
             holderViewModel.concernedItem.value = 3
-            Nutrition(navControl, holderViewModel, drawerState, scope)
+            Nutrition(
+                navControl = navControl,
+                holderViewModel = holderViewModel,
+                drawerState = drawerState,
+                scope = scope
+            )
         }
         composable(route = ScreenConfiguration.TimerScreen.route) {
             holderViewModel.mainHeading.value = "Timer"
             holderViewModel.concernedItem.value = 4
-            Timer(navControl, holderViewModel, drawerState, scope)
+            Timer(
+                navControl = navControl,
+                holderViewModel = holderViewModel,
+                drawerState = drawerState,
+                scope = scope
+            )
         }
         composable(route = ScreenConfiguration.BMIScreen.route) {
             holderViewModel.mainHeading.value = ""
             holderViewModel.concernedItem.value = 5
-            Bmi(navControl, holderViewModel, drawerState, scope)
+            Bmi(
+                navControl = navControl,
+                holderViewModel = holderViewModel,
+                drawerState = drawerState,
+                scope = scope
+            )
         }
         composable(route = ScreenConfiguration.SettingsScreen.route) {
             holderViewModel.mainHeading.value = ""
             holderViewModel.concernedItem.value = 6
-            Settings(navControl, holderViewModel, drawerState, scope)
+            Settings(
+                navControl = navControl,
+                holderViewModel = holderViewModel,
+                drawerState = drawerState,
+                scope = scope
+            )
         }
         composable(route = ScreenConfiguration.AboutScreen.route) {
             holderViewModel.mainHeading.value = "About"
             holderViewModel.concernedItem.value = 7
-            About(navControl, holderViewModel, drawerState, scope)
+            About(
+                navControl = navControl,
+                holderViewModel = holderViewModel,
+                drawerState = drawerState,
+                scope = scope
+            )
         }
         composable(route = ScreenConfiguration.LicensesScreen.route) {
             holderViewModel.mainHeading.value = "Licenses"
             holderViewModel.concernedItem.value = 8
-            Licenses(navControl, holderViewModel, drawerState, scope)
+            Licenses(
+                navControl = navControl,
+                holderViewModel = holderViewModel,
+                drawerState = drawerState,
+                scope = scope
+            )
         }
 
         //Secondary
         composable(route = ScreenConfiguration.CalendarView.route) {
             holderViewModel.fragHeading.value = "History"
-            Calendar(navControl, holderViewModel)
+            Calendar(navControl = navControl, holderViewModel = holderViewModel)
         }
     }
 }

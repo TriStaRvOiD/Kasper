@@ -27,7 +27,7 @@ object StepDaoModule {
 
     @Provides
     @Singleton
-    fun provideDao(@ApplicationContext context: Context): StepsDao {
+    fun provideStepsDao(@ApplicationContext context: Context): StepsDao {
         val db by lazy {
             Room.databaseBuilder(
                 context,

@@ -22,6 +22,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object StepModule {
+
     @Provides
     @Singleton
     fun provideStepSensor(app: Application): MeasurableSensor {
