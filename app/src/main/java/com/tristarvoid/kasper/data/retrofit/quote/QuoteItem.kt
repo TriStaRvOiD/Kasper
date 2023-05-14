@@ -10,7 +10,7 @@
 
 package com.tristarvoid.kasper.data.retrofit.quote
 
-data class Quote2Item(
+data class QuoteItem(
     val _id: String,
     val author: String,
     val authorSlug: String,

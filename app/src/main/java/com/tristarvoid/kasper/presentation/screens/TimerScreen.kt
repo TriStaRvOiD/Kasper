@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,13 +46,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.tristarvoid.kasper.domain.HolderViewModel
 import com.tristarvoid.kasper.presentation.navigation.MainAppBar
+import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Timer(
     navControl: NavHostController,
@@ -161,8 +160,8 @@ fun Timer(
         Text(
             text = (currentTime / 1000L).toString(),
             fontSize = 44.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
+            fontFamily = JosefinSans,
+            fontWeight = FontWeight.Bold
         )
         Button(
             onClick = {

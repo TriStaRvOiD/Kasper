@@ -17,6 +17,7 @@ import androidx.lifecycle.viewModelScope
 import com.tristarvoid.kasper.data.retrofit.pollution.QualityApi
 import com.tristarvoid.kasper.data.retrofit.weather.WeatherApi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -36,7 +37,7 @@ class WeatherViewModel @Inject constructor(
         lat: Double,
         long: Double
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = weatherApi.getWeather(
                     lat,
@@ -61,7 +62,7 @@ class WeatherViewModel @Inject constructor(
         lat: Double,
         long: Double
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = qualityApi.getQuality(
                     lat,

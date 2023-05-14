@@ -37,7 +37,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlin.math.pow
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Bmi(
     navControl: NavHostController,

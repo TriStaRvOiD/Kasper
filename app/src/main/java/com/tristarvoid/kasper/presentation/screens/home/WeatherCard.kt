@@ -51,7 +51,7 @@ fun Weather(
                 fontFamily = JosefinSans
             )
             Text(
-                modifier = Modifier.padding(10.dp),
+                modifier = Modifier.padding(all = 10.dp),
                 text = "\u2022 Air quality outdoors is $quality.",
                 style = MaterialTheme.typography.titleSmall,
                 fontFamily = JosefinSans

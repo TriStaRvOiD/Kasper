@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -34,7 +35,7 @@ import com.tristarvoid.kasper.view.Header
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun Home(
     navControl: NavHostController,
@@ -43,18 +44,18 @@ fun Home(
     scope: CoroutineScope,
     toaster: ToastMaker = hiltViewModel()
 ) {
-    var showToast by remember { mutableStateOf(false) }
+    var showToast by remember { mutableStateOf(value = false) }
 
-    var backPressState by remember { mutableStateOf<BackPress>(BackPress.Idle) }
+    var backPressState by remember { mutableStateOf<BackPress>(value = BackPress.Idle) }
 
     if (showToast) {
-        toaster.displayToast("Press back again to exit", Toast.LENGTH_LONG)
+        toaster.displayToast(message = "Press back again to exit", length = Toast.LENGTH_LONG)
         showToast = false
     }
 
     LaunchedEffect(key1 = backPressState) {
         if (backPressState == BackPress.InitialTouch) {
-            delay(2000)
+            delay(timeMillis = 2000)
             backPressState = BackPress.Idle
         }
     }
@@ -64,86 +65,93 @@ fun Home(
         showToast = true
     }
 
-    Scaffold(
-        topBar = {
-            MainAppBar(navControl, drawerState, scope, holderViewModel)
-        }
-    ) {
-        val permissionStatus =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                rememberPermissionState(permission = Manifest.permission.ACTIVITY_RECOGNITION).status
-            } else {
-                TODO("VERSION.SDK_INT < Q")
+    Surface {
+        Scaffold(
+            topBar = {
+                MainAppBar(navControl, drawerState, scope, holderViewModel)
             }
-        val stepsViewModel: StepsViewModel = hiltViewModel()
-        val quoteViewModel: QuoteViewModel = hiltViewModel()
-        val weatherViewModel: WeatherViewModel = hiltViewModel()
-        val timeOfDay by remember {
-            holderViewModel.timeOfDay
-        }
-        LaunchedEffect(Unit) {
-            while (true) {
-                delay(5000)
-                holderViewModel.updateTime()
-            }
-        }
-        //Remember whether apis have been called
-        val apisCalled = remember {
-            holderViewModel.apisCalled
-        }
-        //To prevent continuous network call
-        if (!apisCalled.value) {
-            quoteViewModel.getTheQuote()
-            weatherViewModel.getWeather(19.0760, 72.8777)
-            weatherViewModel.getQuality(19.0760, 72.8777)
-            holderViewModel.apisCalled.value = true
-        }
-        val quote by quoteViewModel.quote.collectAsState()
-        val temp = remember {
-            weatherViewModel.temp
-        }
-        val desc = remember {
-            weatherViewModel.desc
-        }
-        val quality = remember {
-            weatherViewModel.quality
-        }
-        val isActive = remember {
-            stepsViewModel.isActive
-        }
-        Column(
-            modifier = Modifier
-                .padding(top = it.calculateTopPadding())
-                .fillMaxSize()
-                .padding(16.dp)
         ) {
-            Header(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .paddingFromBaseline(5.dp),
-                alignment = Alignment.TopStart,
-                text = if (timeOfDay < 12) "It's mornin'" else if (timeOfDay < 18) "It's afternoon" else "It's evenin'",
-                fontSize = 35
-            )
-            Spacer(modifier = Modifier.height(18.dp))
-            Divider() //Below header
-            Spacer(modifier = Modifier.height(16.dp))
-            StepInfo(stepsViewModel, isActive.value, permissionStatus)
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column {
-                    Quote(quote)
-                    Spacer(modifier = Modifier.height(9.dp))
-                    Control(isActive.value, stepsViewModel, permissionStatus)
+            val permissionStatus =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    rememberPermissionState(permission = Manifest.permission.ACTIVITY_RECOGNITION).status
+                } else {
+                    TODO("VERSION.SDK_INT < Q")
                 }
-                Weather(desc.value, temp.value, quality.value)
+            val stepsViewModel: StepsViewModel = hiltViewModel()
+            val quoteViewModel: QuoteViewModel = hiltViewModel()
+            val weatherViewModel: WeatherViewModel = hiltViewModel()
+            val timeOfDay by remember {
+                holderViewModel.timeOfDay
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            CalorieGraph()
-            Spacer(modifier = Modifier.height(16.dp))
+            LaunchedEffect(Unit) {
+                while (true) {
+                    delay(timeMillis = 5000)
+                    holderViewModel.updateTime()
+                }
+            }
+            //Remember whether apis have been called
+            val apisCalled = remember {
+                holderViewModel.apisCalled
+            }
+            //To prevent continuous network call
+            if (!apisCalled.value) {
+                quoteViewModel.getTheQuote()
+                weatherViewModel.getWeather(lat = 19.0760, long = 72.8777)
+                weatherViewModel.getQuality(lat = 19.0760, long = 72.8777)
+                holderViewModel.apisCalled.value = true
+            }
+            val quote by quoteViewModel.quote.collectAsState()
+            val temp = remember {
+                weatherViewModel.temp
+            }
+            val desc = remember {
+                weatherViewModel.desc
+            }
+            val quality = remember {
+                weatherViewModel.quality
+            }
+            val isActive = stepsViewModel.isTheSensorActive.collectAsStateWithLifecycle()
+            Column(
+                modifier = Modifier
+                    .padding(top = it.calculateTopPadding())
+                    .fillMaxSize()
+                    .padding(all = 16.dp)
+            ) {
+                Header(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .paddingFromBaseline(5.dp),
+                    alignment = Alignment.TopStart,
+                    text = if (timeOfDay < 12) "It's mornin'" else if (timeOfDay < 18) "It's afternoon" else "It's evenin'",
+                    fontSize = 35
+                )
+                Spacer(modifier = Modifier.height(height = 18.dp))
+                Divider() //Below header
+                Spacer(modifier = Modifier.height(height = 16.dp))
+                StepInfo(
+                    stepsViewModel = stepsViewModel,
+                    isActive = isActive.value
+                )
+                Spacer(modifier = Modifier.height(height = 16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column {
+                        Quote(quote = quote)
+                        Spacer(modifier = Modifier.height(height = 9.dp))
+                        Control(
+                            active = isActive.value,
+                            viewModel = stepsViewModel,
+                            permissionStatus = permissionStatus
+                        )
+                    }
+                    Weather(desc = desc.value, temp = temp.value, quality = quality.value)
+                }
+                Spacer(modifier = Modifier.height(height = 16.dp))
+                CalorieGraph()
+                Spacer(modifier = Modifier.height(height = 16.dp))
+            }
         }
     }
 }

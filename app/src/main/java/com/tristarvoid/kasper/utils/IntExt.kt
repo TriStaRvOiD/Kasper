@@ -14,3 +14,10 @@ package com.tristarvoid.kasper.utils
 fun Int.formatDecimalSeparator(): String {
     return toString().reversed().chunked(3).joinToString(",").reversed()
 }
+
+//This method will change in the future.
+// Here weight is 70kg, height is 6 ft
+fun Int.calculateCalorieValue(): Int {
+    return ((0.57 * 70) + (0.415 * 6) + (0.00063 * this)).toInt()
+}
+

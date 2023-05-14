@@ -16,5 +16,5 @@ import retrofit2.http.GET
 interface QuoteApi {
 
     @GET ("/quotes/random?maxLength=30")
-    suspend fun getQuote(): Response<Quote2>
+    suspend fun getQuote(): Response<Quote>
 }

@@ -27,7 +27,6 @@ import com.tristarvoid.kasper.domain.HolderViewModel
 import com.tristarvoid.kasper.presentation.navigation.MainAppBar
 import kotlinx.coroutines.CoroutineScope
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Licenses(
     navControl: NavHostController,

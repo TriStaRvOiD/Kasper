@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -30,57 +29,49 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionStatus
 import com.tristarvoid.kasper.R
-import com.tristarvoid.kasper.data.steps.StepsEvent
 import com.tristarvoid.kasper.domain.StepsViewModel
 import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
 import com.tristarvoid.kasper.utils.formatDecimalSeparator
 import com.tristarvoid.kasper.view.CustomCard
 import com.tristarvoid.kasper.view.LottieLoader
 
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun StepInfo(
     stepsViewModel: StepsViewModel,
-    isActive: Boolean,
-    permissionStatus: PermissionStatus
+    isActive: Boolean
 ) {
-    val state by stepsViewModel.state.collectAsState()
-    val steps = state.currentSteps
-    val goalInState = state.goal
-    val goalChange = remember {
-        mutableStateOf(goalInState)
+    val stepsState by stepsViewModel.stepsState.collectAsState()
+    val steps = stepsState.currentSteps
+    val goalInState = stepsState.goal
+    var goalEntry by remember {
+        mutableStateOf(value = goalInState)
     }
-    val calories = state.calories
-    val avgSteps = state.avgSteps
-    val remainingSteps = state.remainingSteps
-    if (isActive) {
-        if (permissionStatus == PermissionStatus.Granted)
-            stepsViewModel.start()
-        else
-            stepsViewModel.stop()
-    }
-    val openDialog = remember { mutableStateOf(false) }
+    val calories = stepsState.caloriesBurned
+    val avgSteps = stepsState.averageSteps
+    val openDialog = remember { mutableStateOf(value = false) }
     if (openDialog.value)
         AlertDialog(
             onDismissRequest = {
                 openDialog.value = false
             },
             title = {
-                Text("Enter goal")
+                Text(
+                    text = "Enter goal",
+                    fontFamily = JosefinSans
+                )
             },
             text = {
                 OutlinedTextField(
-                    value = goalChange.value.toString(),
+                    value = goalEntry.toString(),
                     onValueChange = {
-                        if (it.length in 1..5) goalChange.value = it.toInt()
+                        if (it.length in 1..5) goalEntry = it.toInt()
                     },
                     label = { Text("Text") },
                     textStyle = TextStyle(fontFamily = JosefinSans, fontSize = 21.sp),
@@ -92,21 +83,26 @@ fun StepInfo(
                 Button(
                     onClick = {
                         openDialog.value = false
-                        stepsViewModel.onEvent(StepsEvent.SetGoal(goalChange.value))
-                        stepsViewModel.onEvent(StepsEvent.SaveEntry)
+                        stepsViewModel.alterGoal(goalEntry)
                     }
                 ) {
-                    Text("OK")
+                    Text(
+                        text = "Ok",
+                        fontFamily = JosefinSans
+                    )
                 }
             },
             dismissButton = {
                 Button(
                     onClick = {
                         openDialog.value = false
-                        goalChange.value = goalInState
+                        goalEntry = goalInState
                     }
                 ) {
-                    Text("Cancel")
+                    Text(
+                        text = "Cancel",
+                        fontFamily = JosefinSans
+                    )
                 }
             }
         )
@@ -150,7 +146,12 @@ fun StepInfo(
                     fontFamily = JosefinSans
                 )
                 Text(
-                    text = "Steps Remaining: " + if (remainingSteps == 0) "none" else "${remainingSteps.formatDecimalSeparator()} steps",
+                    text = "Steps Remaining: " + "${
+                        if (goalInState > steps)
+                            (goalInState - steps).formatDecimalSeparator()
+                        else
+                            0
+                    } more",
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = JosefinSans
                 )
