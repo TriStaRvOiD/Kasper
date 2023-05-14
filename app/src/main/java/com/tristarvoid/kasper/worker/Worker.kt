@@ -8,6 +8,18 @@
  * You should have received a copy of the GNU General Public License along with Kasper. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.kasper.data.retrofit.quote
+package com.tristarvoid.kasper.worker
 
-class Quote2 : ArrayList<Quote2Item>()
+import android.content.Context
+import androidx.work.Worker
+import androidx.work.WorkerParameters
+
+class Worker(
+    appContext: Context,
+    workerParams: WorkerParameters
+) : Worker(appContext, workerParams) {
+
+    override fun doWork(): Result {
+        return Result.success()
+    }
+}

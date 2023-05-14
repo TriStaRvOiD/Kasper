@@ -10,22 +10,25 @@
 
 package com.tristarvoid.kasper.di
 
-import android.app.Application
-import com.tristarvoid.kasper.data.sensor.MeasurableSensor
-import com.tristarvoid.kasper.data.sensor.StepSensor
+import android.content.Context
+import androidx.work.WorkManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object StepModule {
+object WorkManagerModule {
 
     @Provides
     @Singleton
-    fun provideStepSensor(app: Application): MeasurableSensor {
-        return StepSensor(app)
+    fun provideWorkManagerInstance(
+        @ApplicationContext context: Context
+    ): WorkManager {
+        return WorkManager.getInstance(context)
     }
+
 }
