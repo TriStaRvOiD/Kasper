@@ -22,7 +22,7 @@ import androidx.navigation.NavHostController
 import com.tristarvoid.kasper.R
 import com.tristarvoid.kasper.domain.HolderViewModel
 import com.tristarvoid.kasper.presentation.navigation.MainAppBar
-import com.tristarvoid.kasper.view.LottieLoader
+import com.tristarvoid.kasper.presentation.components.LottieLoader
 import kotlinx.coroutines.CoroutineScope
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

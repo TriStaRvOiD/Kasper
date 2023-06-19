@@ -22,7 +22,6 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
@@ -63,7 +62,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 val screen by splashViewModel.startDestination
                 Surface {
-                    Display(holderViewModel, screen)
+                    MainScreen(holderViewModel, screen)
                 }
             }
         }
@@ -71,13 +70,69 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Display(
+fun MainScreen(
     holderViewModel: HolderViewModel,
     screen: String
 ) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val menuItemList = listOf(
+        MenuItem(
+            id = ScreenConfiguration.HomeScreen.route,
+            title = "Home",
+            contentDescription = "Go to home screen",
+            icon = painterResource(id = R.drawable.home)
+        ),
+        MenuItem(
+            id = ScreenConfiguration.WorkoutScreen.route,
+            title = "Workouts",
+            contentDescription = "Go to workouts screen",
+            icon = painterResource(id = R.drawable.exercise)
+        ),
+        MenuItem(
+            id = ScreenConfiguration.RemindersScreen.route,
+            title = "Reminders",
+            contentDescription = "Go to reminders screen",
+            icon = painterResource(id = R.drawable.reminders)
+        ),
+        MenuItem(
+            id = ScreenConfiguration.NutritionScreen.route,
+            title = "Nutrition",
+            contentDescription = "Go to nutrition screen",
+            icon = painterResource(id = R.drawable.nutrition)
+        ),
+        MenuItem(
+            id = ScreenConfiguration.TimerScreen.route,
+            title = "Timer",
+            contentDescription = "Go to timer screen",
+            icon = painterResource(id = R.drawable.timer)
+        ),
+        MenuItem(
+            id = ScreenConfiguration.BMIScreen.route,
+            title = "BMI",
+            contentDescription = "Go to privacy screen",
+            icon = painterResource(id = R.drawable.bmi)
+        ),
+        MenuItem(
+            id = ScreenConfiguration.SettingsScreen.route,
+            title = "Settings",
+            contentDescription = "Go to settings screen",
+            icon = painterResource(id = R.drawable.settings)
+        ),
+        MenuItem(
+            id = ScreenConfiguration.AboutScreen.route,
+            title = "About",
+            contentDescription = "Go to about screen",
+            icon = painterResource(id = R.drawable.info)
+        ),
+        MenuItem(
+            id = ScreenConfiguration.LicensesScreen.route,
+            title = "Licenses",
+            contentDescription = "Go to water screen",
+            icon = painterResource(id = R.drawable.licenses)
+        )
+    )
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -86,62 +141,7 @@ fun Display(
                 drawerState = drawerState,
                 scope = scope,
                 holderViewModel = holderViewModel,
-                items = listOf(
-                    MenuItem(
-                        id = ScreenConfiguration.HomeScreen.route,
-                        title = "Home",
-                        contentDescription = "Go to home screen",
-                        icon = painterResource(id = R.drawable.home)
-                    ),
-                    MenuItem(
-                        id = ScreenConfiguration.WorkoutScreen.route,
-                        title = "Workouts",
-                        contentDescription = "Go to workouts screen",
-                        icon = painterResource(id = R.drawable.exercise)
-                    ),
-                    MenuItem(
-                        id = ScreenConfiguration.RemindersScreen.route,
-                        title = "Reminders",
-                        contentDescription = "Go to reminders screen",
-                        icon = painterResource(id = R.drawable.reminders)
-                    ),
-                    MenuItem(
-                        id = ScreenConfiguration.NutritionScreen.route,
-                        title = "Nutrition",
-                        contentDescription = "Go to nutrition screen",
-                        icon = painterResource(id = R.drawable.nutrition)
-                    ),
-                    MenuItem(
-                        id = ScreenConfiguration.TimerScreen.route,
-                        title = "Timer",
-                        contentDescription = "Go to timer screen",
-                        icon = painterResource(id = R.drawable.timer)
-                    ),
-                    MenuItem(
-                        id = ScreenConfiguration.BMIScreen.route,
-                        title = "BMI",
-                        contentDescription = "Go to privacy screen",
-                        icon = painterResource(id = R.drawable.bmi)
-                    ),
-                    MenuItem(
-                        id = ScreenConfiguration.SettingsScreen.route,
-                        title = "Settings",
-                        contentDescription = "Go to settings screen",
-                        icon = painterResource(id = R.drawable.settings)
-                    ),
-                    MenuItem(
-                        id = ScreenConfiguration.AboutScreen.route,
-                        title = "About",
-                        contentDescription = "Go to about screen",
-                        icon = painterResource(id = R.drawable.info)
-                    ),
-                    MenuItem(
-                        id = ScreenConfiguration.LicensesScreen.route,
-                        title = "Licenses",
-                        contentDescription = "Go to water screen",
-                        icon = painterResource(id = R.drawable.licenses)
-                    )
-                )
+                items = menuItemList
             )
         }
     ) {
@@ -154,10 +154,3 @@ fun Display(
         )
     }
 }
-
-data class MenuItem(
-    val id: String,
-    val title: String,
-    val contentDescription: String,
-    val icon: Painter
-)

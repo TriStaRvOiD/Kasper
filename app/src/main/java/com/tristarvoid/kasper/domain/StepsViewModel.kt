@@ -12,8 +12,8 @@ package com.tristarvoid.kasper.domain
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tristarvoid.kasper.data.repo.GoalDataStoreRepository
-import com.tristarvoid.kasper.data.repo.StatusDataStoreRepository
+import com.tristarvoid.kasper.data.datastore.GoalDataStoreRepository
+import com.tristarvoid.kasper.data.datastore.StatusDataStoreRepository
 import com.tristarvoid.kasper.data.steps.StepsDao
 import com.tristarvoid.kasper.data.steps.StepsEvent
 import com.tristarvoid.kasper.data.steps.StepsState
@@ -45,14 +45,6 @@ class StepsViewModel @Inject constructor(
     init {
         keepSensorStatusUpToDate()
         keepStateUpToDate()
-    }
-
-    fun startWork() {
-        alterListeningStatus(value = true)
-    }
-
-    fun stopWork() {
-        alterListeningStatus(value = false)
     }
 
     private fun onEvent(
@@ -128,12 +120,6 @@ class StepsViewModel @Inject constructor(
     fun alterGoal(goal: Int) {
         viewModelScope.launch(context = Dispatchers.IO) {
             goalRepository.saveGoalValue(goalValue = goal)
-        }
-    }
-
-    private fun alterListeningStatus(value: Boolean) {
-        viewModelScope.launch(context = Dispatchers.IO) {
-            statusRepository.saveListeningState(value = value)
         }
     }
 

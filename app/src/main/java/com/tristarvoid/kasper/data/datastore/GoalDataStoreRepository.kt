@@ -8,7 +8,7 @@
  * You should have received a copy of the GNU General Public License along with Kasper. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.kasper.data.repo
+package com.tristarvoid.kasper.data.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore

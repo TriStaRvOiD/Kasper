@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -7,7 +5,6 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("com.google.devtools.ksp")
-    id("com.guardsquare.appsweep") version "latest.release"
     kotlin("kapt")
 }
 
@@ -53,9 +50,6 @@ android {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
         }
     }
-    appsweep {
-        apiKey = gradleLocalProperties(rootDir).getProperty("app_sweep_key")
-    }
 }
 
 dependencies {
@@ -77,8 +71,6 @@ dependencies {
     implementation("com.kizitonwose.calendar:compose:2.3.0")
 
     //Vico
-    implementation("com.patrykandpatrick.vico:core:1.6.6")
-    implementation("com.patrykandpatrick.vico:compose:1.6.6")
     implementation("com.patrykandpatrick.vico:compose-m3:1.6.6")
 
     //Lottie
@@ -105,17 +97,14 @@ dependencies {
     implementation("androidx.hilt:hilt-common:1.0.0")
     kapt("androidx.hilt:hilt-compiler:1.0.0")
 
-    //Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.0")
-
     //Miscellaneous
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.21"))
     implementation("androidx.compose.ui:ui:1.4.3")
     implementation("androidx.compose.ui:ui-tooling-preview:1.4.3")
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.activity:activity-compose:1.7.1")
-    implementation("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
@@ -129,8 +118,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
     
     //Debug
-    debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.3")
+    debugImplementation(platform("androidx.compose:compose-bom:2023.05.01"))
 }
 
 // Allow references to generated code

@@ -39,8 +39,8 @@ import com.tristarvoid.kasper.R
 import com.tristarvoid.kasper.domain.StepsViewModel
 import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
 import com.tristarvoid.kasper.utils.formatDecimalSeparator
-import com.tristarvoid.kasper.view.CustomCard
-import com.tristarvoid.kasper.view.LottieLoader
+import com.tristarvoid.kasper.presentation.components.CustomCard
+import com.tristarvoid.kasper.presentation.components.LottieLoader
 
 @Composable
 fun StepInfo(

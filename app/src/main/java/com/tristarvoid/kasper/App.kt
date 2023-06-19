@@ -21,19 +21,21 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        val foregroundServiceChannel = NotificationChannel(
-            "foreground_service_channel_id",
-            "Step counting",
-            NotificationManager.IMPORTANCE_LOW
-        )
-        foregroundServiceChannel.description =
-            "Notification for the step counting foreground service"
-
-        val remindersChannel = NotificationChannel(
-            "reminders_channel_id",
-            "Reminders",
-            NotificationManager.IMPORTANCE_HIGH
-        )
+        val foregroundServiceChannel by lazy {
+            NotificationChannel(
+                "foreground_service_channel_id",
+                "Step counting",
+                NotificationManager.IMPORTANCE_LOW
+            )
+        }
+        foregroundServiceChannel.description = "Notification for the step counting foreground service"
+        val remindersChannel by lazy {
+            NotificationChannel(
+                "reminders_channel_id",
+                "Reminders",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+        }
         remindersChannel.description = "Notifications for the 'Reminders' feature."
 
         val notificationManager =

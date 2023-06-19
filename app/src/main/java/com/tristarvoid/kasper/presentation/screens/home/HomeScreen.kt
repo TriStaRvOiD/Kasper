@@ -28,10 +28,10 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.tristarvoid.kasper.domain.HolderViewModel
 import com.tristarvoid.kasper.domain.QuoteViewModel
 import com.tristarvoid.kasper.domain.StepsViewModel
-import com.tristarvoid.kasper.domain.ToastMaker
+import com.tristarvoid.kasper.domain.ToastViewModel
 import com.tristarvoid.kasper.domain.WeatherViewModel
 import com.tristarvoid.kasper.presentation.navigation.MainAppBar
-import com.tristarvoid.kasper.view.Header
+import com.tristarvoid.kasper.presentation.components.Header
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 
@@ -42,7 +42,7 @@ fun Home(
     holderViewModel: HolderViewModel,
     drawerState: DrawerState,
     scope: CoroutineScope,
-    toaster: ToastMaker = hiltViewModel()
+    toaster: ToastViewModel = hiltViewModel()
 ) {
     var showToast by remember { mutableStateOf(value = false) }
 
@@ -140,9 +140,8 @@ fun Home(
                     Column {
                         Quote(quote = quote)
                         Spacer(modifier = Modifier.height(height = 9.dp))
-                        Control(
+                        StatusCard(
                             active = isActive.value,
-                            viewModel = stepsViewModel,
                             permissionStatus = permissionStatus
                         )
                     }
