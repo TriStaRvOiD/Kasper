@@ -23,16 +23,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
-import com.tristarvoid.kasper.domain.StepsViewModel
 import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
 import com.tristarvoid.kasper.service.StepDetectorService
-import com.tristarvoid.kasper.view.CustomCard
+import com.tristarvoid.kasper.presentation.components.CustomCard
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun Control(
+fun StatusCard(
     active: Boolean,
-    viewModel: StepsViewModel,
     permissionStatus: PermissionStatus,
     localContext: Context = LocalContext.current
 ) {
@@ -43,14 +41,10 @@ fun Control(
             .heightIn(min = 46.dp, max = 46.dp),
         function = {
             if (permissionStatus == PermissionStatus.Granted) {
-                if (active) {
+                if (active)
                     localContext.stopService(stepsServiceIntent)
-                    viewModel.stopWork()
-                }
-                else {
+                else
                     localContext.startForegroundService(stepsServiceIntent)
-                    viewModel.startWork()
-                }
             }
         }
     ) {

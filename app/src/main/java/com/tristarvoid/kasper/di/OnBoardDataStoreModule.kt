@@ -11,7 +11,7 @@
 package com.tristarvoid.kasper.di
 
 import android.content.Context
-import com.tristarvoid.kasper.data.repo.OnBoardDataStoreRepository
+import com.tristarvoid.kasper.data.datastore.OnBoardDataStoreRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

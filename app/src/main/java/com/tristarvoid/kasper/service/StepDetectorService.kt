@@ -11,11 +11,11 @@
 package com.tristarvoid.kasper.service
 
 import android.app.Notification
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import com.tristarvoid.kasper.R
+import com.tristarvoid.kasper.data.datastore.StatusDataStoreRepository
 import com.tristarvoid.kasper.data.sensor.MeasurableSensor
 import com.tristarvoid.kasper.data.steps.StepsDao
 import com.tristarvoid.kasper.data.steps.StepsData
@@ -28,13 +28,11 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class StepDetectorService : Service() {
-
-    @Inject
-    lateinit var stepsDao: StepsDao
-
-    @Inject
-    lateinit var measurableSensor: MeasurableSensor
+class StepDetectorService @Inject constructor(
+    private val stepsDao: StepsDao,
+    private val measurableSensor: MeasurableSensor,
+    private val statusRepository: StatusDataStoreRepository
+) : Service() {
 
     private val _date = MutableStateFlow(value = LocalDate.now().toEpochDay())
 
@@ -55,34 +53,33 @@ class StepDetectorService : Service() {
             }
         }
 
-        val pendingIntent: PendingIntent =
-            Intent(this, StepDetectorService::class.java).let { notificationIntent ->
-                PendingIntent.getActivity(
-                    this, 0, notificationIntent,
-                    PendingIntent.FLAG_IMMUTABLE
-                )
-            }
-
-        val notification: Notification = Notification.Builder(this, "foreground_service_channel_id")
-            .setContentTitle("Step counting is active")
-            .setContentText("Swipe to dismiss")
-            .setShowWhen(false)
-            .setSmallIcon(R.drawable.notification_logo)
-            .setContentIntent(pendingIntent)
-            .build()
+        val notification by lazy {
+            Notification.Builder(this, "foreground_service_channel_id")
+                .setContentTitle("Step counting is active")
+                .setContentText("Kasper is detecting your step count in the background.")
+                .setShowWhen(false)
+                .setSmallIcon(R.drawable.notification_logo)
+                .build()
+        }
 
         startForeground(1, notification)
+        alterListeningStatus(value = true)
         return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onDestroy() {
         measurableSensor.stopListening()
         super.onDestroy()
+        alterListeningStatus(value = false)
     }
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
-
+    private fun alterListeningStatus(value: Boolean) {
+        CoroutineScope(Dispatchers.IO).launch {
+            statusRepository.saveListeningState(value = value)
+        }
+    }
 }

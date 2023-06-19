@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.tristarvoid.kasper.domain.HolderViewModel
 import com.tristarvoid.kasper.presentation.MenuItem
-import com.tristarvoid.kasper.view.Header
+import com.tristarvoid.kasper.presentation.components.Header
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

@@ -12,7 +12,7 @@ package com.tristarvoid.kasper.domain
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tristarvoid.kasper.data.repo.OnBoardDataStoreRepository
+import com.tristarvoid.kasper.data.datastore.OnBoardDataStoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

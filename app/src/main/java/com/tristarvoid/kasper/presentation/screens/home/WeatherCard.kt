@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
-import com.tristarvoid.kasper.view.CustomCard
+import com.tristarvoid.kasper.presentation.components.CustomCard
 
 @Composable
 fun Weather(

@@ -10,7 +10,6 @@
 
 package com.tristarvoid.kasper.presentation.screens
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -30,13 +29,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.tristarvoid.kasper.domain.HolderViewModel
+import com.tristarvoid.kasper.presentation.components.Header
 import com.tristarvoid.kasper.presentation.navigation.MainAppBar
 import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
-import com.tristarvoid.kasper.view.Header
 import kotlinx.coroutines.CoroutineScope
 import kotlin.math.pow
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Bmi(

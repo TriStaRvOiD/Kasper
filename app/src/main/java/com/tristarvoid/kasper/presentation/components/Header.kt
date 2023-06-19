@@ -8,39 +8,30 @@
  * You should have received a copy of the GNU General Public License along with Kasper. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.kasper.presentation.screens.home
+package com.tristarvoid.kasper.presentation.components
 
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
-import com.tristarvoid.kasper.presentation.components.CustomCard
 
 @Composable
-fun Quote(
-    quote: String
+fun Header(
+    modifier: Modifier,
+    alignment: Alignment = Alignment.Center,
+    text: String,
+    fontSize: Int = 30
 ) {
-    CustomCard(
-        modifier = Modifier
-            .widthIn(min = 143.dp, max = 143.dp)
-            .heightIn(min = 90.dp, max = 90.dp),
-        function = {}
+    Box(
+        modifier = modifier,
+        contentAlignment = alignment
     ) {
         Text(
-            modifier = Modifier.padding(start = 10.dp, top = 10.dp),
-            text = "Quote : ",
-            style = MaterialTheme.typography.titleMedium,
-            fontFamily = JosefinSans
-        )
-        Text(
-            modifier = Modifier.padding(10.dp),
-            text = if (quote == "") "Loading . . ." else quote,
-            style = MaterialTheme.typography.titleSmall,
+            text = text,
+            fontSize = fontSize.sp,
             fontFamily = JosefinSans
         )
     }

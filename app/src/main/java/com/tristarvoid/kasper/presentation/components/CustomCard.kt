@@ -8,7 +8,7 @@
  * You should have received a copy of the GNU General Public License along with Kasper. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.tristarvoid.kasper.view
+package com.tristarvoid.kasper.presentation.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.isSystemInDarkTheme
