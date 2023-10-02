@@ -10,35 +10,76 @@
 
 package com.tristarvoid.kasper.presentation.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.*
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomCard(
+    enableGlow: Boolean = false,
+    color1: Color = Color(0xFFff51eb),
+    color2: Color = Color(0xFFede342),
+    loopAnimate: Boolean = false,
     modifier: Modifier,
-    function: () -> Unit,
+    onClick: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    OutlinedCard(
-        modifier = modifier,
-        onClick = function,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background,
-            contentColor = LocalContentColor.current
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 0.dp
-        ),
-        border = BorderStroke(
-            (if (isSystemInDarkTheme()) 0.6.dp else 1.dp),
-            (if (isSystemInDarkTheme()) Color.White else Color.Black)
-        )
+    val firstColor = remember { color1 }
+    val secondColor = remember { color2 }
+
+    val startColor by animateColorAsState(
+        targetValue = firstColor,
+        animationSpec = tween(500), label = ""
+    )
+
+    val endColor by animateColorAsState(
+        targetValue = secondColor,
+        animationSpec = tween(500), label = ""
+    )
+
+    Column(
+        modifier = modifier
+            .clickable {
+                onClick()
+            }
+            .shadow(
+                elevation = 40.dp,
+                shape = RoundedCornerShape(8.dp),
+                clip = false,
+                ambientColor = if (enableGlow) startColor else Color.Transparent,
+                spotColor = if (enableGlow) endColor else Color.Transparent,
+            )
+            .background(
+                MaterialTheme.colorScheme.surface,
+                RoundedCornerShape(8.dp)
+            )
+            .border(
+                1.dp,
+                brush = Brush.linearGradient(
+                    colors = if (enableGlow) listOf(
+                        startColor,
+                        endColor
+                    ) else listOf(MaterialTheme.colorScheme.onBackground, MaterialTheme.colorScheme.onBackground),
+                    Offset(0.0f, 0.0f), Offset(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY)
+                ),
+                shape = RoundedCornerShape(8.dp),
+            )
     ) {
         content()
     }

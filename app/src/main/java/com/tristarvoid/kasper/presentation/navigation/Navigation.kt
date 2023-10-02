@@ -10,143 +10,193 @@
 
 package com.tristarvoid.kasper.presentation.navigation
 
-import androidx.compose.material3.DrawerState
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.tristarvoid.kasper.domain.HolderViewModel
-import com.tristarvoid.kasper.presentation.onboarding.WelcomeScreen
-import com.tristarvoid.kasper.presentation.screens.About
-import com.tristarvoid.kasper.presentation.screens.Bmi
-import com.tristarvoid.kasper.presentation.screens.Licenses
-import com.tristarvoid.kasper.presentation.screens.LoadingScreen
-import com.tristarvoid.kasper.presentation.screens.Nutrition
-import com.tristarvoid.kasper.presentation.screens.Reminders
-import com.tristarvoid.kasper.presentation.screens.Settings
-import com.tristarvoid.kasper.presentation.screens.Timer
-import com.tristarvoid.kasper.presentation.screens.Workouts
-import com.tristarvoid.kasper.presentation.screens.home.Home
-import com.tristarvoid.kasper.presentation.views.Calendar
-import kotlinx.coroutines.CoroutineScope
+import com.tristarvoid.kasper.domain.NavigationViewModel
+import com.tristarvoid.kasper.domain.ThemeViewModel
+import com.tristarvoid.kasper.domain.ToastViewModel
+import com.tristarvoid.kasper.presentation.screens.home.HomeScreen
+import com.tristarvoid.kasper.presentation.screens.more.About
+import com.tristarvoid.kasper.presentation.screens.more.Licenses
+import com.tristarvoid.kasper.presentation.screens.more.MoreScreen
+import com.tristarvoid.kasper.presentation.screens.more.Settings
+import com.tristarvoid.kasper.presentation.screens.summary.Calendar
+import kotlinx.coroutines.delay
 
 @Composable
 fun Navigation(
-    navControl: NavHostController,
-    holderViewModel: HolderViewModel,
-    drawerState: DrawerState,
-    scope: CoroutineScope,
+    navigationViewModel: NavigationViewModel,
+    paddingValues: PaddingValues,
+    navController: NavHostController,
+    themeViewModel: ThemeViewModel,
     defaultScreen: String
 ) {
     NavHost(
-        navController = navControl,
+        modifier = Modifier.padding(
+            top = paddingValues.calculateTopPadding(),
+            bottom = paddingValues.calculateBottomPadding(),
+            start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
+            end = paddingValues.calculateEndPadding(LayoutDirection.Ltr)
+        ),
+        navController = navController,
         startDestination = defaultScreen
     ) {
-        //Loading
-        composable(route = ScreenConfiguration.LoadingScreen.route) {
-            LoadingScreen()
-        }
-        //Onboard
-        composable(route = ScreenConfiguration.WelcomeScreen.route) {
-            WelcomeScreen()
-        }
+        homeRoute(
+            onThemeToggle = {
+                themeViewModel.isDarkTheme.value = !themeViewModel.isDarkTheme.value
+            },
+            onBackPress = {
+                val toaster: ToastViewModel = hiltViewModel()
+                var showToast by remember { mutableStateOf(value = false) }
+                var backPressState by remember { mutableStateOf<BackPress>(value = BackPress.Idle) }
 
-        //Primary
-        composable(route = ScreenConfiguration.HomeScreen.route) {
-            holderViewModel.mainHeading.value = ""
-            holderViewModel.concernedItem.value = 0
-            Home(
-                navControl = navControl,
-                holderViewModel = holderViewModel,
-                drawerState = drawerState,
-                scope = scope
-            )
-        }
-        composable(route = ScreenConfiguration.WorkoutScreen.route) {
-            holderViewModel.mainHeading.value = "Workouts"
-            holderViewModel.concernedItem.value = 1
-            Workouts(
-                navControl = navControl,
-                holderViewModel = holderViewModel,
-                drawerState = drawerState,
-                scope = scope
-            )
-        }
-        composable(route = ScreenConfiguration.RemindersScreen.route) {
-            holderViewModel.mainHeading.value = "Reminders"
-            holderViewModel.concernedItem.value = 2
-            Reminders(
-                navControl = navControl,
-                holderViewModel = holderViewModel,
-                drawerState = drawerState,
-                scope = scope
-            )
-        }
-        composable(route = ScreenConfiguration.NutritionScreen.route) {
-            holderViewModel.mainHeading.value = "Nutrition"
-            holderViewModel.concernedItem.value = 3
-            Nutrition(
-                navControl = navControl,
-                holderViewModel = holderViewModel,
-                drawerState = drawerState,
-                scope = scope
-            )
-        }
-        composable(route = ScreenConfiguration.TimerScreen.route) {
-            holderViewModel.mainHeading.value = "Timer"
-            holderViewModel.concernedItem.value = 4
-            Timer(
-                navControl = navControl,
-                holderViewModel = holderViewModel,
-                drawerState = drawerState,
-                scope = scope
-            )
-        }
-        composable(route = ScreenConfiguration.BMIScreen.route) {
-            holderViewModel.mainHeading.value = ""
-            holderViewModel.concernedItem.value = 5
-            Bmi(
-                navControl = navControl,
-                holderViewModel = holderViewModel,
-                drawerState = drawerState,
-                scope = scope
-            )
-        }
-        composable(route = ScreenConfiguration.SettingsScreen.route) {
-            holderViewModel.mainHeading.value = ""
-            holderViewModel.concernedItem.value = 6
-            Settings(
-                navControl = navControl,
-                holderViewModel = holderViewModel,
-                drawerState = drawerState,
-                scope = scope
-            )
-        }
-        composable(route = ScreenConfiguration.AboutScreen.route) {
-            holderViewModel.mainHeading.value = "About"
-            holderViewModel.concernedItem.value = 7
-            About(
-                navControl = navControl,
-                holderViewModel = holderViewModel,
-                drawerState = drawerState,
-                scope = scope
-            )
-        }
-        composable(route = ScreenConfiguration.LicensesScreen.route) {
-            holderViewModel.mainHeading.value = "Licenses"
-            holderViewModel.concernedItem.value = 8
-            Licenses(
-                navControl = navControl,
-                holderViewModel = holderViewModel,
-                drawerState = drawerState,
-                scope = scope
-            )
-        }
+                if (showToast) {
+                    toaster.displayToast(
+                        message = "Press back again to exit",
+                        length = Toast.LENGTH_LONG
+                    )
+                    showToast = false
+                }
 
-        //Secondary
-        composable(route = ScreenConfiguration.CalendarView.route) {
-            holderViewModel.fragHeading.value = "History"
-            Calendar(navControl = navControl, holderViewModel = holderViewModel)
-        }
+                LaunchedEffect(key1 = backPressState) {
+                    if (backPressState == BackPress.InitialTouch) {
+                        delay(timeMillis = 2000)
+                        backPressState = BackPress.Idle
+                    }
+                }
+
+                BackHandler(backPressState == BackPress.Idle) {
+                    backPressState = BackPress.InitialTouch
+                    showToast = true
+                }
+
+            }
+        )
+
+        summaryRoute(
+            title = "Summary",
+            onBackPress = {
+                BackHandler(enabled = true) {
+                    navController.popBackStack()
+                    navigationViewModel.selectedItemIndex.value = 0
+                }
+            }
+        )
+
+        moreRoute(
+            title = "More",
+            onBackPress = {
+                BackHandler(enabled = true) {
+                    navController.popBackStack()
+                    navigationViewModel.selectedItemIndex.value = 0
+                }
+            }
+        )
+
+        settingsRoute(
+            title = "Settings",
+            viewModel = themeViewModel
+        )
+
+        aboutRoute(
+            title = "About"
+        )
+
+        licensesRoute(
+            title = "Licenses"
+        )
     }
+}
+
+fun NavGraphBuilder.homeRoute(
+    onThemeToggle: () -> Unit,
+    onBackPress: @Composable () -> Unit
+) {
+    composable(route = ScreenConfiguration.HomeScreen.route) {
+        onBackPress()
+        HomeScreen(
+            onThemeToggle = onThemeToggle
+        )
+    }
+}
+
+fun NavGraphBuilder.summaryRoute(
+    title: String,
+    onBackPress: @Composable () -> Unit
+) {
+    composable(route = ScreenConfiguration.SummaryScreen.route) {
+        onBackPress()
+        Calendar(title)
+    }
+}
+
+fun NavGraphBuilder.moreRoute(
+    title: String,
+    onBackPress: @Composable () -> Unit
+) {
+    composable(route = ScreenConfiguration.MoreScreen.route) {
+        onBackPress()
+        MoreScreen(
+            title = title
+        )
+    }
+}
+
+fun NavGraphBuilder.settingsRoute(
+    title: String,
+    viewModel: ThemeViewModel
+) {
+    composable(route = ScreenConfiguration.SettingsScreen.route) {
+        val dynamicIsEnabled = viewModel.dynamicEnabled.collectAsStateWithLifecycle()
+        Settings(
+            title = title,
+            text = if (dynamicIsEnabled.value) "Click to disable dynamic theming" else "Click to enable dynamic theming",
+            onClick = {
+                viewModel.dynamicEnabled.value = !dynamicIsEnabled.value
+            }
+        )
+    }
+}
+
+fun NavGraphBuilder.aboutRoute(
+    title: String
+) {
+    composable(route = ScreenConfiguration.AboutScreen.route) {
+        About(
+            title = title
+        )
+    }
+}
+
+fun NavGraphBuilder.licensesRoute(
+    title: String
+) {
+    composable(route = ScreenConfiguration.LicensesScreen.route) {
+        Licenses(
+            title = title
+        )
+    }
+}
+
+sealed class BackPress {
+    data object Idle : BackPress()
+    data object InitialTouch : BackPress()
 }

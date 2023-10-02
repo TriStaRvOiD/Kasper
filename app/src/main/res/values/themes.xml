@@ -11,5 +11,5 @@
 
 <resources>
 
-    <style name="Theme.Vanguard" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Kasper" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

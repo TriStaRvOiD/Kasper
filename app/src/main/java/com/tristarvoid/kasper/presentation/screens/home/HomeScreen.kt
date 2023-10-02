@@ -12,150 +12,112 @@ package com.tristarvoid.kasper.presentation.screens.home
 
 import android.Manifest
 import android.os.Build
-import android.widget.Toast
-import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
-import com.tristarvoid.kasper.domain.HolderViewModel
-import com.tristarvoid.kasper.domain.QuoteViewModel
+import com.tristarvoid.kasper.R
 import com.tristarvoid.kasper.domain.StepsViewModel
-import com.tristarvoid.kasper.domain.ToastViewModel
-import com.tristarvoid.kasper.domain.WeatherViewModel
-import com.tristarvoid.kasper.presentation.navigation.MainAppBar
-import com.tristarvoid.kasper.presentation.components.Header
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
+import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
+import com.tristarvoid.kasper.utils.isDark
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun Home(
-    navControl: NavHostController,
-    holderViewModel: HolderViewModel,
-    drawerState: DrawerState,
-    scope: CoroutineScope,
-    toaster: ToastViewModel = hiltViewModel()
+fun HomeScreen(
+    onThemeToggle: () -> Unit
 ) {
-    var showToast by remember { mutableStateOf(value = false) }
-
-    var backPressState by remember { mutableStateOf<BackPress>(value = BackPress.Idle) }
-
-    if (showToast) {
-        toaster.displayToast(message = "Press back again to exit", length = Toast.LENGTH_LONG)
-        showToast = false
-    }
-
-    LaunchedEffect(key1 = backPressState) {
-        if (backPressState == BackPress.InitialTouch) {
-            delay(timeMillis = 2000)
-            backPressState = BackPress.Idle
-        }
-    }
-
-    BackHandler(backPressState == BackPress.Idle) {
-        backPressState = BackPress.InitialTouch
-        showToast = true
-    }
-
-    Surface {
-        Scaffold(
-            topBar = {
-                MainAppBar(navControl, drawerState, scope, holderViewModel)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(all = 10.dp)
+            .background(color = MaterialTheme.colorScheme.background)
+            .verticalScroll(state = rememberScrollState(), enabled = true)
+    ) {
+        val permissionStatus =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                rememberPermissionState(permission = Manifest.permission.ACTIVITY_RECOGNITION).status
+            } else {
+                TODO("VERSION.SDK_INT < Q")
             }
+        val stepsViewModel: StepsViewModel = hiltViewModel()
+        val stepsState by stepsViewModel.stepsState.collectAsState()
+        val isActive by stepsViewModel.isTheSensorActive.collectAsState()
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            val permissionStatus =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    rememberPermissionState(permission = Manifest.permission.ACTIVITY_RECOGNITION).status
-                } else {
-                    TODO("VERSION.SDK_INT < Q")
-                }
-            val stepsViewModel: StepsViewModel = hiltViewModel()
-            val quoteViewModel: QuoteViewModel = hiltViewModel()
-            val weatherViewModel: WeatherViewModel = hiltViewModel()
-            val timeOfDay by remember {
-                holderViewModel.timeOfDay
+            Text(
+                text = "T o d a y",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.W400,
+                fontFamily = JosefinSans
+            )
+            Icon(
+                modifier = Modifier
+                    .padding(top = 6.dp)
+                    .clickable {
+                    onThemeToggle()
+                },
+                imageVector = if (MaterialTheme.colorScheme.isDark()) ImageVector.vectorResource(id = R.drawable.light_mode) else ImageVector.vectorResource(
+                    id = R.drawable.dark_mode
+                ),
+                contentDescription = "Theme switch button"
+            )
+        }
+        StepCard(
+            steps = stepsState.currentSteps,
+            goalInState = stepsState.goal,
+            averageSteps = stepsState.averageSteps,
+            alterGoal = {
+                stepsViewModel.alterGoal(it)
             }
-            LaunchedEffect(Unit) {
-                while (true) {
-                    delay(timeMillis = 5000)
-                    holderViewModel.updateTime()
-                }
-            }
-            //Remember whether apis have been called
-            val apisCalled = remember {
-                holderViewModel.apisCalled
-            }
-            //To prevent continuous network call
-            if (!apisCalled.value) {
-                quoteViewModel.getTheQuote()
-                weatherViewModel.getWeather(lat = 19.0760, long = 72.8777)
-                weatherViewModel.getQuality(lat = 19.0760, long = 72.8777)
-                holderViewModel.apisCalled.value = true
-            }
-            val quote by quoteViewModel.quote.collectAsState()
-            val temp = remember {
-                weatherViewModel.temp
-            }
-            val desc = remember {
-                weatherViewModel.desc
-            }
-            val quality = remember {
-                weatherViewModel.quality
-            }
-            val isActive = stepsViewModel.isTheSensorActive.collectAsStateWithLifecycle()
+        )
+        Spacer(modifier = Modifier.height(height = 16.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
+        ) {
             Column(
                 modifier = Modifier
-                    .padding(top = it.calculateTopPadding())
-                    .fillMaxSize()
-                    .padding(all = 16.dp)
+                    .fillMaxHeight()
+                    .weight(0.45f)
+                    .height(IntrinsicSize.Min)
             ) {
-                Header(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .paddingFromBaseline(5.dp),
-                    alignment = Alignment.TopStart,
-                    text = if (timeOfDay < 12) "It's mornin'" else if (timeOfDay < 18) "It's afternoon" else "It's evenin'",
-                    fontSize = 35
-                )
-                Spacer(modifier = Modifier.height(height = 18.dp))
-                Divider() //Below header
-                Spacer(modifier = Modifier.height(height = 16.dp))
-                StepInfo(
-                    stepsViewModel = stepsViewModel,
-                    isActive = isActive.value
-                )
-                Spacer(modifier = Modifier.height(height = 16.dp))
-                Row(
+                CalorieCard(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Column {
-                        Quote(quote = quote)
-                        Spacer(modifier = Modifier.height(height = 9.dp))
-                        StatusCard(
-                            active = isActive.value,
-                            permissionStatus = permissionStatus
-                        )
-                    }
-                    Weather(desc = desc.value, temp = temp.value, quality = quality.value)
-                }
-                Spacer(modifier = Modifier.height(height = 16.dp))
-                CalorieGraph()
-                Spacer(modifier = Modifier.height(height = 16.dp))
+                    calories = stepsState.caloriesBurned.toString()
+                )
+                Spacer(modifier = Modifier.height(height = 8.dp))
+                ControlCard(
+                    modifier = Modifier.fillMaxSize(),
+                    active = isActive,
+                    permissionStatus = permissionStatus
+                )
             }
+            Spacer(modifier = Modifier.width(width = 8.dp))
+            Weather(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(weight = 0.55f)
+            )
+        }
+        Spacer(modifier = Modifier.height(height = 12.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+
         }
     }
-}
-
-sealed class BackPress {
-    object Idle : BackPress()
-    object InitialTouch : BackPress()
 }
