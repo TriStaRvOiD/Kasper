@@ -10,29 +10,30 @@
 
 package com.tristarvoid.kasper.presentation.components
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material3.*
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
 import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Header(
-    modifier: Modifier,
-    alignment: Alignment = Alignment.Center,
-    text: String,
-    fontSize: Int = 30
+fun CustomAppBar(
+    title: String,
+    actions: @Composable RowScope.() -> Unit
 ) {
-    Box(
-        modifier = modifier,
-        contentAlignment = alignment
-    ) {
-        Text(
-            text = text,
-            fontSize = fontSize.sp,
-            fontFamily = JosefinSans
-        )
-    }
+    TopAppBar(
+        colors = topAppBarColors(
+        containerColor = MaterialTheme.colorScheme.background
+        ),
+        title = {
+            Text(
+                modifier = Modifier,
+                text = title,
+                fontFamily = JosefinSans
+            )
+        },
+        actions = actions
+    )
 }
