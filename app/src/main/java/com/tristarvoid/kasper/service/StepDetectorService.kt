@@ -13,7 +13,9 @@ package com.tristarvoid.kasper.service
 import android.app.Notification
 import android.app.Service
 import android.content.Intent
+import android.os.Build
 import android.os.IBinder
+import androidx.annotation.RequiresApi
 import com.tristarvoid.kasper.R
 import com.tristarvoid.kasper.data.datastore.StatusDataStoreRepository
 import com.tristarvoid.kasper.data.sensor.MeasurableSensor
@@ -27,14 +29,29 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
+@RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
-class StepDetectorService @Inject constructor(
-    private val stepsDao: StepsDao,
-    private val measurableSensor: MeasurableSensor,
-    private val statusRepository: StatusDataStoreRepository
-) : Service() {
+class StepDetectorService : Service() {
+
+    @Inject
+    lateinit var stepsDao: StepsDao
+
+    @Inject
+    lateinit var measurableSensor: MeasurableSensor
+
+    @Inject
+    lateinit var statusRepository: StatusDataStoreRepository
 
     private val _date = MutableStateFlow(value = LocalDate.now().toEpochDay())
+
+    private val notification by lazy {
+        Notification.Builder(this, "foreground_service_channel_id")
+            .setContentTitle("Step counting is active")
+            .setContentText("Kasper is detecting your step count in the background.")
+            .setShowWhen(false)
+            .setSmallIcon(R.drawable.notification_logo)
+            .build()
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
@@ -51,15 +68,6 @@ class StepDetectorService @Inject constructor(
                     stepsDao.upsertEntry(stepsData = data)
                 }
             }
-        }
-
-        val notification by lazy {
-            Notification.Builder(this, "foreground_service_channel_id")
-                .setContentTitle("Step counting is active")
-                .setContentText("Kasper is detecting your step count in the background.")
-                .setShowWhen(false)
-                .setSmallIcon(R.drawable.notification_logo)
-                .build()
         }
 
         startForeground(1, notification)

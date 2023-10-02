@@ -3,9 +3,9 @@
  * This file is part of Kasper.
  * Kasper is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
- * Vanguard is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * Kasper is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with Vanguard. If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with Kasper. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.tristarvoid.kasper.presentation
@@ -13,144 +13,126 @@ package com.tristarvoid.kasper.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.rememberDrawerState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.tristarvoid.kasper.R
-import com.tristarvoid.kasper.domain.HolderViewModel
-import com.tristarvoid.kasper.domain.SplashScreenViewModel
-import com.tristarvoid.kasper.presentation.navigation.DrawerBody
+import com.tristarvoid.kasper.domain.NavigationViewModel
+import com.tristarvoid.kasper.domain.ThemeViewModel
 import com.tristarvoid.kasper.presentation.navigation.Navigation
 import com.tristarvoid.kasper.presentation.navigation.ScreenConfiguration
-import com.tristarvoid.kasper.presentation.ui.theme.VanguardTheme
+import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
+import com.tristarvoid.kasper.presentation.ui.theme.KasperTheme
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var splashViewModel: SplashScreenViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        installSplashScreen().setKeepOnScreenCondition {
-            splashViewModel.isLoading.value
-        }
+        installSplashScreen()
         setContent {
-            val holderViewModel = viewModel<HolderViewModel>()
-            val systemUiController = rememberSystemUiController()
-            val dynamicEnabled = holderViewModel.dynamicEnabled.collectAsStateWithLifecycle()
-            SideEffect {
-                systemUiController.setSystemBarsColor(color = Color.Transparent)
-            }
-            VanguardTheme(
-                dynamicColor = dynamicEnabled.value
+            val themeViewModel = viewModel<ThemeViewModel>()
+            val dynamicEnabled by themeViewModel.dynamicEnabled.collectAsStateWithLifecycle()
+            val isDarkTheme by themeViewModel.isDarkTheme.collectAsStateWithLifecycle()
+            KasperTheme(
+                darkTheme = isDarkTheme,
+                dynamicColor = dynamicEnabled
             ) {
-                val screen by splashViewModel.startDestination
-                Surface {
-                    MainScreen(holderViewModel, screen)
+                val navController = rememberNavController()
+                val navViewModel: NavigationViewModel = viewModel()
+                val bottomNavigationItems = listOf(
+                    BottomNavigationItem(
+                        title = "Home",
+                        route = ScreenConfiguration.HomeScreen.route,
+                        contentDescription = "Go to home screen",
+                        selectedIcon = Icons.Filled.Home,
+                        unselectedIcon = Icons.Outlined.Home
+                    ),
+                    BottomNavigationItem(
+                        title = "Summary",
+                        route = ScreenConfiguration.SummaryScreen.route,
+                        contentDescription = "Go to summary screen",
+                        selectedIcon = ImageVector.vectorResource(id = R.drawable.calendar_filled),
+                        unselectedIcon = ImageVector.vectorResource(id = R.drawable.calendar_outlined)
+                    ),
+                    BottomNavigationItem(
+                        title = "More",
+                        route = ScreenConfiguration.MoreScreen.route,
+                        contentDescription = "Go to more screen",
+                        selectedIcon = ImageVector.vectorResource(id = R.drawable.more),
+                        unselectedIcon = ImageVector.vectorResource(id = R.drawable.more)
+                    )
+                )
+
+                val selectedItemIndex by navViewModel.selectedItemIndex.collectAsStateWithLifecycle()
+
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    Scaffold(
+                        bottomBar = {
+                            NavigationBar(
+                                containerColor = MaterialTheme.colorScheme.background
+                            ) {
+                                bottomNavigationItems.forEachIndexed { index, item ->
+                                    NavigationBarItem(
+                                        selected = selectedItemIndex == index,
+                                        onClick = {
+                                            if (selectedItemIndex != index) {
+                                                if (navController.currentBackStack.value.size > 2) {
+                                                    navController.popBackStack()
+                                                }
+                                                if (index != 0)
+                                                    navController.navigate(item.route)
+                                                navViewModel.selectedItemIndex.value = index
+                                            }
+                                        },
+                                        label = {
+                                            Text(
+                                                text = item.title,
+                                                fontFamily = JosefinSans
+                                            )
+                                        },
+                                        icon = {
+                                            Icon(
+                                                imageVector = if (selectedItemIndex == index) item.selectedIcon else item.unselectedIcon,
+                                                contentDescription = item.contentDescription
+                                            )
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    ) { paddingValues ->
+                        Navigation(
+                            navigationViewModel = navViewModel,
+                            paddingValues = paddingValues,
+                            navController = navController,
+                            themeViewModel = themeViewModel,
+                            defaultScreen = ScreenConfiguration.HomeScreen.route
+                        )
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun MainScreen(
-    holderViewModel: HolderViewModel,
-    screen: String
-) {
-    val navController = rememberNavController()
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
-    val menuItemList = listOf(
-        MenuItem(
-            id = ScreenConfiguration.HomeScreen.route,
-            title = "Home",
-            contentDescription = "Go to home screen",
-            icon = painterResource(id = R.drawable.home)
-        ),
-        MenuItem(
-            id = ScreenConfiguration.WorkoutScreen.route,
-            title = "Workouts",
-            contentDescription = "Go to workouts screen",
-            icon = painterResource(id = R.drawable.exercise)
-        ),
-        MenuItem(
-            id = ScreenConfiguration.RemindersScreen.route,
-            title = "Reminders",
-            contentDescription = "Go to reminders screen",
-            icon = painterResource(id = R.drawable.reminders)
-        ),
-        MenuItem(
-            id = ScreenConfiguration.NutritionScreen.route,
-            title = "Nutrition",
-            contentDescription = "Go to nutrition screen",
-            icon = painterResource(id = R.drawable.nutrition)
-        ),
-        MenuItem(
-            id = ScreenConfiguration.TimerScreen.route,
-            title = "Timer",
-            contentDescription = "Go to timer screen",
-            icon = painterResource(id = R.drawable.timer)
-        ),
-        MenuItem(
-            id = ScreenConfiguration.BMIScreen.route,
-            title = "BMI",
-            contentDescription = "Go to privacy screen",
-            icon = painterResource(id = R.drawable.bmi)
-        ),
-        MenuItem(
-            id = ScreenConfiguration.SettingsScreen.route,
-            title = "Settings",
-            contentDescription = "Go to settings screen",
-            icon = painterResource(id = R.drawable.settings)
-        ),
-        MenuItem(
-            id = ScreenConfiguration.AboutScreen.route,
-            title = "About",
-            contentDescription = "Go to about screen",
-            icon = painterResource(id = R.drawable.info)
-        ),
-        MenuItem(
-            id = ScreenConfiguration.LicensesScreen.route,
-            title = "Licenses",
-            contentDescription = "Go to water screen",
-            icon = painterResource(id = R.drawable.licenses)
-        )
-    )
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            DrawerBody(
-                navControl = navController,
-                drawerState = drawerState,
-                scope = scope,
-                holderViewModel = holderViewModel,
-                items = menuItemList
-            )
-        }
-    ) {
-        Navigation(
-            navControl = navController,
-            holderViewModel = holderViewModel,
-            drawerState = drawerState,
-            scope = scope,
-            defaultScreen = screen
-        )
     }
 }

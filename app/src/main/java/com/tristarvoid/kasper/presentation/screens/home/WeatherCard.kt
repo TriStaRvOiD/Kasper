@@ -10,65 +10,104 @@
 
 package com.tristarvoid.kasper.presentation.screens.home
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.heightIn
+import android.content.Context
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.tristarvoid.kasper.R
+import com.tristarvoid.kasper.data.connection.ConnectivityObserver
+import com.tristarvoid.kasper.domain.NetworkViewModel
+import com.tristarvoid.kasper.domain.WeatherViewModel
 import com.tristarvoid.kasper.presentation.components.CustomCard
+import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
+import com.tristarvoid.kasper.utils.isDark
+import kotlinx.coroutines.delay
 
 @Composable
 fun Weather(
-    desc: String,
-    temp: String,
-    quality: String
+    modifier: Modifier,
+    localContext: Context = LocalContext.current
 ) {
+    val networkViewModel: NetworkViewModel = hiltViewModel()
+    val networkStatus by networkViewModel.networkStatus.collectAsState(
+        initial = ConnectivityObserver.Status.Unavailable
+    )
+    val weatherViewModel: WeatherViewModel = hiltViewModel()
+    var fetchedData by remember {
+        mutableStateOf(false)
+    }
+    val temp by remember {
+        weatherViewModel.temp
+    }
+    val desc by remember {
+        weatherViewModel.desc
+    }
+    val quality by remember {
+        weatherViewModel.quality
+    }
+    var loadingText by remember {
+        mutableStateOf(localContext.getString(R.string.loading))
+    }
+    LaunchedEffect(key1 = networkStatus) {
+        if (networkStatus == ConnectivityObserver.Status.Unavailable) {
+            delay(1000)
+            loadingText = localContext.getString(R.string.connection_unavailable)
+        }
+        else {
+            weatherViewModel.getWeather(lat = 19.0760, long = 72.8777)
+            weatherViewModel.getQuality(lat = 19.0760, long = 72.8777)
+        }
+    }
+    LaunchedEffect(key1 = temp) {
+        if (temp != "" && desc != "" && quality != "")
+            fetchedData = true
+    }
     CustomCard(
-        modifier = Modifier
-            .widthIn(min = 178.dp, max = 178.dp)
-            .heightIn(min = 145.dp, max = 145.dp),
-        function = {}
+        enableGlow = fetchedData && MaterialTheme.colorScheme.isDark(),
+        color1 = Color(0xFF2196F3),
+        color2 = Color(0xFF673AB7),
+        modifier = modifier,
+        onClick = {}
     ) {
         Text(
             modifier = Modifier.padding(start = 10.dp, top = 10.dp),
-            text = "Today : ",
-            style = MaterialTheme.typography.titleMedium,
+            text = "Weather : ",
+            style = MaterialTheme.typography.titleSmall,
             fontFamily = JosefinSans
         )
         if (temp != "" && desc != "" && quality != "") {
             Text(
                 modifier = Modifier.padding(start = 10.dp, top = 14.dp),
                 text = "\u2022 It's $temp\u2103 , with ${desc.lowercase()}.",
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.bodyMedium,
                 fontFamily = JosefinSans
             )
             Text(
                 modifier = Modifier.padding(all = 10.dp),
                 text = "\u2022 Air quality outdoors is $quality.",
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.bodyMedium,
                 fontFamily = JosefinSans
             )
-        }
-        else
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    modifier = Modifier.padding(bottom = 21.dp),
-                    text = "Loading . . .",
-                    style = MaterialTheme.typography.titleSmall,
-                    textAlign = TextAlign.Center,
-                    fontFamily = JosefinSans
-                )
-            }
+        } else
+            Text(
+                modifier = Modifier.padding(all = 10.dp),
+                text = loadingText,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                fontFamily = JosefinSans
+            )
     }
 }

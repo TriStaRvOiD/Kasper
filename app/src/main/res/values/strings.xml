@@ -10,8 +10,14 @@
 
 <resources>
     <string name="app_name">Kasper</string>
+    <string name="app_name_separated">K a s p e r</string>
 
     <string name="privacy_1">Kasper is open source</string>
     <string name="privacy_2">This app does not request unnecessary permissions</string>
     <string name="privacy_3">This app does not contain any analytics APIs whatsoever</string>
+
+    <string name="loading">Loading . . .</string>
+    <string name="connection_unavailable">No internet</string>
+    <string name="connection_lost">Connection Lost</string>
+    <string name="connection_losing">Losing connection</string>
 </resources>
