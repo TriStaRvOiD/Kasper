@@ -20,4 +20,3 @@ This application's code is available under a GPL v3 license. This excludes the i
 * This application uses icons from https://fonts.google.com
 * This application uses the "Josefin Sans" font family from https://fonts.google.com
 * This application uses OpenWeatherMap's Apis
-* This application uses https://github.com/lukePeavey/quotable for the random quotes
