@@ -20,6 +20,9 @@ Unfortunately this app currently only supports English, however this will most l
 
 This application's code is available under a GPL v3 license. This excludes the icons, fonts, logos, assets and animations used.
 
+## Notice
+This application's logo was created using AI (Bing Image Generator)
+
 ## Attribution
 
 * This application uses animations from https://lottiefiles.com
