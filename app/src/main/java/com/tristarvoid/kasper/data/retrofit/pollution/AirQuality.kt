@@ -14,6 +14,6 @@ import com.google.gson.JsonObject
 import com.tristarvoid.kasper.data.retrofit.pollution.extra.QualityList
 
 data class AirQuality(
-    val coord: JsonObject,
+    val coordinates: JsonObject,
     val list: List<QualityList>
 )
