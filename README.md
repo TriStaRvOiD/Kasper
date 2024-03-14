@@ -11,21 +11,19 @@ A pedometer/health app written in Kotlin and Jetpack Compose (for a university p
 
 ## Installation
 
-	1.	Clone the repository to your local machine:
-
-```git clone https://github.com/your-username/your-repository.git```
-
-	2.	Open the project in Android Studio.
-	3.	Build the project:
-	•	Click on the “Build” menu.
-	•	Select “Build Project” or press Ctrl + F9 (Windows/Linux) or Cmd + F9 (Mac).
-	4.	Connect a physical device or use an emulator:
-	•	Make sure your device is connected via USB and has Developer Mode enabled.
-	•	Alternatively, use an Android emulator from Android Studio.
-	5.	Run the app:
-	•	Click on the “Run” menu.
-	•	Select “Run app” or press Shift + F10 (Windows/Linux) or Ctrl + R (Mac).
-	6.	The app should now be running on your device or emulator.
+1. Clone the repository to your local machine: 
+```git clone https://github.com/TriStaRvOiD/Kasper.git```
+2. Open the project in Android Studio.
+3. Build the project:
+   - Click on the “Build” menu.
+   - Select “Build Project” or press Ctrl + F9 (Windows/Linux) or Cmd + F9 (Mac).
+4. Connect a physical device or use an emulator:
+   - Make sure your device is connected via USB and has Developer Mode enabled.
+   - Alternatively, use an Android emulator from Android Studio.
+5. Run the app:
+   - Click on the “Run” menu.
+   - Select “Run app” or press Shift + F10 (Windows/Linux) or Ctrl + R (Mac).
+6. The app should now be running on your device or emulator.
 
 ## Configuration
 You will need to manually provide your own OpenWeatherMap API key.
