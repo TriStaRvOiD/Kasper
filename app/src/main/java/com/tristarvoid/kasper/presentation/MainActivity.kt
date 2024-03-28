@@ -24,12 +24,14 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
@@ -41,95 +43,113 @@ import com.tristarvoid.kasper.presentation.navigation.ScreenConfiguration
 import com.tristarvoid.kasper.presentation.ui.theme.JosefinSans
 import com.tristarvoid.kasper.presentation.ui.theme.KasperTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private var keepSplash = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        installSplashScreen()
+        installSplashScreen().setKeepOnScreenCondition { keepSplash }
         setContent {
-            val themeViewModel = viewModel<ThemeViewModel>()
+            val themeViewModel = hiltViewModel<ThemeViewModel>()
             val dynamicEnabled by themeViewModel.dynamicEnabled.collectAsStateWithLifecycle()
             val isDarkTheme by themeViewModel.isDarkTheme.collectAsStateWithLifecycle()
-            KasperTheme(
-                darkTheme = isDarkTheme,
-                dynamicColor = dynamicEnabled
-            ) {
-                val navController = rememberNavController()
-                val navViewModel: NavigationViewModel = viewModel()
-                val bottomNavigationItems = listOf(
-                    BottomNavigationItem(
-                        title = "Home",
-                        route = ScreenConfiguration.HomeScreen.route,
-                        contentDescription = "Go to home screen",
-                        selectedIcon = Icons.Filled.Home,
-                        unselectedIcon = Icons.Outlined.Home
-                    ),
-                    BottomNavigationItem(
-                        title = "Summary",
-                        route = ScreenConfiguration.SummaryScreen.route,
-                        contentDescription = "Go to summary screen",
-                        selectedIcon = ImageVector.vectorResource(id = R.drawable.calendar_filled),
-                        unselectedIcon = ImageVector.vectorResource(id = R.drawable.calendar_outlined)
-                    ),
-                    BottomNavigationItem(
-                        title = "More",
-                        route = ScreenConfiguration.MoreScreen.route,
-                        contentDescription = "Go to more screen",
-                        selectedIcon = ImageVector.vectorResource(id = R.drawable.more),
-                        unselectedIcon = ImageVector.vectorResource(id = R.drawable.more)
-                    )
-                )
 
-                val selectedItemIndex by navViewModel.selectedItemIndex.collectAsStateWithLifecycle()
+            LaunchedEffect(isDarkTheme) {
+                keepSplash = when (isDarkTheme) {
+                    null -> {
+                        true
+                    }
 
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    else -> {
+                        delay(1000)
+                        false
+                    }
+                }
+            }
+
+            isDarkTheme?.let {
+                KasperTheme(
+                    darkTheme = it,
+                    dynamicColor = dynamicEnabled
                 ) {
-                    Scaffold(
-                        bottomBar = {
-                            NavigationBar(
-                                containerColor = MaterialTheme.colorScheme.background
-                            ) {
-                                bottomNavigationItems.forEachIndexed { index, item ->
-                                    NavigationBarItem(
-                                        selected = selectedItemIndex == index,
-                                        onClick = {
-                                            if (selectedItemIndex != index) {
-                                                if (navController.currentBackStack.value.size > 2) {
-                                                    navController.popBackStack()
+                    val navController = rememberNavController()
+                    val navViewModel: NavigationViewModel = viewModel()
+                    val bottomNavigationItems = listOf(
+                        BottomNavigationItem(
+                            title = "Home",
+                            route = ScreenConfiguration.HomeScreen.route,
+                            contentDescription = "Go to home screen",
+                            selectedIcon = Icons.Filled.Home,
+                            unselectedIcon = Icons.Outlined.Home
+                        ),
+                        BottomNavigationItem(
+                            title = "Summary",
+                            route = ScreenConfiguration.SummaryScreen.route,
+                            contentDescription = "Go to summary screen",
+                            selectedIcon = ImageVector.vectorResource(id = R.drawable.calendar_filled),
+                            unselectedIcon = ImageVector.vectorResource(id = R.drawable.calendar_outlined)
+                        ),
+                        BottomNavigationItem(
+                            title = "More",
+                            route = ScreenConfiguration.MoreScreen.route,
+                            contentDescription = "Go to more screen",
+                            selectedIcon = ImageVector.vectorResource(id = R.drawable.more),
+                            unselectedIcon = ImageVector.vectorResource(id = R.drawable.more)
+                        )
+                    )
+
+                    val selectedItemIndex by navViewModel.selectedItemIndex.collectAsStateWithLifecycle()
+
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        Scaffold(
+                            bottomBar = {
+                                NavigationBar(
+                                    containerColor = MaterialTheme.colorScheme.background
+                                ) {
+                                    bottomNavigationItems.forEachIndexed { index, item ->
+                                        NavigationBarItem(
+                                            selected = selectedItemIndex == index,
+                                            onClick = {
+                                                if (selectedItemIndex != index) {
+                                                    if (navController.currentBackStack.value.size > 2) {
+                                                        navController.popBackStack()
+                                                    }
+                                                    if (index != 0)
+                                                        navController.navigate(item.route)
+                                                    navViewModel.selectedItemIndex.value = index
                                                 }
-                                                if (index != 0)
-                                                    navController.navigate(item.route)
-                                                navViewModel.selectedItemIndex.value = index
+                                            },
+                                            label = {
+                                                Text(
+                                                    text = item.title,
+                                                    fontFamily = JosefinSans
+                                                )
+                                            },
+                                            icon = {
+                                                Icon(
+                                                    imageVector = if (selectedItemIndex == index) item.selectedIcon else item.unselectedIcon,
+                                                    contentDescription = item.contentDescription
+                                                )
                                             }
-                                        },
-                                        label = {
-                                            Text(
-                                                text = item.title,
-                                                fontFamily = JosefinSans
-                                            )
-                                        },
-                                        icon = {
-                                            Icon(
-                                                imageVector = if (selectedItemIndex == index) item.selectedIcon else item.unselectedIcon,
-                                                contentDescription = item.contentDescription
-                                            )
-                                        }
-                                    )
+                                        )
+                                    }
                                 }
                             }
+                        ) { paddingValues ->
+                            Navigation(
+                                navigationViewModel = navViewModel,
+                                paddingValues = paddingValues,
+                                navController = navController,
+                                themeViewModel = themeViewModel,
+                                defaultScreen = ScreenConfiguration.HomeScreen.route
+                            )
                         }
-                    ) { paddingValues ->
-                        Navigation(
-                            navigationViewModel = navViewModel,
-                            paddingValues = paddingValues,
-                            navController = navController,
-                            themeViewModel = themeViewModel,
-                            defaultScreen = ScreenConfiguration.HomeScreen.route
-                        )
                     }
                 }
             }

@@ -11,10 +11,39 @@
 package com.tristarvoid.kasper.domain
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.tristarvoid.kasper.data.datastore.ThemeDataStoreRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ThemeViewModel : ViewModel()
-{
+@HiltViewModel
+class ThemeViewModel @Inject constructor(
+    private val themeRepository: ThemeDataStoreRepository
+) : ViewModel() {
     var dynamicEnabled = MutableStateFlow(false)
-    var isDarkTheme = MutableStateFlow(true)
+    var isDarkTheme = MutableStateFlow<Boolean?>(null)
+
+    init {
+        retrieveThemeValue()
+    }
+
+    private fun retrieveThemeValue() {
+        viewModelScope.launch(context = Dispatchers.IO) {
+            themeRepository.readThemeValue().collect { value ->
+                if (value == "light")
+                    isDarkTheme.value = false
+                else if (value == "dark")
+                    isDarkTheme.value = true
+            }
+        }
+    }
+
+    fun writeThemeValue(themeValue: String) {
+        viewModelScope.launch(context = Dispatchers.IO) {
+            themeRepository.saveThemeValue(themeValue)
+        }
+    }
 }
