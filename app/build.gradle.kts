@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.tristarvoid.kasper"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -72,6 +72,9 @@ dependencies {
     implementation("com.mapbox.maps:android:11.2.2")
     // If you're using compose also add the compose extension
     implementation("com.mapbox.extension:maps-compose:11.2.2")
+
+    //Play Services Location
+    implementation("com.google.android.gms:play-services-location:21.2.0")
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
