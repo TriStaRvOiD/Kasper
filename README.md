@@ -1,9 +1,9 @@
 # Kasper
 
 <p align="center">
-  <img width = 200 src=https://github.com/TriStaRvOiD/Kasper/assets/58824912/855804f0-d6ad-411b-a953-b82d4bbd501c>
+  <img width = 200 src=https://github.com/TriStaRvOiD/Kasper/assets/58824912/c148b06f-7e49-429f-b429-4180e5881ad1>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img width=200 src=https://github.com/TriStaRvOiD/Kasper/assets/58824912/f517e2a7-8715-47b6-8472-c2f043891237)>
+  <img width=200 src=https://github.com/TriStaRvOiD/Kasper/assets/58824912/d803283c-46d9-4654-907e-5aba1c17b521>
 </p>
 
 A pedometer/health app written in Kotlin and Jetpack Compose
